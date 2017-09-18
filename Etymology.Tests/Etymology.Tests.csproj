@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\Etymology.Web\settings.json" Link="settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Etymology.Data\Etymology.Data.csproj" />
+  </ItemGroup>
+
+</Project>

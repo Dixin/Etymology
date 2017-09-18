@@ -1,0 +1,118 @@
+﻿@using Etymology.Data.Models
+
+@model AnalyzeResult
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="row mx-0 bg-info row-eq-height">
+    <div class="col-md-3  col-sm-4 p-1">
+        @{ Etymology etymology = this.Model.Etymologies.First(); }
+        <p><b>Traditional: <span class="text-lg">@etymology.Traditional</span></b></p>
+        @{string traditionalUnicode = ((int)etymology.Traditional.FirstOrDefault()).ToString("X4");}
+        <p><b>Traditional unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@traditionalUnicode" target="_blank">@traditionalUnicode</a></p>
+        <p><b>Simplified: <span class="text-lg">@etymology.Simplified</span></b></p>
+        @{string simplifiedUnicode = ((int)etymology.Simplified.FirstOrDefault()).ToString("X4");}
+        <p><b>Simplified unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@simplifiedUnicode" target="_blank">@simplifiedUnicode</a></p>
+        <p><b>Older character:</b> @etymology.OldKai</p>
+        <p><b>Variant rule:</b> @etymology.Variants796_810</p>
+        <p><b>Meanings of variants:</b> @etymology.VariantMeaning</p>
+        <p><b>Simplification rule:</b> @etymology.SimplificationRule</p>
+        <p><b>Modern invention:</b> @etymology.SimplificationNewOld</p>
+        <p><b>Compound rule:</b> @etymology.RuleBase1753</p>
+        <p><b>Applied rules:</b> @etymology.RuleBaseObserved</p>
+        <p><b>Decomposition:</b> @etymology.Decomposition</p>
+        <p><b>Original meaning:</b> @etymology.Meaning</p>
+        <p><b>Example in use:</b> @etymology.CompoundExample</p>
+        <p><b>Simplified character number:</b> @etymology.SimplifiedCharacterNumber</p>
+        <p><b>Modern meanings:</b> @etymology.EnglishMeanings</p>
+        <p><b>Standard name of character:</b> @etymology.LiuShuStandardName</p>
+        <p><b>Class of character:</b> @etymology.MeaningClass</p>
+        <p><b>Original:</b> @etymology.PictographName</p>
+        <p><b>Main pronunciation:</b> @etymology.Pinyin1</p>
+        <p><b>Other pronunciations:</b> @etymology.PinyinN</p>
+    </div>
+    <div class="col-md-9 col-sm-8 etymology-result bg-primary p-1">
+        <h3>Oracle characters 甲骨文 (@this.Model.Oracles.Length)</h3>
+        @if (!this.Model.Oracles.Any())
+        {
+            <p>There is no known oracle characters found. 没有找到已知的甲骨文.</p>
+        }
+        else
+        {
+            <ul class="list-inline list-unstyled">
+
+                @foreach (Oracle oracle in this.Model.Oracles)
+                {
+                    <li class="text-center">
+                        <div>
+                            <img src="data:image/gif;base64,@Convert.ToBase64String(oracle.Image)" alt="Oracle character @oracle.FormattedId" />
+                        </div>
+                        <p>@oracle.FormattedId</p>
+                    </li>
+                }
+            </ul>
+        }
+        <hr />
+        <h3>Bronze characters 金文 (@this.Model.Bronzes.Length)</h3>
+        @if (!this.Model.Bronzes.Any())
+        {
+            <p>There is no known bronze characters found. 没有找到已知的金文.</p>
+        }
+        else
+        {
+            <ul class="list-inline list-unstyled">
+
+                @foreach (Bronze bronze in this.Model.Bronzes)
+                {
+                    <li class="text-center">
+                        <div>
+                            <img src="data:image/gif;base64,@Convert.ToBase64String(bronze.Image)" alt="Bronze character @bronze.FormattedId" />
+                        </div>
+                        <p>@bronze.FormattedId</p>
+                    </li>
+                }
+            </ul>
+        }
+        <hr />
+        <h3>Seal characters 说文解字的篆字 (@this.Model.Seals.Length)</h3>
+        @if (!this.Model.Seals.Any())
+        {
+            <p>There is no known seal characters found. 没有找到已知的说文解字的篆字.</p>
+        }
+        else
+        {
+            <ul class="list-inline list-unstyled">
+
+                @foreach (Seal seal in this.Model.Seals)
+                {
+                    <li class="text-center">
+                        <div>
+                            <img src="data:image/gif;base64,@Convert.ToBase64String(seal.Image)" alt="Seal character @seal.FormattedId" />
+                        </div>
+                        <p>@seal.FormattedId</p>
+                    </li>
+                }
+            </ul>
+        }
+        <hr />
+        <h3>Liushutong characters 六书通的篆字 (@this.Model.Liushutongs.Length)</h3>
+        @if (!this.Model.Liushutongs.Any())
+        {
+            <p>There is no known Liushutong characters found. 没有找到已知的六书通的字.</p>
+        }
+        else
+        {
+            <ul class="list-inline list-unstyled">
+
+                @foreach (Liushutong liushutong in this.Model.Liushutongs)
+                {
+                    <li class="text-center">
+                        <div>
+                            <img src="data:image/gif;base64,@Convert.ToBase64String(liushutong.Image)" alt="Liushutong character @liushutong.FormattedId" />
+                        </div>
+                        <p>@liushutong.FormattedId</p>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>

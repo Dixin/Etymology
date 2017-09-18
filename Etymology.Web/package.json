@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "name": "etymology",
+  "private": true,
+  "devDependencies": {
+    "jquery": "1.12.4",
+    "js-cookie": "2.1.4",
+    "bootstrap": "3.3.7",
+    "ladda": "1.0.4",
+    "ie10-viewport-bug-workaround.js": "1.0.0"
+  }
+}
