@@ -1,3 +1,8 @@
+---
+layout: post
+title: Why Study Chinese Etymology
+---
+
 # Why Study Chinese Etymology
 
 When I was a young man of 22 in Taiwan in 1972 trying to become fluent and literate in Chinese, I was faced with the prospect of learning to write about 5000 characters and 60,000 character combinations. The characters were complex with many strokes and almost no apparent logic. I found on the rare occasions when I could get a step by step evolution of the character from its original form, with an explanation of its original meaning and an interpretation of its original form, suddenly it would become apparent how all the strokes had come to be. The problem is that there is no book in English that adequately explains this etymology and even if you read Chinese there is no single book in Chinese that explains it all. In short it is a research project to understand each character. To have this information at my fingertips in English would have been a great help.
