@@ -34,7 +34,8 @@
                 {
                     antiforgery.SendTokenToContext(context);
                 }
-                else if (!settings.ErrorPageUrls.Contains(path, StringComparer.OrdinalIgnoreCase) && !context.Request.IsValid(settings))
+                else if (!settings.IgnoreRequestValidation.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) 
+                    && !context.Request.IsValid(settings))
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     return;

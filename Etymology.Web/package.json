@@ -1,12 +1,26 @@
 {
   "version": "1.0.0",
   "name": "etymology",
+  "author": "Dixin Yan",
   "private": true,
-  "devDependencies": {
-    "jquery": "1.12.4",
-    "js-cookie": "2.1.4",
-    "bootstrap": "3.3.7",
-    "ladda": "1.0.4",
-    "ie10-viewport-bug-workaround.js": "1.0.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dixin/Etymology.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dixin/Etymology/issues"
+  },
+  "dependencies": {
+    "bootstrap": "<4.0.0-alpha.2",
+    "ie10-viewport-bug-workaround.js": "^1.0.0",
+    "jquery": "<2.0.0",
+    "js-cookie": "^2.1.4",
+    "ladda": "^1.0.4"
+  },
+  "devDependencies": {},
+  "-vs-binding": {
+    "BeforeBuild": [
+      ""
+    ]
   }
 }

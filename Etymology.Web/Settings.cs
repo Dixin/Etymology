@@ -10,6 +10,6 @@
 
         public List<string> IndexPageUrls { get; } = new List<string>();
 
-        public List<string> ErrorPageUrls { get; } = new List<string>();
+        public List<string> IgnoreRequestValidation { get; } = new List<string>();
     }
 }
