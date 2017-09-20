@@ -2,6 +2,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+    <ApplicationInsightsResourceId>/subscriptions/d099d3f1-ba53-48cf-b4a0-24e75dedd437/resourcegroups/etymology/providers/microsoft.insights/components/etymology</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/d099d3f1-ba53-48cf-b4a0-24e75dedd437/resourcegroups/etymology/providers/microsoft.insights/components/etymology</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
@@ -35,6 +38,10 @@
 
   <ItemGroup>
     <Folder Include="Contents\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

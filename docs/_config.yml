@@ -2,4 +2,4 @@ name: Chinese Etymology 字源
 description: Search 100K+ ancient Chinese characters and etymology. 查询10万+古汉字和字源.
 theme: jekyll-theme-cayman
 permalink: /:title/
-baseurl: "http://dixinyan.asuscomm.com"
+baseurl: "http://etymology.azurewebsites.net"
