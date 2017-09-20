@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Etymology.Data", "src\Etymology.Data\Etymology.Data.csproj", "{AB884CCD-6210-43E6-A0DF-3BD2D3D4E37F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Etymology.Web", "src\Etymology.Web\Etymology.Web.csproj", "{067FEF43-B8EE-495C-AED5-C9FAEA45456F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Etymology.Tests", "src\Etymology.Tests\Etymology.Tests.csproj", "{4FD2F94A-D8B9-488E-8068-D31148ABA50C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{CC291496-B132-4AE8-BB36-CC0B59B7CAA6}"
+	ProjectSection(SolutionItems) = preProject
+		docs\_config.yml = docs\_config.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_posts", "_posts", "{53EE1C43-2F6F-4464-A93D-9FDEB94764D9}"
+	ProjectSection(SolutionItems) = preProject
+		docs\_posts\2017-09-17-why-study-chinese-etymology.md = docs\_posts\2017-09-17-why-study-chinese-etymology.md
+		docs\_posts\2017-09-18-spoken-chinese-and-other-languages.md = docs\_posts\2017-09-18-spoken-chinese-and-other-languages.md
+		docs\_posts\2017-09-19-what-is-a-simplified-chinese-character.md = docs\_posts\2017-09-19-what-is-a-simplified-chinese-character.md
+		docs\_posts\2017-09-19-what-is-a-traditional-chinese-character.md = docs\_posts\2017-09-19-what-is-a-traditional-chinese-character.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_layouts", "_layouts", "{34D1750B-F418-4911-96C1-EB025084D328}"
+	ProjectSection(SolutionItems) = preProject
+		docs\_layouts\default.html = docs\_layouts\default.html
+		docs\_layouts\post.html = docs\_layouts\post.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BF1CDA83-FF92-45D9-A84A-50822A37887A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Etymology.sln.DotSettings = Etymology.sln.DotSettings
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB884CCD-6210-43E6-A0DF-3BD2D3D4E37F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB884CCD-6210-43E6-A0DF-3BD2D3D4E37F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB884CCD-6210-43E6-A0DF-3BD2D3D4E37F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB884CCD-6210-43E6-A0DF-3BD2D3D4E37F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067FEF43-B8EE-495C-AED5-C9FAEA45456F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067FEF43-B8EE-495C-AED5-C9FAEA45456F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067FEF43-B8EE-495C-AED5-C9FAEA45456F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067FEF43-B8EE-495C-AED5-C9FAEA45456F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FD2F94A-D8B9-488E-8068-D31148ABA50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FD2F94A-D8B9-488E-8068-D31148ABA50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FD2F94A-D8B9-488E-8068-D31148ABA50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FD2F94A-D8B9-488E-8068-D31148ABA50C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AB884CCD-6210-43E6-A0DF-3BD2D3D4E37F} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
+		{067FEF43-B8EE-495C-AED5-C9FAEA45456F} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
+		{4FD2F94A-D8B9-488E-8068-D31148ABA50C} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
+		{53EE1C43-2F6F-4464-A93D-9FDEB94764D9} = {CC291496-B132-4AE8-BB36-CC0B59B7CAA6}
+		{34D1750B-F418-4911-96C1-EB025084D328} = {CC291496-B132-4AE8-BB36-CC0B59B7CAA6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9A81CF28-631F-422A-8115-5F115AF1DF62}
+	EndGlobalSection
+EndGlobal
