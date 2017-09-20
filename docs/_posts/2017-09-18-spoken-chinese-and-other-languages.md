@@ -1,4 +1,4 @@
-﻿---
+---
 layout: post
 title: Spoken Chinese and Other Languages
 ---
