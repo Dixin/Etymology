@@ -1,4 +1,4 @@
-﻿namespace Etymology.Web
+﻿namespace Etymology.Web.Server
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
@@ -9,6 +9,7 @@
 
         private static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseWebRoot("Client")
                 .UseApplicationInsights()
                 .UseStartup<Startup>()
                 .Build();

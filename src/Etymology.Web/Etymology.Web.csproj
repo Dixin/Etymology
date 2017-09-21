@@ -7,18 +7,53 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Client\**" />
-    <Compile Remove="Contents\Images\**" />
     <Compile Remove="logs\**" />
-    <Content Remove="Client\**" />
-    <Content Remove="Contents\Images\**" />
     <Content Remove="logs\**" />
-    <EmbeddedResource Remove="Client\**" />
-    <EmbeddedResource Remove="Contents\Images\**" />
     <EmbeddedResource Remove="logs\**" />
-    <None Remove="Client\**" />
-    <None Remove="Contents\Images\**" />
     <None Remove="logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Client\css\ie10-viewport-bug-workaround.css" />
+    <Content Include="Client\error\index.htm" />
+    <Content Include="Client\favicon.ico" />
+    <Content Include="Client\images\alipay.jpg" />
+    <Content Include="Client\images\carousel1.jpg" />
+    <Content Include="Client\images\carousel2.jpg" />
+    <Content Include="Client\images\carousel3.jpg" />
+    <Content Include="Client\images\carousel4.jpg" />
+    <Content Include="Client\images\cctv.jpg" />
+    <Content Include="Client\images\dixin-yan.jpg" />
+    <Content Include="Client\images\error.png" />
+    <Content Include="Client\images\favicons\android-icon-144x144.png" />
+    <Content Include="Client\images\favicons\android-icon-192x192.png" />
+    <Content Include="Client\images\favicons\android-icon-36x36.png" />
+    <Content Include="Client\images\favicons\android-icon-48x48.png" />
+    <Content Include="Client\images\favicons\android-icon-72x72.png" />
+    <Content Include="Client\images\favicons\android-icon-96x96.png" />
+    <Content Include="Client\images\favicons\apple-icon-114x114.png" />
+    <Content Include="Client\images\favicons\apple-icon-120x120.png" />
+    <Content Include="Client\images\favicons\apple-icon-144x144.png" />
+    <Content Include="Client\images\favicons\apple-icon-152x152.png" />
+    <Content Include="Client\images\favicons\apple-icon-180x180.png" />
+    <Content Include="Client\images\favicons\apple-icon-57x57.png" />
+    <Content Include="Client\images\favicons\apple-icon-60x60.png" />
+    <Content Include="Client\images\favicons\apple-icon-72x72.png" />
+    <Content Include="Client\images\favicons\apple-icon-76x76.png" />
+    <Content Include="Client\images\favicons\apple-icon-precomposed.png" />
+    <Content Include="Client\images\favicons\apple-icon.png" />
+    <Content Include="Client\images\favicons\favicon-16x16.png" />
+    <Content Include="Client\images\favicons\favicon-32x32.png" />
+    <Content Include="Client\images\favicons\favicon-96x96.png" />
+    <Content Include="Client\images\favicons\logo.png" />
+    <Content Include="Client\images\favicons\ms-icon-144x144.png" />
+    <Content Include="Client\images\favicons\ms-icon-150x150.png" />
+    <Content Include="Client\images\favicons\ms-icon-310x310.png" />
+    <Content Include="Client\images\favicons\ms-icon-70x70.png" />
+    <Content Include="Client\images\favicons\wechat-icon-300x300.png" />
+    <Content Include="Client\images\wechat-public.jpg" />
+    <Content Include="Client\images\wechat-wallet.jpg" />
+    <Content Include="Client\index.htm" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +72,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contents\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

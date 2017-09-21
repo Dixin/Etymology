@@ -6,10 +6,10 @@
 <div class="row mx-0 bg-info row-eq-height">
     <div class="col-md-3  col-sm-4 p-1">
         @{ Etymology etymology = this.Model.Etymologies.First(); }
-        <p><b>Traditional: <span class="text-lg">@etymology.Traditional</span></b></p>
+        <p><b>Traditional:</b> <span class="text-lg">@etymology.Traditional</span></p>
         @{string traditionalUnicode = ((int)etymology.Traditional.FirstOrDefault()).ToString("X4");}
         <p><b>Traditional unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@traditionalUnicode" target="_blank">@traditionalUnicode</a></p>
-        <p><b>Simplified: <span class="text-lg">@etymology.Simplified</span></b></p>
+        <p><b>Simplified:</b> <span class="text-lg">@etymology.Simplified</span></p>
         @{string simplifiedUnicode = ((int)etymology.Simplified.FirstOrDefault()).ToString("X4");}
         <p><b>Simplified unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@simplifiedUnicode" target="_blank">@simplifiedUnicode</a></p>
         <p><b>Older character:</b> @etymology.OldKai</p>

@@ -1,4 +1,4 @@
-﻿namespace Etymology.Web
+﻿namespace Etymology.Web.Server
 {
     using System;
     using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace Etymology.Web.Controllers
+﻿namespace Etymology.Web.Server.Controllers
 {
     using System;
     using System.Globalization;

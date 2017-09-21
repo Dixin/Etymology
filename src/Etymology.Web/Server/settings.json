@@ -1,0 +1,18 @@
+﻿{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "ImageCache": "Contents/Images",
+  "ConnectionStrings": {
+    "Etymology": "Server=tcp:{server}.database.windows.net,1433;Initial Catalog={database};Persist Security Info=False;User ID={username};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  },
+  "Referers": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net" ],
+  "IndexPageUrls": [ "/", "/index.htm" ],
+  "IgnoreRequestValidation": [ "/error", "/images/favicon" ],
+  "ApplicationInsights": {
+    "InstrumentationKey": "8264b36a-6dc9-444b-b08b-7435fad27c70"
+  }
+}
