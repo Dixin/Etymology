@@ -39,13 +39,10 @@
         else
         {
             <ul class="list-inline list-unstyled">
-
                 @foreach (Oracle oracle in this.Model.Oracles)
                 {
                     <li class="text-center">
-                        <div>
-                            <img src="data:image/gif;base64,@Convert.ToBase64String(oracle.Image)" alt="Oracle character @oracle.FormattedId" />
-                        </div>
+                        <div class="etymology-@oracle.FormattedId"></div>
                         <p>@oracle.FormattedId</p>
                     </li>
                 }
@@ -60,13 +57,10 @@
         else
         {
             <ul class="list-inline list-unstyled">
-
                 @foreach (Bronze bronze in this.Model.Bronzes)
                 {
                     <li class="text-center">
-                        <div>
-                            <img src="data:image/gif;base64,@Convert.ToBase64String(bronze.Image)" alt="Bronze character @bronze.FormattedId" />
-                        </div>
+                        <div class="etymology-@bronze.FormattedId"></div>
                         <p>@bronze.FormattedId</p>
                     </li>
                 }
@@ -81,13 +75,10 @@
         else
         {
             <ul class="list-inline list-unstyled">
-
                 @foreach (Seal seal in this.Model.Seals)
                 {
                     <li class="text-center">
-                        <div>
-                            <img src="data:image/gif;base64,@Convert.ToBase64String(seal.Image)" alt="Seal character @seal.FormattedId" />
-                        </div>
+                        <div class="etymology-@seal.FormattedId"></div>
                         <p>@seal.FormattedId</p>
                     </li>
                 }
@@ -102,17 +93,32 @@
         else
         {
             <ul class="list-inline list-unstyled">
-
                 @foreach (Liushutong liushutong in this.Model.Liushutongs)
                 {
                     <li class="text-center">
-                        <div>
-                            <img src="data:image/gif;base64,@Convert.ToBase64String(liushutong.Image)" alt="Liushutong character @liushutong.FormattedId" />
-                        </div>
+                        <div class="etymology-@liushutong.FormattedId"></div>
                         <p>@liushutong.FormattedId</p>
                     </li>
                 }
             </ul>
         }
     </div>
+    <style type="text/css">
+        @foreach (Oracle oracle in this.Model.Oracles)
+        {
+            <text>.etymology-@(oracle.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(oracle.Image))') } </text>
+        }
+        @foreach (Bronze bronze in this.Model.Bronzes)
+        {
+            <text>.etymology-@(bronze.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(bronze.Image))') } </text>
+        }
+        @foreach (Seal seal in this.Model.Seals)
+        {
+            <text>.etymology-@(seal.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(seal.Image))') } </text>
+        }
+        @foreach (Liushutong liushutong in this.Model.Liushutongs)
+        {
+            <text>.etymology-@(liushutong.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(liushutong.Image))') } </text>
+        }
+    </style>
 </div>
