@@ -34,11 +34,6 @@
             services.Configure<Settings>(options => this.Configuration.Bind(options));
 
             services.AddMvc(options => options.AddAntiforgery());
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.FileProviders.Clear();
-                options.FileProviders.Add(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Server)));
-            });
             services.AddAntiforgery();
 
             services.AddDataAccess(this.Configuration);

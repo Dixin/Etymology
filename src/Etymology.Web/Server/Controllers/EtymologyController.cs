@@ -52,7 +52,7 @@
                     return this.NotFound();
                 }
 
-                return this.View(result);
+                return this.View("~/Server/Views/Etymology/Analyze.cshtml", result);
             }
             catch (Exception exception)
             {

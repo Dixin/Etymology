@@ -1193,37 +1193,17 @@
 
             var navOffset = 51;
             var animateToHash = function (hash, setHash) {
-                $('html, body').animate({
-                    scrollTop: $(hash).offset().top - navOffset
-                }, 800, function () {
-                    if (setHash) {
-                        global.location.hash = hash;
-                    }
-                });
-            };
-
-            var search = function (chinese) {
-                $("#etymologySearchChar").val(chinese);
-                $("#etymologySearchButton").click();
-            };
-            var isChinese = function(value) {
-                return /[\u3400-\u9FBF]/.test(value);
-            };
-            var searchFromHash = function () {
-                var chineseFromHash = global.location.hash.substring(1);
-                if (isChinese(chineseFromHash)) {
-                    search(chineseFromHash);
+                var $hash = $(hash);
+                if ($hash.length > 0) {
+                    $('html, body').animate({
+                        scrollTop: $hash.offset().top - navOffset
+                    }, 800, function() {
+                        if (setHash) {
+                            global.location.hash = hash;
+                        }
+                    });
                 }
-            }
-
-            var oldHash = global.location.hash.substring(1);
-            $(window).on('hashchange', function () {
-                var newHash = global.location.hash.substring(1);
-                if (oldHash !== newHash) {
-                    searchFromHash();
-                    oldHash = newHash;
-                }
-            });
+            };
 
             $(document).ready(function () {
                 $("#etymologyNav a").on('click', function (event) {
@@ -1246,16 +1226,7 @@
                 });
                 var $error = $("#etymologyError");
                 var $result = $("#etymologyResult");
-
-                $("#etymologySearch, #etymologyNavSearch").on("submit", function (event) {
-                    event.preventDefault();
-                    var chinese;
-                    if (this.id === "etymologySearch") {
-                        chinese = $("#etymologySearchChar").val();
-                    }
-                    if (this.id === "etymologyNavSearch") {
-                        chinese = $("#etymologyNavSearchChar").val();
-                    }
+                var search = function (chinese) {
                     $("#etymologySearchChar, #etymologyNavSearchChar").val(chinese);
 
                     $.each(buttons, function (index, button) {
@@ -1286,11 +1257,51 @@
                             button.stop();
                         });
                     });
+                };
+
+                $("#etymologySearch, #etymologyNavSearch").on("submit", function (event) {
+                    event.preventDefault();
+                    var chinese;
+                    if (this.id === "etymologySearch") {
+                        chinese = $("#etymologySearchChar").val();
+                    }
+                    if (this.id === "etymologyNavSearch") {
+                        chinese = $("#etymologyNavSearchChar").val();
+                    }
+                    var hash = global.location.hash.substring(1);
+                    if (hash === chinese) {
+                        animateToHash("#" + chinese);
+                    } else {
+                        global.location.hash = chinese;
+                    }
                 });
 
                 $("#etymologyRandomButton").on("click", function () {
                     var index = Math.floor(Math.random() * commonCharsLength + 1);
-                    search(commonChars[index]);
+                    global.location.hash = commonChars[index];
+                });
+
+                var isChinese = function(value) {
+                    return /[\u3400-\u9FBF]/.test(value);
+                };
+                var searchFromHash = function () {
+                    var chineseFromHash = global.location.hash.substring(1);
+                    if (isChinese(chineseFromHash)) {
+                        search(chineseFromHash);
+                    }
+                }
+
+                var oldHash = global.location.hash.substring(1);
+                $(window).on('hashchange', function (event) {
+                    event.preventDefault();
+                    var newHash = global.location.hash.substring(1);
+                    if (oldHash !== newHash) {
+                        searchFromHash();
+                        oldHash = newHash;
+                    }
+                    else {
+                        animateToHash("#" + newHash);
+                    }
                 });
 
                 searchFromHash();
