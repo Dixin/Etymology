@@ -9,7 +9,7 @@
   "ConnectionStrings": {
     "Etymology": "Server=tcp:{server}.database.windows.net,1433;Initial Catalog={database};Persist Security Info=False;User ID={username};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   },
-  "Referers": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net" ],
+  "Referers": [ "dixinyan.asuscomm.com", "hanziyuan.net", "www.hanziyuan.net", "etymology.azurewebsites.net" ],
   "IndexPageUrls": [ "/", "/index.htm" ],
   "IgnoreRequestValidation": [ "/error", "/images/favicon" ],
   "ApplicationInsights": {
