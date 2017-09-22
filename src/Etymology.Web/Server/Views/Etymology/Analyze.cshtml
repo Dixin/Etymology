@@ -3,9 +3,11 @@
 @model AnalyzeResult
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+@{ var (_, etymologies, oracles, bronzes, seals, liushutongs) = this.Model; }
+
 <div class="row mx-0 bg-info row-eq-height">
     <div class="col-md-3  col-sm-4 p-1">
-        @{ Etymology etymology = this.Model.Etymologies.First(); }
+        @{ Etymology etymology = etymologies.First(); }
         <p><b>Traditional:</b> <span class="text-lg">@etymology.Traditional</span></p>
         @{string traditionalUnicode = ((int)etymology.Traditional.FirstOrDefault()).ToString("X4");}
         <p><b>Traditional unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@traditionalUnicode" target="_blank">@traditionalUnicode</a></p>
@@ -31,15 +33,15 @@
         <p><b>Other pronunciations:</b> @etymology.PinyinN</p>
     </div>
     <div class="col-md-9 col-sm-8 etymology-result bg-primary p-1">
-        <h3><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Oracle characters 甲骨文 (@this.Model.Oracles.Length)</h3>
-        @if (!this.Model.Oracles.Any())
+        <h3><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Oracle characters 甲骨文 (@oracles.Length)</h3>
+        @if (!oracles.Any())
         {
             <p>There is no known oracle characters found. 没有找到已知的甲骨文.</p>
         }
         else
         {
             <ul class="list-inline list-unstyled">
-                @foreach (Oracle oracle in this.Model.Oracles)
+                @foreach (Oracle oracle in oracles)
                 {
                     <li class="text-center">
                         <div class="etymology-@oracle.FormattedId"></div>
@@ -49,15 +51,15 @@
             </ul>
         }
         <hr />
-        <h3>Bronze characters 金文 (@this.Model.Bronzes.Length)</h3>
-        @if (!this.Model.Bronzes.Any())
+        <h3>Bronze characters 金文 (@bronzes.Length)</h3>
+        @if (!bronzes.Any())
         {
             <p>There is no known bronze characters found. 没有找到已知的金文.</p>
         }
         else
         {
             <ul class="list-inline list-unstyled">
-                @foreach (Bronze bronze in this.Model.Bronzes)
+                @foreach (Bronze bronze in bronzes)
                 {
                     <li class="text-center">
                         <div class="etymology-@bronze.FormattedId"></div>
@@ -67,15 +69,15 @@
             </ul>
         }
         <hr />
-        <h3>Seal characters 说文解字的篆字 (@this.Model.Seals.Length)</h3>
-        @if (!this.Model.Seals.Any())
+        <h3>Seal characters 说文解字的篆字 (@seals.Length)</h3>
+        @if (!seals.Any())
         {
             <p>There is no known seal characters found. 没有找到已知的说文解字的篆字.</p>
         }
         else
         {
             <ul class="list-inline list-unstyled">
-                @foreach (Seal seal in this.Model.Seals)
+                @foreach (Seal seal in seals)
                 {
                     <li class="text-center">
                         <div class="etymology-@seal.FormattedId"></div>
@@ -85,15 +87,15 @@
             </ul>
         }
         <hr />
-        <h3>Liushutong characters 六书通的篆字 (@this.Model.Liushutongs.Length)</h3>
-        @if (!this.Model.Liushutongs.Any())
+        <h3>Liushutong characters 六书通的篆字 (@liushutongs.Length)</h3>
+        @if (!liushutongs.Any())
         {
             <p>There is no known Liushutong characters found. 没有找到已知的六书通的字.</p>
         }
         else
         {
             <ul class="list-inline list-unstyled">
-                @foreach (Liushutong liushutong in this.Model.Liushutongs)
+                @foreach (Liushutong liushutong in liushutongs)
                 {
                     <li class="text-center">
                         <div class="etymology-@liushutong.FormattedId"></div>
@@ -104,19 +106,19 @@
         }
     </div>
     <style type="text/css">
-        @foreach (Oracle oracle in this.Model.Oracles)
+        @foreach (Oracle oracle in oracles)
         {
             <text>.etymology-@(oracle.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(oracle.Image))') } </text>
         }
-        @foreach (Bronze bronze in this.Model.Bronzes)
+        @foreach (Bronze bronze in bronzes)
         {
             <text>.etymology-@(bronze.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(bronze.Image))') } </text>
         }
-        @foreach (Seal seal in this.Model.Seals)
+        @foreach (Seal seal in seals)
         {
             <text>.etymology-@(seal.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(seal.Image))') } </text>
         }
-        @foreach (Liushutong liushutong in this.Model.Liushutongs)
+        @foreach (Liushutong liushutong in liushutongs)
         {
             <text>.etymology-@(liushutong.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(liushutong.Image))') } </text>
         }

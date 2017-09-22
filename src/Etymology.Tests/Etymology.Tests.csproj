@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\Etymology.Web\settings.json" Link="settings.json">
+    <Content Include="..\Etymology.Web\Server\settings.Development.json" Link="settings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Etymology.Web\Server\settings.json" Link="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -25,5 +25,15 @@
         public Seal[] Seals { get; }
 
         public Liushutong[] Liushutongs { get; }
+
+        public void Deconstruct(out char chinese, out Etymology[] etymologies, out Oracle[] oracles, out Bronze[] bronzes, out Seal[] seals, out Liushutong[] liushutongs)
+        {
+            chinese = this.Chinese;
+            etymologies = this.Etymologies;
+            oracles = this.Oracles;
+            bronzes = this.Bronzes;
+            seals = this.Seals;
+            liushutongs = this.Liushutongs;
+        }
     }
 }
