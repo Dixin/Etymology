@@ -1188,6 +1188,9 @@
 
     <script type="text/javascript">
         (function (global, undefined) {
+            var commonChars = "一我不在人有来上大去子得下天时出小好多又可家学会年生同老中十自前它后见用国动进成作对而己山工向事命长水义三于高正二问方四之光分白东次如口儿气五使文再果明行因外门新队先员九每少比车斗马化士干石日百六解立河八相今死步反千或师月位七女利刚且未农古告名土阳史此北服雨父内传兴观冲友公旁南岁至教强呼旧受令何牛取入林句区衣般母叔";
+            var commonCharsLength = commonChars.length;
+
             var navOffset = 51;
             var animateToHash = function (hash, setHash) {
                 $('html, body').animate({
@@ -1198,6 +1201,29 @@
                     }
                 });
             };
+
+            var search = function (chinese) {
+                $("#etymologySearchChar").val(chinese);
+                $("#etymologySearchButton").click();
+            };
+            var isChinese = function(value) {
+                return /[\u3400-\u9FBF]/.test(value);
+            };
+            var searchFromHash = function () {
+                var chineseFromHash = global.location.hash.substring(1);
+                if (isChinese(chineseFromHash)) {
+                    search(chineseFromHash);
+                }
+            }
+
+            var oldHash = global.location.hash.substring(1);
+            $(window).on('hashchange', function () {
+                var newHash = global.location.hash.substring(1);
+                if (oldHash !== newHash) {
+                    searchFromHash();
+                    oldHash = newHash;
+                }
+            });
 
             $(document).ready(function () {
                 $("#etymologyNav a").on('click', function (event) {
@@ -1248,7 +1274,7 @@
                         $error.hide();
                         $result.html(data).show();
 
-                        animateToHash("#etymologyResult", false);
+                        animateToHash("#" + chinese, true);
                     }).fail(function (jqXHR, textStatus, error) {
                         $result.hide();
                         var message = !jqXHR.status || !jqXHR.responseText ? "Network connection failed." : "[" + jqXHR.status + " " + textStatus + "] " + error + ". " + jqXHR.responseText;
@@ -1261,6 +1287,13 @@
                         });
                     });
                 });
+
+                $("#etymologyRandomButton").on("click", function () {
+                    var index = Math.floor(Math.random() * commonCharsLength + 1);
+                    search(commonChars[index]);
+                });
+
+                searchFromHash();
             });
 
             $(global).load(function() {
@@ -1273,3 +1306,4 @@
     </script>
 </body>
 </html>
+
