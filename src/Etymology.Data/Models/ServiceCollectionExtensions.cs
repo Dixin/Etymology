@@ -7,10 +7,17 @@
 
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddDbContextPool<EtymologyContext>(dbOptions => dbOptions
-                .UseSqlServer(
-                    configuration.GetConnectionString(nameof(Etymology)),
-                    sqlOptions => sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null)));
+        public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
+        {
+            string connection = configuration.GetConnectionString(nameof(Etymology));
+            if (string.IsNullOrWhiteSpace(connection))
+            {
+                throw new InvalidOperationException("Failed to get connection string.");
+            }
+
+            return services.AddDbContextPool<EtymologyContext>(dbOptions => dbOptions.UseSqlServer(
+                connection,
+                sqlOptions => sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null)));
+        }
     }
 }

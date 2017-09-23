@@ -34,7 +34,7 @@
                 {
                     antiforgery.SendTokenToContext(context);
                 }
-                else if (!settings.IgnoreRequestValidation.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) 
+                else if (!settings.ExposedPaths.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) 
                     && !context.Request.IsValid(settings))
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -56,9 +56,9 @@
             return 
                 // Referer.
                 Uri.TryCreate(headers["Referer"], UriKind.Absolute, out Uri refererUri)
-                && settings.Referers.Contains(refererUri.Host, StringComparer.OrdinalIgnoreCase)
+                && settings.RefererHosts.Contains(refererUri.Host, StringComparer.OrdinalIgnoreCase)
                 // Host.
-                && settings.Referers.Contains(request.Host.Host, StringComparer.OrdinalIgnoreCase)
+                && settings.RefererHosts.Contains(request.Host.Host, StringComparer.OrdinalIgnoreCase)
                 // User agent.
                 && !string.IsNullOrEmpty(headers["User-Agent"])
                 // Anti forgery token.

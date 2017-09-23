@@ -1,5 +1,5 @@
 ﻿{
-  "Referers": [ "localhost" ],
+  "RefererHosts": [ "localhost" ],
   "ConnectionStrings": {
     "Etymology": "Server=(localdb)\\mssqllocaldb;Database=ChineseEtymology;Trusted_Connection=True;"
   }

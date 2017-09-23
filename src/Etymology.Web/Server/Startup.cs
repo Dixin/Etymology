@@ -10,8 +10,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using Microsoft.AspNetCore.Mvc.Razor;
-    using Microsoft.Extensions.FileProviders;
 
     public class Startup
     {
