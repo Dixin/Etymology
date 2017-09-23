@@ -5,7 +5,7 @@
 
 @{ var (chinese, etymologies, oracles, bronzes, seals, liushutongs) = this.Model; }
 
-<div class="row mx-0 bg-info row-eq-height" id="@chinese">
+<div class="row mx-0 bg-info row-eq-height etymology-nav" id="@chinese">
     <div class="col-md-3  col-sm-4 p-1">
         @{ Etymology etymology = etymologies.First(); }
         <p><b>Traditional:</b> <span class="text-lg">@etymology.Traditional</span></p>
