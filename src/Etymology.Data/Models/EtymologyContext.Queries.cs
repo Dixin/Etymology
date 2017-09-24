@@ -14,7 +14,7 @@
         {
             if (char.GetUnicodeCategory(chinese) != UnicodeCategory.OtherLetter)
             {
-                throw new ArgumentOutOfRangeException(nameof(chinese));
+                throw new ArgumentOutOfRangeException(nameof(chinese), $"{chinese} is not Chinese character.");
             }
 
             // LINQ to Entities queries creates multiple round trips to database and causes lower performance.

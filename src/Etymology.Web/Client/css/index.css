@@ -1,0 +1,190 @@
+﻿@import "ie10-viewport-bug-workaround.css";
+@import "~ladda/dist/ladda-themeless.min.css";
+
+.navbar-collapse {
+    overflow: hidden;
+}
+
+body {
+    position: relative;
+    padding-top: 50px;
+}
+
+.row-eq-height {
+    overflow: hidden;
+}
+
+    .row-eq-height [class*="col-"] {
+        margin-bottom: -99999px;
+        padding-bottom: 99999px;
+    }
+
+.m-0 {
+    margin: 0;
+}
+
+.mx-0 {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.px-0 {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.p-1 {
+    padding: 15px;
+}
+
+.px-1 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.py-1 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.pt-1 {
+    padding-top: 15px;
+}
+
+.pb-1 {
+    padding-bottom: 15px;
+}
+
+.bg-purple {
+    background-color: #563d7c;
+}
+
+.bg-black {
+    background-color: #000000;
+}
+
+.text-black {
+    color: #000000;
+}
+
+.text-lg {
+    font-size: 50px;
+}
+
+.text-danger-color {
+    color: #ff4444;
+}
+
+a.text-danger-color, a.text-danger-color:visited {
+    color: #ff4444 !important;
+}
+
+    a.text-danger-color:hover, a.text-danger-color:active {
+        color: #ff9c9c !important;
+    }
+
+.text-white {
+    color: #eeeeee;
+}
+
+a.text-white, a.text-white:visited {
+    color: #ffffff !important;
+}
+
+    a.text-white:hover, a.text-white:active {
+        color: #ffffff !important;
+    }
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+
+        .navbar-collapse.collapse.in {
+            display: block !important;
+        }
+
+    .navbar-header .collapse, .navbar-toggle {
+        display: block !important;
+    }
+
+    .navbar-header {
+        float: none;
+    }
+}
+
+.etymology-news .media-left a {
+    width: 50px;
+    height: 64px;
+    display: block;
+    font-size: 40px;
+    color: #e1bee7;
+}
+
+.etymology-videos .media-left a {
+    width: 114px;
+    height: 64px;
+    display: block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.etymology-brand {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media (min-width: 768px) {
+    .etymology-brand {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+@media (max-width: 351px) {
+    .etymology-nav-icon {
+        display: none;
+    }
+}
+
+.navbar-fixed-top .navbar-collapse {
+    max-height: none;
+}
+
+.etymology-search button {
+    margin-bottom: 10px;
+}
+
+.etymology-stat div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.etymology-result ul {
+    margin-top: 15px;
+}
+
+    .etymology-result ul li div {
+        background-color: #fff;
+        width: 105px;
+        height: 70px;
+        background-size: 60px 60px;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+    }
+
+        .etymology-result ul li div img {
+            margin-top: 5px;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 5px;
+        }
+
+.etymology-news .media-body {
+    color: #ccc;
+}
+
+.etymology-news .media-heading {
+    color: #fff;
+}
