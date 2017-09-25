@@ -7,6 +7,7 @@ const $ = global.$;
 const ui = {
     init: () => {
         ui.$nav = $("#etymologyNav");
+        ui.$navMenu = $("#etymologyNavMenu");
         ui.$positions = $("div.etymology-nav");
         ui.$links = $("a.etymology-link");
         ui.buttons = $("#etymologySearchButton, #etymologyNavSearchButton, #etymologyRandomButton").map((index, element) => Ladda.create(element));
@@ -20,6 +21,7 @@ const ui = {
     },
 
     $nav: null,
+    $navMenu: null,
     $positions: null,
     $links: null,
     buttons: null,
@@ -56,7 +58,13 @@ const ui = {
 
     getChinese: search => search["chinese"].value,
 
-    getNavOffset: () => ui.$nav.height() - 1
+    getNavOffset: () => ui.$nav.height() - 1,
+
+    collapseMenu: () => {
+        if (ui.$navMenu.is(":visible")) {
+            ui.$navMenu.collapse('hide');
+        }
+    }
 };
 
 export default ui;

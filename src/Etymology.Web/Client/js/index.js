@@ -32,7 +32,11 @@ $document.on("ready", () => {
 
     Hash.init(UI.getNavOffset(), UI.$positions);
 
-    UI.$links.on("click", event => Hash.scrollTo(event.currentTarget.hash));
+    UI.$links.on("click", event => {
+        event.preventDefault();
+        Hash.scrollTo(event.currentTarget.hash);
+        UI.collapseMenu();
+    });
 
     UI.$search.on("submit", event => {
         event.preventDefault();
