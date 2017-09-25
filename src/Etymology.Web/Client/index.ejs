@@ -40,7 +40,7 @@
     <!-- Bootstrap -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 
-	<style><%= require("to-string-loader!css-loader?{'minimize':{'discardComments':{'removeAll':true}}}!./css/index.css") %></style>
+	<style><%= htmlWebpackPlugin.options.minify ? require("to-string-loader!css-loader?{'minimize':{'discardComments':{'removeAll':true}}}!./css/index.css") : require("to-string-loader!css-loader!./css/index.css") %></style>
 
     <!--[if lt IE 9]>
         <style type="text/css">
@@ -83,18 +83,18 @@
             </div>
             <div id="etymologyNavMenu" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#home" class="etymology-link">Home 首页</a></li>
-                    <li><a href="#about" class="etymology-link">About 汉字叔叔</a></li>
+                    <li class="active"><a href="#home" class="etymology-link" data-toggle="collapse" data-target="#etymologyNavMenu">Home 首页</a></li>
+                    <li><a href="#about" class="etymology-link" data-toggle="collapse" data-target="#etymologyNavMenu">About 汉字叔叔</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Research 汉字研究<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#research" class="etymology-link">Chinese character and etymology 汉字和字源</a></li>
-                            <li><a href="#news" class="etymology-link">News 新闻</a></li>
-                            <li><a href="#videos" class="etymology-link">Videos 视频</a></li>
+                            <li><a href="#research" class="etymology-link" data-toggle="collapse" data-target="#etymologyNavMenu">Chinese character and etymology 汉字和字源</a></li>
+                            <li><a href="#news" class="etymology-link" data-toggle="collapse" data-target="#etymologyNavMenu">News 新闻</a></li>
+                            <li><a href="#videos" class="etymology-link" data-toggle="collapse" data-target="#etymologyNavMenu">Videos 视频</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#contact" class="etymology-link">Contact 联系</a></li>
-                            <li><a href="#donation" class="etymology-link">Donation 捐款</a></li>
-                            <li><a href="#contributors" class="etymology-link">Contributors 贡献者</a></li>
+                            <li><a href="#contact" class="etymology-link" data-toggle="collapse" data-target="#etymologyNavMenu">Contact 联系</a></li>
+                            <li><a href="#donation" class="etymology-link" data-toggle="collapse" data-target="#etymologyNavMenu">Donation 捐款</a></li>
+                            <li><a href="#contributors" class="etymology-link" data-toggle="collapse" data-target="#etymologyNavMenu">Contributors 贡献者</a></li>
                         </ul>
                     </li>
                 </ul>

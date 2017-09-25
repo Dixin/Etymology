@@ -7,7 +7,7 @@ const $ = global.$;
 const ui = {
     init: () => {
         ui.$nav = $("#etymologyNav");
-        ui.$positions = $(".etymology-nav");
+        ui.$positions = $("div.etymology-nav");
         ui.$links = $("a.etymology-link");
         ui.buttons = $("#etymologySearchButton, #etymologyNavSearchButton, #etymologyRandomButton").map((index, element) => Ladda.create(element));
         ui.$error = $("#etymologyError");
@@ -52,7 +52,11 @@ const ui = {
             const $link = $(element);
             $link.css({ "background-image": `url(${$link.data("background")})` });
         });
-    }
+    },
+
+    getChinese: search => search["chinese"].value,
+
+    getNavOffset: () => ui.$nav.height() - 1
 };
 
 export default ui;

@@ -30,13 +30,13 @@ const trySearchFromHash = () => {
 $document.on("ready", () => {
     UI.init();
 
-    Hash.init(UI.$nav.height() - 1, UI.$positions);
+    Hash.init(UI.getNavOffset(), UI.$positions);
 
     UI.$links.on("click", event => Hash.scrollTo(event.currentTarget.hash));
 
     UI.$search.on("submit", event => {
         event.preventDefault();
-        const chinese = event.currentTarget["chinese"].value;
+        const chinese = UI.getChinese(event.currentTarget);
         if (Data.isChinese(chinese)) {
             if (!Hash.scrollTo(chinese)) {
                 Hash.set(chinese);
