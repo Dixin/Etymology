@@ -42,22 +42,25 @@ $document.on("ready", () => {
         event.preventDefault();
         const chinese = UI.getChinese(event.currentTarget);
         if (Data.isChinese(chinese)) {
+            UI.collapseMenu();
             if (!Hash.scrollTo(chinese)) {
                 Hash.set(chinese);
             }
         } else {
-            global.alert("Please input single Chinese character 请输入单个汉字.");
+            UI.showInvalidInput();
         }
     });
 
     UI.$random.on("click", () => Hash.set(Data.randomChinese()));
+
+    UI.$main.on("click", () => UI.collapseMenu());
 
     trySearchFromHash();
 });
 
 $global.on("hashchange", () => trySearchFromHash());
 
-$global.on("scroll", Hash.setAfterScroll);
+$global.on("scroll", () => Hash.setAfterScroll(UI.collapseMenu));
 
 $global.on("load", () => UI.loadVideoThumbnails());
 

@@ -60,7 +60,7 @@ export default {
 
     updatePositions: updatePositions,
 
-    setAfterScroll: () => {
+    setAfterScroll: callback => {
         if (scrollTimeoutId) {
             global.clearTimeout(scrollTimeoutId);
         }
@@ -76,8 +76,11 @@ export default {
                         return false;
                     }
                     set(position.id);
-                    return true;
+                    return false;
                 });
+            }
+            if (callback) {
+                callback();
             }
         }, 200);
     }

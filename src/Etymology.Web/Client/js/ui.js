@@ -6,6 +6,7 @@ const $ = global.$;
 
 const ui = {
     init: () => {
+        ui.$main = $("#etymologyMain");
         ui.$nav = $("#etymologyNav");
         ui.$navMenu = $("#etymologyNavMenu");
         ui.$positions = $("div.etymology-nav");
@@ -19,19 +20,6 @@ const ui = {
         ui.$videos = $("#videos .media-left a");
         ui.$chinese = $("#etymologySearchChar, #etymologyNavSearchChar");
     },
-
-    $nav: null,
-    $navMenu: null,
-    $positions: null,
-    $links: null,
-    buttons: null,
-    $error: null,
-    $errorMessage: null,
-    $result: null,
-    $search: null,
-    $random: null,
-    $videos: null,
-    $chinese: null,
 
     startLoading: () => $.each(ui.buttons, (index, button) => button.start()),
 
@@ -61,10 +49,12 @@ const ui = {
     getNavOffset: () => ui.$nav.height() - 1,
 
     collapseMenu: () => {
-        if (ui.$navMenu.is(":visible")) {
+        if (ui.$navMenu.hasClass("in")) {
             ui.$navMenu.collapse('hide');
         }
-    }
+    },
+
+    showInvalidInput: () => global.alert("Please input single Chinese character 请输入单个汉字.")
 };
 
 export default ui;
