@@ -29,5 +29,9 @@
     "to-string-loader": "^1.1.5",
     "webpack": "^3.6.0",
     "webpack-merge": "^4.1.0"
+  },
+  "scripts": {
+    "buildDebug": "node_modules/.bin/webpack --config webpack.config.Debug.js --watch",
+    "buildRelease": "node_modules/.bin/webpack --config webpack.config.Release.js --watch"
   }
 }

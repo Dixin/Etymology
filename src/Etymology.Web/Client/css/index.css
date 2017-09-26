@@ -161,8 +161,11 @@ a.text-white, a.text-white:visited {
 }
 
 .etymology-stat div {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 0;
+}
+
+.etymology-stat h3 {
+    margin-top: 10px;
 }
 
 .etymology-result ul {
