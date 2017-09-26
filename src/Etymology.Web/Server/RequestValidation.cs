@@ -10,7 +10,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.DependencyInjection;
 
-    internal static class ValidateRequest
+    internal static class RequestValidation
     {
         internal static MvcOptions AddAntiforgery(this MvcOptions options)
         {
