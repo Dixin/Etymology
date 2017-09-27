@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="node_modules\.bin\webpack --config webpack.config.$(Configuration).js" />
+    <Exec Command="npm build$(Configuration)" />
   </Target>
 
 </Project>
