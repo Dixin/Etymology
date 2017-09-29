@@ -1,41 +1,48 @@
 ﻿{
- "name": "Chinese Etymology 字源",
- "icons": [
-  {
-   "src": "images/favicons/android-icon-36x36.png",
-   "sizes": "36x36",
-   "type": "image/png",
-   "density": "0.75"
-  },
-  {
-    "src": "images/favicons/android-icon-48x48.png",
-    "sizes": "48x48",
-    "type": "image/png",
-    "density": "1.0"
-  },
-  {
-    "src": "images/favicons/android-icon-72x72.png",
-    "sizes": "72x72",
-    "type": "image/png",
-    "density": "1.5"
-  },
-  {
-    "src": "images/favicons/android-icon-96x96.png",
-    "sizes": "96x96",
-    "type": "image/png",
-    "density": "2.0"
-  },
-  {
-    "src": "images/favicons/android-icon-144x144.png",
-    "sizes": "144x144",
-    "type": "image/png",
-    "density": "3.0"
-  },
-  {
-    "src": "images/favicons/android-icon-192x192.png",
-    "sizes": "192x192",
-    "type": "image/png",
-    "density": "4.0"
-  }
- ]
+  "name": "Chinese Etymology 字源",
+  "short_name": "字源",
+  "lang": "zh",
+  "start_url": "http://hanziyuan.net",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Chinese Etymology 字源, Chinese character history and ancient Chinaese character (Orachle characters, Bronze characters, Seal characters, Shuowen Jiezi, Liushutong) analysis and research 汉字历史和古汉字(甲骨文, 金文, 篆字, 说文解字, 六书通)研究与分析. Search 100K+ ancient Chinese characters and etymology. 查询10万+古汉字和字源.",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/favicons/android-icon-36x36.png",
+      "sizes": "36x36",
+      "type": "image/png",
+      "density": "0.75"
+    },
+    {
+      "src": "images/favicons/android-icon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "density": "1.0"
+    },
+    {
+      "src": "images/favicons/android-icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "density": "1.5"
+    },
+    {
+      "src": "images/favicons/android-icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "density": "2.0"
+    },
+    {
+      "src": "images/favicons/android-icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "density": "3.0"
+    },
+    {
+      "src": "images/favicons/android-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "density": "4.0"
+    }
+  ]
 }

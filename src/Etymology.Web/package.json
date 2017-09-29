@@ -32,6 +32,6 @@
   },
   "scripts": {
     "buildDebug": "node_modules/.bin/webpack --config webpack.config.Debug.js --watch",
-    "buildRelease": "node_modules/.bin/webpack --config webpack.config.Release.js --watch"
+    "buildRelease": "node_modules/.bin/webpack --config webpack.config.Release.js"
   }
 }

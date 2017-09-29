@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="npm build$(Configuration)" />
+    <Exec Command="npm run build$(Configuration)" />
   </Target>
 
 </Project>
