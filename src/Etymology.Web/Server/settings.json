@@ -11,7 +11,7 @@
   },
   "RefererHosts": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net" ],
   "IndexPageUrls": [ "/", "/index.htm" ],
-  "ExposedPaths": [ "/error", "/images/favicons", "/browserconfig.xml", "/manifest.json" ],
+  "ExposedPaths": [ "/error", "/images/favicons", "/browserconfig.xml", "/manifest.json", "/favicon.ico" ],
   "ApplicationInsights": {
     "InstrumentationKey": "8264b36a-6dc9-444b-b08b-7435fad27c70"
   }
