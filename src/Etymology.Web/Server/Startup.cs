@@ -22,6 +22,10 @@
                 .AddJsonFile(Path.Combine(Server, "settings.json"), optional: false, reloadOnChange: true)
                 .AddJsonFile(Path.Combine(Server, $"settings.{environment.EnvironmentName}.json"), optional: true)
                 .AddEnvironmentVariables();
+            if (!environment.IsProduction())
+            {
+                builder.AddApplicationInsightsSettings(developerMode: true);
+            }
             this.Configuration = builder.Build();
         }
 
@@ -37,6 +41,8 @@
             services.AddDataAccess(this.Configuration);
 
             services.AddCache(this.Configuration);
+
+            services.AddApplicationInsightsTelemetry(this.Configuration);
         }
 
         public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment environment, ILoggerFactory loggerFactory, ImageCache imageCache, IAntiforgery antiforgery, IOptions<Settings> options)
@@ -48,14 +54,17 @@
                 applicationBuilder.UseExceptionHandler("/error");
                 applicationBuilder.UseStatusCodePagesWithReExecute("/error");
 
+                loggerFactory.AddApplicationInsights(applicationBuilder.ApplicationServices);
+
                 // Async Configure method is not supported by ASP.NET.
                 // https://github.com/aspnet/Hosting/issues/373
                 // imageCache.SaveWithRetryAsync().Wait();
             }
             else
             {
-                loggerFactory.AddConsole(LogLevel.Trace, true).AddDebug().AddFile("logs/{Date}.txt");
                 applicationBuilder.UseDeveloperExceptionPage().UseBrowserLink();
+
+                loggerFactory.AddConsole(LogLevel.Trace, true).AddDebug().AddFile("logs/{Date}.txt");
             }
 
             applicationBuilder.UseDefaultFiles();

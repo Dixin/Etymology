@@ -20,7 +20,7 @@
         }
 
         public async Task SaveWithRetryAsync() => 
-            await Retry.ExecuteAsync(
+            await Retry.FixedIntervalAsync(
                 async () =>
                 {
                     await this.context.BronzeImages().ForEachAsync(character =>
@@ -36,7 +36,7 @@
                 retryInterval: TimeSpan.FromSeconds(10));
 
         private static void SaveCharacterWithRetry(string cacheRoot, ICharacter character) => 
-            Retry.Execute(
+            Retry.FixedInterval(
                 () =>
                 {
                     string path = Path.Combine(cacheRoot, character.Path());
