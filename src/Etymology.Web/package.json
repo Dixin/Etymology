@@ -31,7 +31,7 @@
     "webpack-merge": "^4.1.0"
   },
   "scripts": {
-    "buildDebug": "node_modules/.bin/webpack --config webpack.config.Debug.js --watch",
+    "buildDebug": "node_modules/.bin/webpack --config webpack.config.Debug.js",
     "buildRelease": "node_modules/.bin/webpack --config webpack.config.Release.js"
   }
 }

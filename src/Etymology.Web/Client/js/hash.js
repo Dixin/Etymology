@@ -1,5 +1,6 @@
 ﻿const global = window;
 const location = global.location;
+const $ = global.$;
 const $document = $(global.document);
 
 let navOffset = 0;

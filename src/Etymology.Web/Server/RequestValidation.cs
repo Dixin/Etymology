@@ -46,7 +46,7 @@
         private static void SendTokenToContext(this IAntiforgery antiforgery, HttpContext context)
         {
             AntiforgeryTokenSet tokens = antiforgery.GetAndStoreTokens(context);
-            context.Response.Cookies.Append(tokens.FormFieldName, tokens.RequestToken, new CookieOptions() { HttpOnly = false });
+            context.Response.Cookies.Append(tokens.FormFieldName, tokens.RequestToken, new CookieOptions() { HttpOnly = false, SameSite = SameSiteMode.None});
         }
 
         private static bool IsValid(this HttpRequest request, Settings settings)
