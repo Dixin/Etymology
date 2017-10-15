@@ -34,7 +34,7 @@
                 {
                     antiforgery.SendTokenToContext(context);
                 }
-                else if (!settings.ExposedPaths.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) 
+                else if (!settings.ExposedPaths.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
                     && !context.Request.IsValid(settings))
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -46,14 +46,17 @@
         private static void SendTokenToContext(this IAntiforgery antiforgery, HttpContext context)
         {
             AntiforgeryTokenSet tokens = antiforgery.GetAndStoreTokens(context);
-            context.Response.Cookies.Append(tokens.FormFieldName, tokens.RequestToken, new CookieOptions() { HttpOnly = false, SameSite = SameSiteMode.None});
+            context.Response.Cookies.Append(
+                tokens.FormFieldName,
+                tokens.RequestToken,
+                new CookieOptions() { HttpOnly = false, SameSite = SameSiteMode.None }); // Default same site mode is Lax, which make the cookie not readable in 360 browser.
         }
 
         private static bool IsValid(this HttpRequest request, Settings settings)
         {
             IHeaderDictionary headers = request.Headers;
             IRequestCookieCollection cookies = request.Cookies;
-            return 
+            return
                 // Referer.
                 Uri.TryCreate(headers["Referer"], UriKind.Absolute, out Uri refererUri)
                 && settings.RefererHosts.Contains(refererUri.Host, StringComparer.OrdinalIgnoreCase)

@@ -49,7 +49,7 @@
                 if (!result.Etymologies.Any())
                 {
                     this.logger.LogCritical("The etymology for {chinese} is not found.", chinese);
-                    return this.NotFound();
+                    return this.View("~/Server/Views/Etymology/NotFound.cshtml", result);
                 }
 
                 return this.View("~/Server/Views/Etymology/Analyze.cshtml", result);
