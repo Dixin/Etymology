@@ -26,5 +26,5 @@ export default {
         return commonChars[index];
     },
 
-    isChinese: value => /[\u3400-\u9FBF]/.test(value)
+    isChinese: value => /^[\u3400-\u9FBF]$/.test(value)
 };
