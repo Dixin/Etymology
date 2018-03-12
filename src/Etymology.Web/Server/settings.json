@@ -7,12 +7,12 @@
   },
   "ImageCache": "Contents/Images",
   "ConnectionStrings": {
-    "Etymology": ""
+    "Etymology": "Server=tcp:dixinyan.database.windows.net,1433;Initial Catalog=etymology;Persist Security Info=False;User ID=dixinyan;Password=ftSq1@zure;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   },
-  "RefererHosts": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net" ],
+  "RefererHosts": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net", "etymology2.azurewebsites.net", "localhost", "127.0.0.1" ],
   "IndexPageUrls": [ "/", "/index.htm" ],
-  "ExposedPaths": [ "/error", "/images", "/browserconfig.xml", "/manifest.json", "/favicon.ico", "/robots.txt", "/apple-touch-icon-precomposed.png", "apple-touch-icon.png", "apple-touch-icon-120x120-precomposed.png", "apple-touch-icon-120x120.png", "apple-touch-icon-152x152-precomposed.png", "apple-touch-icon-152x152.png" ],
+  "ExposedPaths": [ "/error", "/images", "/js", "/css", "/fonts", "/browserconfig.xml", "/manifest.json", "/favicon.ico", "/robots.txt", "/apple-touch-icon-precomposed.png", "/apple-touch-icon.png", "/apple-touch-icon-120x120-precomposed.png", "/apple-touch-icon-120x120.png", "/apple-touch-icon-152x152-precomposed.png", "/apple-touch-icon-152x152.png" ],
   "ApplicationInsights": {
-    "InstrumentationKey": "8264b36a-6dc9-444b-b08b-7435fad27c70"
+    "InstrumentationKey": "e9d6bcf5-c1ee-46e0-ab51-eef2ae955f67"
   }
 }
