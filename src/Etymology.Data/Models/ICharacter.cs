@@ -11,7 +11,7 @@
         int Id { get; }
 
         [NotMapped]
-        byte[] Image { get; }
+        string ImageBase64 { get; }
 
         [NotMapped]
         string FormattedId { get; }

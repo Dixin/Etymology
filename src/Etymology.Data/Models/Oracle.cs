@@ -11,7 +11,6 @@
         [StringLength(255)]
         public string Combo { get; set; }
         public int OracleId { get; set; }
-        [Column(TypeName = "image")]
-        public byte[] Image { get; set; }
+        public string ImageBase64 { get; set; }
     }
 }

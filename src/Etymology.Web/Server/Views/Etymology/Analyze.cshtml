@@ -108,19 +108,19 @@
     <style type="text/css">
         @foreach (Oracle oracle in oracles)
         {
-            <text>.etymology-@(oracle.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(oracle.Image))') } </text>
+            <text>.etymology-@(oracle.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(oracle.ImageBase64)') } </text>
         }
         @foreach (Bronze bronze in bronzes)
         {
-            <text>.etymology-@(bronze.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(bronze.Image))') } </text>
+            <text>.etymology-@(bronze.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(bronze.ImageBase64)') } </text>
         }
         @foreach (Seal seal in seals)
         {
-            <text>.etymology-@(seal.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(seal.Image))') } </text>
+            <text>.etymology-@(seal.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(seal.ImageBase64)') } </text>
         }
         @foreach (Liushutong liushutong in liushutongs)
         {
-            <text>.etymology-@(liushutong.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(Convert.ToBase64String(liushutong.Image))') } </text>
+            <text>.etymology-@(liushutong.FormattedId) { background-image: url('data:image/gif;base64,@this.Html.Raw(liushutong.ImageBase64)') } </text>
         }
     </style>
 </div>

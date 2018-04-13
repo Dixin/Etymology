@@ -41,7 +41,7 @@
                 {
                     string path = Path.Combine(cacheRoot, character.Path());
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
-                    File.WriteAllBytes(path, character.Image);
+                    File.WriteAllBytes(path, Convert.FromBase64String(character.ImageBase64));
                 },
                 retryInterval: TimeSpan.Zero,
                 retryCount: 3);

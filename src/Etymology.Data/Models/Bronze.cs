@@ -10,7 +10,6 @@
         public string Character { get; set; }
         public int? Rank { get; set; }
         public int BronzeId { get; set; }
-        [Column(TypeName = "image")]
-        public byte[] Image { get; set; }
+        public string ImageBase64 { get; set; }
     }
 }

@@ -77,13 +77,13 @@
                             declare @traditional nvarchar(5);
                             select top(1) @traditional = [Traditional] from dbo.Etymology where Simplified = @chinese or traditional = @chinese or OldKai = @chinese;
 
-                            select OracleId, Image from dbo.Oracle where Character = @traditional and image is not null order by OracleId;
+                            select OracleId, ImageBase64 from dbo.Oracle where Character = @traditional and ImageBase64 is not null order by OracleId;
 
-                            select BronzeId, Image from dbo.Bronze where Character = @traditional and image is not null order by BronzeId;
+                            select BronzeId, ImageBase64 from dbo.Bronze where Character = @traditional and ImageBase64 is not null order by BronzeId;
 
-                            select SealId, Image, ShuowenSimplified from dbo.Seal where Character = @traditional and image is not null order by SealId;
+                            select SealId, ImageBase64, ShuowenSimplified from dbo.Seal where Character = @traditional and ImageBase64 is not null order by SealId;
 
-                            select LiushutongId, Image from dbo.Liushutong where Character = @traditional and image is not null order by LiushutongId;";
+                            select LiushutongId, ImageBase64 from dbo.Liushutong where Character = @traditional and ImageBase64 is not null order by LiushutongId;";
                         DbParameter characterParameter = command.CreateParameter();
                         characterParameter.ParameterName = nameof(chinese);
                         characterParameter.Value = chinese;
@@ -122,7 +122,7 @@
                                     oracles.Add(new Oracle()
                                     {
                                         OracleId = (int)reader[nameof(Models.Oracle.OracleId)],
-                                        Image = (byte[])reader[nameof(Models.Oracle.Image)]
+                                        ImageBase64 = (string)reader[nameof(Models.Oracle.ImageBase64)]
                                     });
                                 }
                             }
@@ -133,7 +133,7 @@
                                     bronzes.Add(new Bronze()
                                     {
                                         BronzeId = (int)reader[nameof(Models.Bronze.BronzeId)],
-                                        Image = (byte[])reader[nameof(Models.Bronze.Image)]
+                                        ImageBase64 = (string)reader[nameof(Models.Bronze.ImageBase64)]
                                     });
                                 }
                             }
@@ -144,7 +144,7 @@
                                     seals.Add(new Seal()
                                     {
                                         SealId = (int)reader[nameof(Models.Seal.SealId)],
-                                        Image = (byte[])reader[nameof(Models.Seal.Image)]
+                                        ImageBase64 = (string)reader[nameof(Models.Seal.ImageBase64)]
                                     });
                                 }
                             }
@@ -155,7 +155,7 @@
                                     liushutongs.Add(new Liushutong()
                                     {
                                         LiushutongId = (int)reader[nameof(Models.Liushutong.LiushutongId)],
-                                        Image = (byte[])reader[nameof(Models.Liushutong.Image)]
+                                        ImageBase64 = (string)reader[nameof(Models.Liushutong.ImageBase64)]
                                     });
                                 }
                             }
@@ -168,16 +168,16 @@
         }
 
         public IQueryable<Bronze> BronzeImages() =>
-            this.Bronze.Where(bonze => bonze.Image != null);
+            this.Bronze.Where(bonze => bonze.ImageBase64 != null);
 
         public IQueryable<Liushutong> LiushutongImages() =>
-            this.Liushutong.Where(liushutong => liushutong.Image != null);
+            this.Liushutong.Where(liushutong => liushutong.ImageBase64 != null);
 
         public IQueryable<Oracle> OracleImages() =>
-            this.Oracle.Where(oracle => oracle.Image != null);
+            this.Oracle.Where(oracle => oracle.ImageBase64 != null);
 
         public IQueryable<Seal> SealImages() =>
-            this.Seal.Where(seal => seal.Image != null);
+            this.Seal.Where(seal => seal.ImageBase64 != null);
     }
 
     internal static class DbDataReaderExtensions

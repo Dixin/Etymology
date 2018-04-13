@@ -9,12 +9,11 @@
         [StringLength(225)]
         public string Character { get; set; }
         public int LiushutongId { get; set; }
-        [Column(TypeName = "image")]
-        public byte[] Image { get; set; }
         public int? SealId { get; set; }
 
         [ForeignKey("SealId")]
         [InverseProperty("Liushutong")]
         public Seal Seal { get; set; }
+        public string ImageBase64 { get; set; }
     }
 }

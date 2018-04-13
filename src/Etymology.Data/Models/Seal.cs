@@ -44,10 +44,9 @@
         [StringLength(255)]
         public string Dxfq { get; set; }
         public int SealId { get; set; }
-        [Column(TypeName = "image")]
-        public byte[] Image { get; set; }
 
         [InverseProperty("Seal")]
         public ICollection<Liushutong> Liushutong { get; set; }
+        public string ImageBase64 { get; set; }
     }
 }
