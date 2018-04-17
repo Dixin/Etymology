@@ -48,42 +48,106 @@
                     using (DbCommand command = connection.CreateCommand())
                     {
                         command.CommandText = @"
-                            select 
-                                [Traditional]
-                                ,[Simplified]
-                                ,[OldKai] -- older character 
-                                ,[Variants796_810] -- variant rule
-                                ,[VariantMeaning] -- meanings of variants
-                                ,[SimplificationRule] -- simplification rule
-                                ,[SimplificationNewOld] -- modern invention 
-                                ,[RuleBase1753] -- compound rule
-                                ,[RuleBaseObserved] -- applied rules
-                                ,[Etymology] -- decomposition
-                                ,[Meaning] -- original meaning
-                                ,[CompoundExample] -- example in use
-                                ,[8105xID] -- simplified character number
-                                ,[EnglishMeanings] -- modern meanings
-                                ,[LiuShuStandardName] -- standard name of character
-                                ,[MeaningClass] -- class of character
-                                ,[PictographName] -- original 
-                                ,[Pinyin1] -- main pronunciation
-                                ,[PinyinN] -- other pronunciations 
-                            from
-                            ((select * from dbo.Etymology where Simplified = @chinese and traditional = @chinese)
-                            Union all
-                            (select * from dbo.Etymology where (Simplified = @chinese or traditional = @chinese or OldKai = @chinese) and not (Simplified = @chinese and traditional = @chinese)))
-                            as etymology;
+                            DECLARE
+	                            @Simplified nvarchar(5),
+	                            @Traditional nvarchar(5),
+	                            @OldTraditional nvarchar(10),
+	                            @Pinyin nvarchar(15),
+	                            @Index8105 nvarchar(10),
+	                            @SimplificationRule nvarchar(30),
+	                            @SimplificationClarified nvarchar(200),
+	                            @VariantRule nvarchar(40),
+	                            @VariantClarified nvarchar(255),
+	                            @AppliedRule nvarchar(30),
+	                            @FontRule nvarchar(10),
+	                            @Decomposition nvarchar(255),
+	                            @DecompositionClarified nvarchar(255),
+	                            @OriginalMeaning nvarchar(255),
+	                            @Videos nvarchar(50),
+	                            @WordExample nvarchar(255),
+	                            @EnglishSenses nvarchar(255),
+	                            @PinyinOther nvarchar(255),
+	                            @Pictures nvarchar(255),
+	                            @LearnOrder nvarchar(5),
+	                            @FrequencyOrder nvarchar(10),
+	                            @IdealForms nvarchar(25),
+	                            @Classification nvarchar(25),
+	                            @EtymologyId int,
+	                            @Unicode nvarchar(10);
 
-                            declare @traditional nvarchar(5);
-                            select top(1) @traditional = [Traditional] from dbo.Etymology where Simplified = @chinese or traditional = @chinese or OldKai = @chinese;
+                            SELECT TOP(1)
+                                @Simplified = Simplified -- Simplified character
+                                ,@Traditional = Traditional -- Traditional character
+                                ,@OldTraditional = OldTraditional -- Older traditional characters
+                                ,@Pinyin = Pinyin -- Main pronunciation
+                                ,@Index8105 = Index8105 -- Simplified character index number
+                                ,@SimplificationRule = SimplificationRule -- Simplification rule
+                                ,@SimplificationClarified = SimplificationClarified -- Simplification rule explained
+                                ,@VariantRule = VariantRule -- Variant rule
+                                ,@VariantClarified = VariantClarified -- Variant rule clarification
+                                ,@AppliedRule = AppliedRule -- Applied rules
+                                ,@FontRule = FontRule -- New font rule
+                                ,@Decomposition = Decomposition -- Character decomposition
+                                ,@DecompositionClarified = DecompositionClarified -- Decomposition notes
+                                ,@OriginalMeaning = OriginalMeaning -- Original meaning
+                                ,@EnglishSenses = EnglishSenses -- English senses
+                                ,@WordExample = WordExample -- Usage example
+                                ,@PinyinOther = PinyinOther -- Other pronunciations
+                                ,@Videos = Videos -- Related videos
+                                ,@Pictures = Pictures -- Related pictures
+                                ,@FrequencyOrder = FrequencyOrder -- Importance by frequency
+                                ,@LearnOrder = LearnOrder -- Importance in learning
+                                ,@IdealForms = IdealForms -- Ideal ideographs
+                                ,@Classification = Classification -- Classification
+                                ,@Unicode = [Unicode] -- Traditional Character Unicode
+                            FROM dbo.Etymology 
+							WHERE Traditional = @chinese OR Simplified = @chinese OR OldTraditional = @chinese;
 
-                            select OracleId, ImageBase64 from dbo.Oracle where Character = @traditional and ImageBase64 is not null order by OracleId;
+							SELECT 
+								@Simplified AS Simplified -- Simplified character
+                                ,@Traditional AS Traditional -- Traditional character
+                                ,@OldTraditional AS OldTraditional -- Older traditional characters
+                                ,@Pinyin AS Pinyin -- Main pronunciation
+                                ,@Index8105 AS Index8105 -- Simplified character index number
+                                ,@SimplificationRule AS SimplificationRule -- Simplification rule
+                                ,@SimplificationClarified AS SimplificationClarified -- Simplification rule explained
+                                ,@VariantRule AS VariantRule -- Variant rule
+                                ,@VariantClarified AS VariantClarified -- Variant rule clarification
+                                ,@AppliedRule AS AppliedRule -- Applied rules
+                                ,@FontRule AS FontRule -- New font rule
+                                ,@Decomposition AS Decomposition -- Character decomposition
+                                ,@DecompositionClarified AS DecompositionClarified -- Decomposition notes
+                                ,@OriginalMeaning AS OriginalMeaning -- Original meaning
+                                ,@EnglishSenses AS EnglishSenses -- English senses
+                                ,@WordExample AS WordExample -- Usage example
+                                ,@PinyinOther AS PinyinOther -- Other pronunciations
+                                ,@Videos AS Videos -- Related videos
+                                ,@Pictures AS Pictures -- Related pictures
+                                ,@FrequencyOrder AS FrequencyOrder -- Importance by frequency
+                                ,@LearnOrder AS LearnOrder -- Importance in learning
+                                ,@IdealForms AS IdealForms -- Ideal ideographs
+                                ,@Classification AS Classification -- Classification
+                                ,@Unicode AS [Unicode]; -- Traditional Character Unicode
 
-                            select BronzeId, ImageBase64 from dbo.Bronze where Character = @traditional and ImageBase64 is not null order by BronzeId;
+                            SELECT OracleId, ImageVectorBase64 
+							FROM dbo.Oracle 
+							WHERE Traditional = @Traditional AND ImageVectorBase64 IS NOT NULL 
+							ORDER BY OracleId;
 
-                            select SealId, ImageBase64, ShuowenSimplified from dbo.Seal where Character = @traditional and ImageBase64 is not null order by SealId;
+                            SELECT BronzeId, ImageVectorBase64 
+							FROM dbo.Bronze 
+							WHERE Traditional = @Traditional AND ImageVectorBase64 IS NOT NULL 
+							ORDER BY BronzeId;
 
-                            select LiushutongId, ImageBase64 from dbo.Liushutong where Character = @traditional and ImageBase64 is not null order by LiushutongId;";
+                            SELECT SealId, ImageVectorBase64 
+							FROM dbo.Seal 
+							WHERE Traditional = @Traditional AND ImageVectorBase64 IS NOT NULL 
+							ORDER BY SealId;
+
+                            SELECT LiushutongId, ImageVectorBase64 
+							FROM dbo.Liushutong 
+							WHERE Traditional = @Traditional AND ImageVectorBase64 IS NOT NULL 
+							ORDER BY LiushutongId;";
                         DbParameter characterParameter = command.CreateParameter();
                         characterParameter.ParameterName = nameof(chinese);
                         characterParameter.Value = chinese;
@@ -96,23 +160,28 @@
                                 {
                                     Traditional = reader.ToNullableAndTrim(nameof(Models.Etymology.Traditional)),
                                     Simplified = reader.ToNullableAndTrim(nameof(Models.Etymology.Simplified)),
-                                    OldKai = reader.ToNullableAndTrim(nameof(Models.Etymology.OldKai)),
-                                    Variants796_810 = reader.ToNullableAndTrim(nameof(Models.Etymology.Variants796_810)),
-                                    VariantMeaning = reader.ToNullableAndTrim(nameof(Models.Etymology.VariantMeaning)),
+                                    OldTraditional = reader.ToNullableAndTrim(nameof(Models.Etymology.OldTraditional)),
+                                    Pinyin = reader.ToNullableAndTrim(nameof(Models.Etymology.Pinyin)),
+                                    Index8105 = reader.ToNullableAndTrim(nameof(Models.Etymology.Index8105)),
                                     SimplificationRule = reader.ToNullableAndTrim(nameof(Models.Etymology.SimplificationRule)),
-                                    SimplificationNewOld = reader.ToNullableAndTrim(nameof(Models.Etymology.SimplificationNewOld)),
-                                    RuleBase1753 = reader.ToNullableAndTrim(nameof(Models.Etymology.RuleBase1753)),
-                                    RuleBaseObserved = reader.ToNullableAndTrim(nameof(Models.Etymology.RuleBaseObserved)),
-                                    Decomposition = reader.ToNullableAndTrim(nameof(Models.Etymology)),
-                                    Meaning = reader.ToNullableAndTrim(nameof(Models.Etymology.Meaning)),
-                                    CompoundExample = reader.ToNullableAndTrim(nameof(Models.Etymology.CompoundExample)),
-                                    SimplifiedCharacterNumber = reader.ToNullableAndTrim(Models.Etymology.SimplifiedCharacterNumberColumn),
-                                    EnglishMeanings = reader.ToNullableAndTrim(nameof(Models.Etymology.EnglishMeanings)),
-                                    LiuShuStandardName = reader.ToNullableAndTrim(nameof(Models.Etymology.LiuShuStandardName)),
-                                    MeaningClass = reader.ToNullableAndTrim(nameof(Models.Etymology.MeaningClass)),
-                                    PictographName = reader.ToNullableAndTrim(nameof(Models.Etymology.PictographName)),
-                                    Pinyin1 = reader.ToNullableAndTrim(nameof(Models.Etymology.Pinyin1)),
-                                    PinyinN = reader.ToNullableAndTrim(nameof(Models.Etymology.PinyinN))
+                                    SimplificationClarified = reader.ToNullableAndTrim(nameof(Models.Etymology.SimplificationClarified)),
+                                    VariantRule = reader.ToNullableAndTrim(nameof(Models.Etymology.VariantRule)),
+                                    VariantClarified = reader.ToNullableAndTrim(nameof(Models.Etymology.VariantClarified)),
+                                    AppliedRule = reader.ToNullableAndTrim(nameof(Models.Etymology.AppliedRule)),
+                                    FontRule = reader.ToNullableAndTrim(nameof(Models.Etymology.FontRule)),
+                                    Decomposition = reader.ToNullableAndTrim(nameof(Models.Etymology.Decomposition)),
+                                    DecompositionClarified = reader.ToNullableAndTrim(nameof(Models.Etymology.DecompositionClarified)),
+                                    OriginalMeaning = reader.ToNullableAndTrim(nameof(Models.Etymology.OriginalMeaning)),
+                                    EnglishSenses = reader.ToNullableAndTrim(nameof(Models.Etymology.EnglishSenses)),
+                                    WordExample = reader.ToNullableAndTrim(nameof(Models.Etymology.WordExample)),
+                                    PinyinOther = reader.ToNullableAndTrim(nameof(Models.Etymology.PinyinOther)),
+                                    Videos = reader.ToNullableAndTrim(nameof(Models.Etymology.Videos)),
+                                    Pictures = reader.ToNullableAndTrim(nameof(Models.Etymology.Pictures)),
+                                    FrequencyOrder = reader.ToNullableAndTrim(nameof(Models.Etymology.FrequencyOrder)),
+                                    LearnOrder = reader.ToNullableAndTrim(nameof(Models.Etymology.LearnOrder)),
+                                    IdealForms = reader.ToNullableAndTrim(nameof(Models.Etymology.IdealForms)),
+                                    Classification = reader.ToNullableAndTrim(nameof(Models.Etymology.Classification)),
+                                    Unicode = reader.ToNullableAndTrim(nameof(Models.Etymology.Unicode)),
                                 });
                             }
                             if (await reader.NextResultAsync())
@@ -122,7 +191,7 @@
                                     oracles.Add(new Oracle()
                                     {
                                         OracleId = (int)reader[nameof(Models.Oracle.OracleId)],
-                                        ImageBase64 = (string)reader[nameof(Models.Oracle.ImageBase64)]
+                                        ImageVectorBase64 = (string)reader[nameof(Models.Oracle.ImageVectorBase64)]
                                     });
                                 }
                             }
@@ -133,7 +202,7 @@
                                     bronzes.Add(new Bronze()
                                     {
                                         BronzeId = (int)reader[nameof(Models.Bronze.BronzeId)],
-                                        ImageBase64 = (string)reader[nameof(Models.Bronze.ImageBase64)]
+                                        ImageVectorBase64 = (string)reader[nameof(Models.Bronze.ImageVectorBase64)]
                                     });
                                 }
                             }
@@ -144,7 +213,7 @@
                                     seals.Add(new Seal()
                                     {
                                         SealId = (int)reader[nameof(Models.Seal.SealId)],
-                                        ImageBase64 = (string)reader[nameof(Models.Seal.ImageBase64)]
+                                        ImageVectorBase64 = (string)reader[nameof(Models.Seal.ImageVectorBase64)]
                                     });
                                 }
                             }
@@ -155,14 +224,13 @@
                                     liushutongs.Add(new Liushutong()
                                     {
                                         LiushutongId = (int)reader[nameof(Models.Liushutong.LiushutongId)],
-                                        ImageBase64 = (string)reader[nameof(Models.Liushutong.ImageBase64)]
+                                        ImageVectorBase64 = (string)reader[nameof(Models.Liushutong.ImageVectorBase64)]
                                     });
                                 }
                             }
                         }
                     }
                 }
-
             });
             return new AnalyzeResult(chinese, etymologies.ToArray(), oracles.ToArray(), bronzes.ToArray(), seals.ToArray(), liushutongs.ToArray());
         }

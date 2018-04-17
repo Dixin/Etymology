@@ -1,9 +1,10 @@
-﻿namespace Etymology.Data.Models
-{
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace Etymology.Data.Models
+{
     public partial class Seal
     {
         public Seal()
@@ -11,8 +12,10 @@
             Liushutong = new HashSet<Liushutong>();
         }
 
-        [StringLength(255)]
-        public string Character { get; set; }
+        public int SealId { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string Traditional { get; set; }
         [StringLength(255)]
         public string Common { get; set; }
         [StringLength(255)]
@@ -43,10 +46,11 @@
         [Column("DXFQ")]
         [StringLength(255)]
         public string Dxfq { get; set; }
-        public int SealId { get; set; }
+        public string ImageBase64 { get; set; }
+        public string ImageVector { get; set; }
+        public string ImageVectorBase64 { get; set; }
 
         [InverseProperty("Seal")]
         public ICollection<Liushutong> Liushutong { get; set; }
-        public string ImageBase64 { get; set; }
     }
 }

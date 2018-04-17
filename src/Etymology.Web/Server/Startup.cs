@@ -1,7 +1,6 @@
 ﻿namespace Etymology.Web.Server
 {
     using System.IO;
-    using Etymology.Data.Cache;
     using Etymology.Data.Models;
     using Microsoft.AspNetCore.Antiforgery;
     using Microsoft.AspNetCore.Builder;
@@ -15,62 +14,65 @@
     {
         private const string Server = nameof(Server);
 
+        private readonly IConfiguration configuration;
+
+        private readonly IHostingEnvironment environment;
+
         public Startup(IHostingEnvironment environment)
         {
-            IConfigurationBuilder builder = new ConfigurationBuilder()
+            IConfigurationBuilder configuration = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
                 .AddJsonFile(Path.Combine(Server, "settings.json"), optional: false, reloadOnChange: true)
                 .AddJsonFile(Path.Combine(Server, $"settings.{environment.EnvironmentName}.json"), optional: true)
                 .AddEnvironmentVariables();
-            if (!environment.IsProduction())
+            if (!environment.IsDevelopment())
             {
-                builder.AddApplicationInsightsSettings(developerMode: true);
+                configuration.AddApplicationInsightsSettings(developerMode: environment.IsStaging());
             }
-            this.Configuration = builder.Build();
+            this.configuration = configuration.Build();
+            this.environment = environment;
         }
 
-        public IConfiguration Configuration { get; }
-
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services) // Container.
         {
-            services.Configure<Settings>(options => this.Configuration.Bind(options));
+            services.Configure<Settings>(options => this.configuration.Bind(options));
 
             services.AddMvc(options => options.AddAntiforgery());
             services.AddAntiforgery();
 
-            services.AddDataAccess(this.Configuration);
+            services.AddDataAccess(this.configuration);
 
-            services.AddCache(this.Configuration);
-
-            services.AddApplicationInsightsTelemetry(this.Configuration);
+            if (!this.environment.IsDevelopment())
+            {
+                services.AddApplicationInsightsTelemetry(this.configuration);
+            }
         }
 
-        public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment environment, ILoggerFactory loggerFactory, ImageCache imageCache, IAntiforgery antiforgery, IOptions<Settings> options)
+        public void Configure(IApplicationBuilder application, ILoggerFactory loggerFactory, IAntiforgery antiforgery, IOptions<Settings> options) // HTTP pipeline.
         {
-            applicationBuilder.UseAntiforgery(options.Value, antiforgery);
-
-            if (environment.IsProduction())
+            if (this.environment.IsProduction())
             {
-                applicationBuilder.UseExceptionHandler("/error");
-                applicationBuilder.UseStatusCodePagesWithReExecute("/error");
+                application.UseExceptionHandler("/error");
+                application.UseStatusCodePagesWithReExecute("/error");
 
-                loggerFactory.AddApplicationInsights(applicationBuilder.ApplicationServices);
-
-                // Async Configure method is not supported by ASP.NET.
-                // https://github.com/aspnet/Hosting/issues/373
-                // imageCache.SaveWithRetryAsync().Wait();
+                loggerFactory.AddApplicationInsights(application.ApplicationServices);
             }
             else
             {
-                applicationBuilder.UseDeveloperExceptionPage().UseBrowserLink();
+                application.UseDeveloperExceptionPage().UseBrowserLink();
 
                 loggerFactory.AddConsole(LogLevel.Trace, true).AddDebug().AddFile("logs/{Date}.txt");
             }
 
-            applicationBuilder.UseDefaultFiles();
-            applicationBuilder.UseStaticFiles();
+            application.UseAntiforgery(options.Value, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)));
 
-            applicationBuilder.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller}/{action}"));
+            application.UseDefaultFiles();
+            application.UseStaticFiles();
+
+            application.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller}/{action}"));
+
+            // Async Configure method is not supported by ASP.NET.
+            // https://github.com/aspnet/Hosting/issues/373
         }
     }
 }

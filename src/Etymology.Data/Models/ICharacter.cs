@@ -1,6 +1,10 @@
 ﻿namespace Etymology.Data.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Text;
+    using System.Xml.Linq;
+    using global::Etymology.Data.Common;
 
     public interface ICharacter
     {
@@ -10,8 +14,9 @@
         [NotMapped]
         int Id { get; }
 
-        [NotMapped]
-        string ImageBase64 { get; }
+        string ImageBase64 { get; set; }
+
+        string ImageVector { get; set; }
 
         [NotMapped]
         string FormattedId { get; }
@@ -63,5 +68,21 @@
 
         [NotMapped]
         public string FormattedId => $"{this.Prefix}{this.Id:00000}";
+    }
+
+    public static class CharacterExtensions
+    {
+        public static string ImageVectorBase64(this ICharacter character)
+        {
+            try
+            {
+                XDocument svg = XDocument.Parse(character.ImageVector);
+                return Convert.ToBase64String(Encoding.UTF8.GetBytes(svg.Root.ToString(SaveOptions.DisableFormatting)));
+            }
+            catch (Exception exception) when (exception.IsNotCritical())
+            {
+                return string.Empty;
+            }
+        }
     }
 }

@@ -179,14 +179,15 @@ a.text-white, a.text-white:visited {
         background-size: 60px 60px;
         background-position: 50% 50%;
         background-repeat: no-repeat;
+        color: transparent;
+        cursor: pointer;
     }
 
-        .etymology-result ul li div img {
-            margin-top: 5px;
-            width: 60px;
-            height: 60px;
-            margin-bottom: 5px;
-        }
+    .etymology-result ul li button {
+        margin-top: 5px;
+        margin-bottom: 15px;
+        width: 105px;
+    }
 
 .etymology-news .media-body {
     color: #ccc;
@@ -194,4 +195,26 @@ a.text-white, a.text-white:visited {
 
 .etymology-news .media-heading {
     color: #fff;
+}
+
+.modal-dialog {
+    width: auto;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.modal-dialog,
+.modal-content {
+    height: 95%;
+}
+
+.modal-content {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.modal-header, .modal-body, .modal-footer {
+    border: 0px none;
+}
+.modal-body {
+    height: calc(100% - 120px);
 }

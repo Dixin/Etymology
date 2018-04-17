@@ -1,7 +1,9 @@
-﻿namespace Etymology.Data.Models
-{
-    using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
+namespace Etymology.Data.Models
+{
     public partial class EtymologyContext : DbContext
     {
         public virtual DbSet<Bronze> Bronze { get; set; }
@@ -14,19 +16,21 @@
         {
             modelBuilder.Entity<Bronze>(entity =>
             {
-                entity.HasIndex(e => e.Character);
-
-                entity.Property(e => e.BronzeId).ValueGeneratedNever();
+                entity.HasIndex(e => e.Traditional)
+                    .ForSqlServerIsClustered();
             });
 
             modelBuilder.Entity<Etymology>(entity =>
             {
-                entity.Property(e => e.Traditional).ValueGeneratedNever();
+                entity.HasIndex(e => e.Traditional)
+                    .IsUnique()
+                    .ForSqlServerIsClustered();
             });
 
             modelBuilder.Entity<Liushutong>(entity =>
             {
-                entity.Property(e => e.LiushutongId).ValueGeneratedNever();
+                entity.HasIndex(e => e.Traditional)
+                    .ForSqlServerIsClustered();
 
                 entity.HasOne(d => d.Seal)
                     .WithMany(p => p.Liushutong)
@@ -36,14 +40,14 @@
 
             modelBuilder.Entity<Oracle>(entity =>
             {
-                entity.HasIndex(e => e.Character);
-
-                entity.Property(e => e.OracleId).ValueGeneratedNever();
+                entity.HasIndex(e => e.Traditional)
+                    .ForSqlServerIsClustered();
             });
 
             modelBuilder.Entity<Seal>(entity =>
             {
-                entity.Property(e => e.SealId).ValueGeneratedNever();
+                entity.HasIndex(e => e.Traditional)
+                    .ForSqlServerIsClustered();
             });
         }
     }

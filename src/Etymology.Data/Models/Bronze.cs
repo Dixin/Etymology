@@ -1,15 +1,19 @@
-﻿namespace Etymology.Data.Models
-{
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace Etymology.Data.Models
+{
     public partial class Bronze
     {
         [Required]
-        [StringLength(255)]
-        public string Character { get; set; }
+        [StringLength(20)]
+        public string Traditional { get; set; }
         public int? Rank { get; set; }
-        public int BronzeId { get; set; }
         public string ImageBase64 { get; set; }
+        public string ImageVector { get; set; }
+        public int BronzeId { get; set; }
+        public string ImageVectorBase64 { get; set; }
     }
 }

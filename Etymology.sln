@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Etymology.Tool", "src\Etymology.Tool\Etymology.Tool.csproj", "{11B2B287-3690-47A2-B2C9-BCA644A4F477}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{4FD2F94A-D8B9-488E-8068-D31148ABA50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FD2F94A-D8B9-488E-8068-D31148ABA50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FD2F94A-D8B9-488E-8068-D31148ABA50C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11B2B287-3690-47A2-B2C9-BCA644A4F477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B2B287-3690-47A2-B2C9-BCA644A4F477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B2B287-3690-47A2-B2C9-BCA644A4F477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B2B287-3690-47A2-B2C9-BCA644A4F477}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{4FD2F94A-D8B9-488E-8068-D31148ABA50C} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
 		{53EE1C43-2F6F-4464-A93D-9FDEB94764D9} = {CC291496-B132-4AE8-BB36-CC0B59B7CAA6}
 		{34D1750B-F418-4911-96C1-EB025084D328} = {CC291496-B132-4AE8-BB36-CC0B59B7CAA6}
+		{11B2B287-3690-47A2-B2C9-BCA644A4F477} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A81CF28-631F-422A-8115-5F115AF1DF62}
