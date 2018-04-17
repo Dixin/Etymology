@@ -56,7 +56,5 @@ namespace Etymology.Data.Models
         [StringLength(25)]
         public string Classification { get; set; }
         public int EtymologyId { get; set; }
-        [StringLength(10)]
-        public string Unicode { get; set; }
     }
 }

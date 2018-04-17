@@ -72,8 +72,7 @@
 	                            @FrequencyOrder nvarchar(10),
 	                            @IdealForms nvarchar(25),
 	                            @Classification nvarchar(25),
-	                            @EtymologyId int,
-	                            @Unicode nvarchar(10);
+	                            @EtymologyId int;
 
                             SELECT TOP(1)
                                 @Simplified = Simplified -- Simplified character
@@ -99,7 +98,6 @@
                                 ,@LearnOrder = LearnOrder -- Importance in learning
                                 ,@IdealForms = IdealForms -- Ideal ideographs
                                 ,@Classification = Classification -- Classification
-                                ,@Unicode = [Unicode] -- Traditional Character Unicode
                             FROM dbo.Etymology 
 							WHERE Traditional = @chinese OR Simplified = @chinese OR OldTraditional = @chinese;
 
@@ -127,7 +125,6 @@
                                 ,@LearnOrder AS LearnOrder -- Importance in learning
                                 ,@IdealForms AS IdealForms -- Ideal ideographs
                                 ,@Classification AS Classification -- Classification
-                                ,@Unicode AS [Unicode]; -- Traditional Character Unicode
 
                             SELECT OracleId, ImageVectorBase64 
 							FROM dbo.Oracle 
@@ -181,7 +178,6 @@
                                     LearnOrder = reader.ToNullableAndTrim(nameof(Models.Etymology.LearnOrder)),
                                     IdealForms = reader.ToNullableAndTrim(nameof(Models.Etymology.IdealForms)),
                                     Classification = reader.ToNullableAndTrim(nameof(Models.Etymology.Classification)),
-                                    Unicode = reader.ToNullableAndTrim(nameof(Models.Etymology.Unicode)),
                                 });
                             }
                             if (await reader.NextResultAsync())

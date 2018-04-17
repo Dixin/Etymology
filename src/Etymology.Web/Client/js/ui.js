@@ -19,8 +19,15 @@ const ui = {
         ui.$random = $("#etymologyRandomButton");
         ui.$videos = $("#videos .media-left a");
         ui.$chinese = $("#etymologySearchChar, #etymologyNavSearchChar");
-        ui.$characters = () => $("#etymologyCharacters button");
         ui.$modal = $("#etymologyModal");
+        ui.$modalTitle = ui.$modal.find(".modal-title");
+        ui.$modalContent = ui.$modal.find(".modal-content");
+
+        ui.$modal.on("show.bs.modal", event => {
+            const id = $.trim($(event.relatedTarget).text()); // Button that triggered the modal
+            ui.$modalTitle.text(id);
+            ui.$modalContent.prop("id", id);
+        });
     },
 
     startLoading: () => $.each(ui.buttons, (index, button) => button.start()),
@@ -30,15 +37,6 @@ const ui = {
     showResult: data => {
         ui.$error.hide();
         ui.$result.html(data).show();
-        ui.initializeCharacters();
-    },
-
-    initializeCharacters: () => {
-        ui.$modal.on('show.bs.modal', event => {
-            const id = $.trim($(event.relatedTarget).text()); // Button that triggered the modal
-            ui.$modal.find(".modal-title").text(id);
-            ui.$modal.find('.modal-content').prop("id", id);
-        });
     },
 
     showError: (status, responseText, textStatus, error) => {

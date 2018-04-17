@@ -29,7 +29,6 @@ const trySearchFromHash = () => {
 
 $document.on("ready", () => {
     UI.init();
-    UI.initializeCharacters();
 
     Hash.init(UI.getNavOffset(), UI.$positions);
 
