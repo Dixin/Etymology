@@ -140,8 +140,8 @@
 
         private static string GetIPAddress(this HttpContext context) =>
             context.Connection.RemoteIpAddress?.ToString()
-                ?? context.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString()
-                ?? (context.Request.Headers.TryGetValue("X-Forwarded-For", out StringValues forarded) ? forarded.ToString() : null)
-                ?? (context.Request.Headers.TryGetValue("REMOTE_ADDR", out StringValues remote) ? remote.ToString() : null);
+            ?? context.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString()
+            ?? (context.Request.Headers.TryGetValue("X-Forwarded-For", out StringValues forarded) ? forarded.ToString() : null)
+            ?? (context.Request.Headers.TryGetValue("REMOTE_ADDR", out StringValues remote) ? remote.ToString() : null);
     }
 }
