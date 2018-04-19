@@ -24,7 +24,7 @@ const ui = {
         ui.$modalContent = ui.$modal.find(".modal-content");
 
         ui.$modal.on("show.bs.modal", event => {
-            const id = $.trim($(event.relatedTarget).text()); // Button that triggered the modal
+            const id = $.trim($(event.relatedTarget).text());
             ui.$modalTitle.text(id);
             ui.$modalContent.prop("id", id);
         });
