@@ -1,6 +1,7 @@
 ﻿namespace Etymology.Web.Server
 {
     using System.IO;
+    using System.Text;
     using Etymology.Data.Models;
     using Microsoft.AspNetCore.Antiforgery;
     using Microsoft.AspNetCore.Builder;
@@ -46,6 +47,9 @@
             {
                 services.AddApplicationInsightsTelemetry(this.configuration);
             }
+
+            // Add support for GB18030.
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         public void Configure(IApplicationBuilder application, ILoggerFactory loggerFactory, IAntiforgery antiforgery, IOptions<Settings> options) // HTTP pipeline.

@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Net;
-    using Etymology.Data.Common;
+    using Etymology.Common;
     using Etymology.Data.Models;
     using Microsoft.AspNetCore.Antiforgery;
     using Microsoft.AspNetCore.Builder;

@@ -113,7 +113,7 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             </span>
-                            <input type="text" name="chinese" class="form-control text-black" placeholder="字" value="车" style="width: 3em;" required="" pattern="[\u3400-\u9FBF]" id="etymologyNavSearchChar" title="Please input single Chinese character. 请输入单个汉字." />
+                            <input type="text" name="chinese" class="form-control text-black" placeholder="字" value="车" style="width: 3em;" required="" minlength="1" maxlength="2" id="etymologyNavSearchChar" title="Please input single Chinese character. 请输入单个汉字." />
                             <button class="btn btn-success ladda-button" data-style="zoom-in" type="submit" id="etymologyNavSearchButton">Etymology 搜索字源</button>
                         </div>
                     </form>
@@ -180,7 +180,7 @@
                         <p>Input single Chinese character for etymology.<br />输入单个汉字, 查询10万+古汉字和字源.</p>
                         <form id="etymologySearch">
                             <div class="form-group form-group-lg">
-                                <input type="text" name="chinese" class="form-control text-black" value="车" placeholder="字" required="" pattern="[\u3400-\u9FBF]" style="width: 3em; margin: 0 auto;" id="etymologySearchChar" title="Please input single Chinese character. 请输入单个汉字." />
+                                <input type="text" name="chinese" class="form-control text-black" value="车" placeholder="字" required="" minlength="1" maxlength="2" style="width: 3em; margin: 0 auto;" id="etymologySearchChar" title="Please input single Chinese character. 请输入单个汉字." />
                             </div>
                             <button type="submit" class="btn btn-success ladda-button" data-style="zoom-in" id="etymologySearchButton"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Etymology 查询字源</button>
                         </form>
@@ -242,16 +242,30 @@
             <div class="row mx-0 bg-info row-eq-height etymology-nav" id="车">
                 <div class="col-md-3  col-sm-4 p-0">
                     <div class="p-1">
-                        <p><b>Traditional:</b> <span class="text-lg">車</span></p>
-                        <p><b>Traditional unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=8ECA" target="_blank">8ECA</a></p>
-                        <p><b>Older traditional character:</b> </p>
-                        <p><b>Simplified:</b> <span class="text-lg">车</span></p>
-                        <p><b>Simplified unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=8F66" target="_blank">8F66</a></p>
+                        <p><b>Traditional in browser:</b> <span class="text-lg">車</span></p>
+                        <p><b>Traditional in Unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=8ECA" target="_blank">U+8ECA</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-8ECA"></p>
+                        <p><b>Older traditional characters:</b> </p>
+                        <p>
+                            <b>Simplified in browser:</b>
+                            <span class="text-lg">车</span>
+                        </p>
+                        <p>
+                            <b>Simplified in Unicode:</b>
+                            <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=8F66" target="_blank">U+8F66</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-8F66">
+                        </p>
                         <p><b>Simplified character index number:</b> 0100</p>
                         <p><b>Main pronunciation:</b> chē</p>
                         <p><b>Other pronunciations:</b> </p>
-                        <p><b>Character decomposition:</b> Component 車 new-char 车 (name- cart-che 车車 chē)</p>
-                        <p><b>Decomposition notes:</b> (- two wheeled cart)</p>
+                        <p class="pre-inline">
+                            <b>Character decomposition:</b>
+                            Component 車
+                            new-char 车
+                            (name- cart-che 车車 chē)
+                        </p>
+                        <p class="pre-inline">
+                            <b>Decomposition notes:</b>
+                            (- two wheeled cart)
+                        </p>
                         <p><b>Original meaning:</b> Meaning cart.</p>
                         <p><b>English senses:</b> cart, vehicle; carry in cart</p>
                         <p><b>Usage example:</b> 車子 chē zǐ (car)</p>
@@ -259,9 +273,16 @@
                         <p><b>Importance in learning:</b> 122</p>
                         <p><b>Classification:</b> tool</p>
                         <p><b>Simplification rule:</b> B014 车[車]</p>
-                        <p><b>Simplification rule explained:</b> new character cursive simplification 车車</p>
+                        <p class="pre-inline">
+                            <b>Simplification rule explained:</b>
+                            new character
+                            cursive simplification 车車
+                        </p>
                         <p><b>Variant rule:</b> C999</p>
-                        <p><b>Variant rule clarification:</b> z</p>
+                        <p class="pre-inline">
+                            <b>Variant rule clarification:</b>
+                            z
+                        </p>
                         <p><b>Applied rules:</b> z</p>
                         <p><b>New font rule:</b> z</p>
                         <a class="btn btn-warning ladda-button" data-style="zoom-in" href="https://github.com/Dixin/Etymology/issues/new" target="_blank"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Report issue 报错/留言</a>

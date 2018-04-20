@@ -19,6 +19,10 @@ body {
         padding-bottom: 99999px;
     }
 
+.pre-inline {
+    white-space: pre-line;
+}
+
 .m-0 {
     margin: 0;
 }

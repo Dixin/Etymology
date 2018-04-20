@@ -3,20 +3,14 @@
     using System;
     using System.Data.Common;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
 
     public partial class EtymologyContext
     {
-        public async Task<AnalyzeResult> AnalyzeAsync(char chinese)
+        public async Task<AnalyzeResult> AnalyzeAsync(string chinese)
         {
-            if (char.GetUnicodeCategory(chinese) != UnicodeCategory.OtherLetter)
-            {
-                throw new ArgumentOutOfRangeException(nameof(chinese), $"{chinese} is not Chinese character.");
-            }
-
             // LINQ to Entities queries creates multiple round trips to database and causes lower performance.
             // Etymology[] etymologies = await this.Etymology
             //   .Where(etymology => etymology.Simplified == @string && etymology.Traditional == @string)
@@ -72,59 +66,68 @@
 	                            @FrequencyOrder nvarchar(10),
 	                            @IdealForms nvarchar(25),
 	                            @Classification nvarchar(25),
-	                            @EtymologyId int;
+	                            @EtymologyId int,
+                                @TraditionalUnicode int,
+                                @SimplifiedInitial nvarchar(2),
+                                @SimplifiedUnicode int;
 
                             SELECT TOP(1)
-                                @Simplified = Simplified -- Simplified character
-                                ,@Traditional = Traditional -- Traditional character
-                                ,@OldTraditional = OldTraditional -- Older traditional characters
-                                ,@Pinyin = Pinyin -- Main pronunciation
-                                ,@Index8105 = Index8105 -- Simplified character index number
-                                ,@SimplificationRule = SimplificationRule -- Simplification rule
-                                ,@SimplificationClarified = SimplificationClarified -- Simplification rule explained
-                                ,@VariantRule = VariantRule -- Variant rule
-                                ,@VariantClarified = VariantClarified -- Variant rule clarification
-                                ,@AppliedRule = AppliedRule -- Applied rules
-                                ,@FontRule = FontRule -- New font rule
-                                ,@Decomposition = Decomposition -- Character decomposition
-                                ,@DecompositionClarified = DecompositionClarified -- Decomposition notes
-                                ,@OriginalMeaning = OriginalMeaning -- Original meaning
-                                ,@EnglishSenses = EnglishSenses -- English senses
-                                ,@WordExample = WordExample -- Usage example
-                                ,@PinyinOther = PinyinOther -- Other pronunciations
-                                ,@Videos = Videos -- Related videos
-                                ,@Pictures = Pictures -- Related pictures
-                                ,@FrequencyOrder = FrequencyOrder -- Importance by frequency
-                                ,@LearnOrder = LearnOrder -- Importance in learning
-                                ,@IdealForms = IdealForms -- Ideal ideographs
-                                ,@Classification = Classification -- Classification
+                                @Simplified = Simplified, -- Simplified character
+                                @SimplifiedInitial = SUBSTRING(Simplified, 1, 1),
+                                @SimplifiedUnicode = UNICODE(SUBSTRING(Simplified, 1, 1)),
+                                @Traditional = Traditional, -- Traditional character
+                                @TraditionalUnicode = UNICODE(Traditional),
+                                @OldTraditional = OldTraditional, -- Older traditional characters
+                                @Pinyin = Pinyin, -- Main pronunciation
+                                @Index8105 = Index8105, -- Simplified character index number
+                                @SimplificationRule = SimplificationRule, -- Simplification rule
+                                @SimplificationClarified = SimplificationClarified, -- Simplification rule explained
+                                @VariantRule = VariantRule, -- Variant rule
+                                @VariantClarified = VariantClarified, -- Variant rule clarification
+                                @AppliedRule = AppliedRule, -- Applied rules
+                                @FontRule = FontRule, -- New font rule
+                                @Decomposition = Decomposition, -- Character decomposition
+                                @DecompositionClarified = DecompositionClarified, -- Decomposition notes
+                                @OriginalMeaning = OriginalMeaning, -- Original meaning
+                                @EnglishSenses = EnglishSenses, -- English senses
+                                @WordExample = WordExample, -- Usage example
+                                @PinyinOther = PinyinOther, -- Other pronunciations
+                                @Videos = Videos, -- Related videos
+                                @Pictures = Pictures, -- Related pictures
+                                @FrequencyOrder = FrequencyOrder, -- Importance by frequency
+                                @LearnOrder = LearnOrder, -- Importance in learning
+                                @IdealForms = IdealForms, -- Ideal ideographs
+                                @Classification = Classification -- Classification
                             FROM dbo.Etymology 
 							WHERE Traditional = @chinese OR Simplified = @chinese OR OldTraditional = @chinese;
 
 							SELECT 
-								@Simplified AS Simplified -- Simplified character
-                                ,@Traditional AS Traditional -- Traditional character
-                                ,@OldTraditional AS OldTraditional -- Older traditional characters
-                                ,@Pinyin AS Pinyin -- Main pronunciation
-                                ,@Index8105 AS Index8105 -- Simplified character index number
-                                ,@SimplificationRule AS SimplificationRule -- Simplification rule
-                                ,@SimplificationClarified AS SimplificationClarified -- Simplification rule explained
-                                ,@VariantRule AS VariantRule -- Variant rule
-                                ,@VariantClarified AS VariantClarified -- Variant rule clarification
-                                ,@AppliedRule AS AppliedRule -- Applied rules
-                                ,@FontRule AS FontRule -- New font rule
-                                ,@Decomposition AS Decomposition -- Character decomposition
-                                ,@DecompositionClarified AS DecompositionClarified -- Decomposition notes
-                                ,@OriginalMeaning AS OriginalMeaning -- Original meaning
-                                ,@EnglishSenses AS EnglishSenses -- English senses
-                                ,@WordExample AS WordExample -- Usage example
-                                ,@PinyinOther AS PinyinOther -- Other pronunciations
-                                ,@Videos AS Videos -- Related videos
-                                ,@Pictures AS Pictures -- Related pictures
-                                ,@FrequencyOrder AS FrequencyOrder -- Importance by frequency
-                                ,@LearnOrder AS LearnOrder -- Importance in learning
-                                ,@IdealForms AS IdealForms -- Ideal ideographs
-                                ,@Classification AS Classification -- Classification
+								@Simplified AS Simplified, -- Simplified character
+                                @SimplifiedInitial AS SimplifiedInitial,
+                                @SimplifiedUnicode AS SimplifiedUnicode,
+                                @Traditional AS Traditional, -- Traditional character
+                                @TraditionalUnicode AS TraditionalUnicode,
+                                @OldTraditional AS OldTraditional, -- Older traditional characters
+                                @Pinyin AS Pinyin, -- Main pronunciation
+                                @Index8105 AS Index8105, -- Simplified character index number
+                                @SimplificationRule AS SimplificationRule, -- Simplification rule
+                                @SimplificationClarified AS SimplificationClarified, -- Simplification rule explained
+                                @VariantRule AS VariantRule, -- Variant rule
+                                @VariantClarified AS VariantClarified, -- Variant rule clarification
+                                @AppliedRule AS AppliedRule, -- Applied rules
+                                @FontRule AS FontRule, -- New font rule
+                                @Decomposition AS Decomposition, -- Character decomposition
+                                @DecompositionClarified AS DecompositionClarified, -- Decomposition notes
+                                @OriginalMeaning AS OriginalMeaning, -- Original meaning
+                                @EnglishSenses AS EnglishSenses, -- English senses
+                                @WordExample AS WordExample, -- Usage example
+                                @PinyinOther AS PinyinOther, -- Other pronunciations
+                                @Videos AS Videos, -- Related videos
+                                @Pictures AS Pictures, -- Related pictures
+                                @FrequencyOrder AS FrequencyOrder, -- Importance by frequency
+                                @LearnOrder AS LearnOrder, -- Importance in learning
+                                @IdealForms AS IdealForms, -- Ideal ideographs
+                                @Classification AS Classification; -- Classification
 
                             SELECT OracleId, ImageVectorBase64 
 							FROM dbo.Oracle 
@@ -155,8 +158,11 @@
                             {
                                 etymologies.Add(new Etymology()
                                 {
-                                    Traditional = reader.ToNullableAndTrim(nameof(Models.Etymology.Traditional)),
                                     Simplified = reader.ToNullableAndTrim(nameof(Models.Etymology.Simplified)),
+                                    SimplifiedInitial = reader.ToNullableAndTrim(nameof(Models.Etymology.SimplifiedInitial)),
+                                    SimplifiedUnicode = (int)reader[nameof(Models.Etymology.SimplifiedUnicode)],
+                                    Traditional = reader.ToNullableAndTrim(nameof(Models.Etymology.Traditional)),
+                                    TraditionalUnicode = (int)reader[nameof(Models.Etymology.TraditionalUnicode)],
                                     OldTraditional = reader.ToNullableAndTrim(nameof(Models.Etymology.OldTraditional)),
                                     Pinyin = reader.ToNullableAndTrim(nameof(Models.Etymology.Pinyin)),
                                     Index8105 = reader.ToNullableAndTrim(nameof(Models.Etymology.Index8105)),

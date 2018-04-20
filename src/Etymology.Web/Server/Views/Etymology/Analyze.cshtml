@@ -9,18 +9,36 @@
     <div class="col-md-3  col-sm-4 p-0">
         <div class="p-1">
             @{ Etymology etymology = etymologies.First(); }
-            <p><b>Traditional:</b> <span class="text-lg">@etymology.Traditional</span></p>
-            @{string traditionalUnicode = ((int)etymology.Traditional.FirstOrDefault()).ToString("X4");}
-            <p><b>Traditional unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@traditionalUnicode" target="_blank">@traditionalUnicode</a></p>
-            <p><b>Older traditional character:</b> @etymology.OldTraditional</p>
-            <p><b>Simplified:</b> <span class="text-lg">@etymology.Simplified</span></p>
-            @{string simplifiedUnicode = ((int)etymology.Simplified.FirstOrDefault()).ToString("X4");}
-            <p><b>Simplified unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@simplifiedUnicode" target="_blank">@simplifiedUnicode</a></p>
+            <p><b>Traditional in browser:</b> <span class="text-lg">@etymology.Traditional</span></p>
+            <p><b>Traditional in Unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicodeMessage" target="_blank">U+@etymology.TraditionalUnicodeMessage</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicodeMessage" /></p>
+            <p><b>Older traditional characters:</b> @etymology.OldTraditional</p>
+            <p>
+                <b>Simplified in browser:</b>
+                @if (etymology.HasSimplified)
+                {
+                    <span class="text-lg">@etymology.SimplifiedInitial</span>
+                }
+                else
+                {
+                    <text>Not exist</text>
+                }
+            </p>
+            <p>
+                <b>Simplified in Unicode:</b> 
+                @if (etymology.HasSimplified)
+                {
+                    <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.SimplifiedUnicodeMessage" target="_blank">U+@etymology.SimplifiedUnicodeMessage</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.SimplifiedUnicodeMessage" />
+                }
+                else
+                {
+                    <text>Not exist</text>
+                }
+            </p>
             <p><b>Simplified character index number:</b> @etymology.Index8105</p>
             <p><b>Main pronunciation:</b> @etymology.Pinyin</p>
             <p><b>Other pronunciations:</b> @etymology.PinyinOther</p>
-            <p><b>Character decomposition:</b> @etymology.Decomposition</p>
-            <p><b>Decomposition notes:</b> @etymology.DecompositionClarified</p>
+            <p class="pre-inline"><b>Character decomposition:</b> @Environment.NewLine@etymology.Decomposition</p>
+            <p class="pre-inline"><b>Decomposition notes:</b> @Environment.NewLine@etymology.DecompositionClarified</p>
             <p><b>Original meaning:</b> @etymology.OriginalMeaning</p>
             <p><b>English senses:</b> @etymology.EnglishSenses</p>
             <p><b>Usage example:</b> @etymology.WordExample</p>
@@ -28,12 +46,12 @@
             <p><b>Importance in learning:</b> @etymology.LearnOrder</p>
             <p><b>Classification:</b> @etymology.Classification</p>
             <p><b>Simplification rule:</b> @etymology.SimplificationRule</p>
-            <p><b>Simplification rule explained:</b> @etymology.SimplificationClarified</p>
+            <p class="pre-inline"><b>Simplification rule explained:</b> @Environment.NewLine@etymology.SimplificationClarified</p>
             <p><b>Variant rule:</b> @etymology.VariantRule</p>
-            <p><b>Variant rule clarification:</b> @etymology.VariantClarified</p>
+            <p class="pre-inline"><b>Variant rule clarification:</b> @Environment.NewLine@etymology.VariantClarified</p>
             <p><b>Applied rules:</b> @etymology.AppliedRule</p>
             <p><b>New font rule:</b> @etymology.FontRule</p>
-            <a class="btn btn-warning ladda-button" data-style="zoom-in" href="https://github.com/Dixin/Etymology/issues/new" target="_blank"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Report issue 报错或留言</a>
+            <a class="btn btn-warning ladda-button" data-style="zoom-in" href="https://github.com/Dixin/Etymology/issues/new" target="_blank"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Report issue 报错/留言</a>
         </div>
     </div>
     <div class="col-md-9 col-sm-8 etymology-result bg-primary p-1" id="etymologyCharacters">
