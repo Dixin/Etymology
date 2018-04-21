@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
     <ApplicationInsightsResourceId>/subscriptions/3d7fc22c-5b77-4fe2-afa6-cef991c8a9ec/resourcegroups/dixinyan/providers/microsoft.insights/components/etymology2</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/d099d3f1-ba53-48cf-b4a0-24e75dedd437/resourcegroups/etymology/providers/microsoft.insights/components/etymology</ApplicationInsightsAnnotationResourceId>

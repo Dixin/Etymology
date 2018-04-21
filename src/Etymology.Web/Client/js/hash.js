@@ -52,7 +52,7 @@ export default {
         const $hash = $(`#${hash}`);
         if ($hash.length > 0) {
             $("html, body").animate({
-                scrollTop: $hash.offset().top - navOffset
+                scrollTop: $hash.offset().top - navOffset + 2
             }, 800);
             return true;
         }

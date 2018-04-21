@@ -9,7 +9,7 @@ const ui = {
         ui.$main = $("#etymologyMain");
         ui.$nav = $("#etymologyNav");
         ui.$navMenu = $("#etymologyNavMenu");
-        ui.$positions = $("div.etymology-nav");
+        ui.$positions = () => $("div.etymology-nav");
         ui.$links = $("a.etymology-link");
         ui.buttons = $("#etymologySearchButton, #etymologyNavSearchButton, #etymologyRandomButton").map((index, element) => Ladda.create(element));
         ui.$error = $("#etymologyError");

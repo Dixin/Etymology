@@ -4,8 +4,6 @@ import Hash from "./hash";
 
 const global = window;
 const $ = global.$;
-const $global = $(global);
-const $document = $(global.document);
 
 const trySearchFromHash = () => {
     const chinese = Hash.get();
@@ -16,21 +14,21 @@ const trySearchFromHash = () => {
         Data.search(chinese).done(data => {
             UI.showResult(data);
 
-            Hash.updatePositions(UI.$positions);
+            Hash.updatePositions(UI.$positions());
             Hash.scrollTo(chinese);
         }).fail((jqXHR, textStatus, error) => {
             UI.showError(jqXHR.status, jqXHR.responseText, textStatus, error);
 
-            Hash.updatePositions(UI.$positions);
+            Hash.updatePositions(UI.$positions());
             Hash.scrollTo(UI.$error.prop("id"));
         }).always(() => UI.stopLoading());
     }
 };
 
-$document.on("ready", () => {
+$(global.document).on("ready", () => {
     UI.init();
 
-    Hash.init(UI.getNavOffset(), UI.$positions);
+    Hash.init(UI.getNavOffset(), UI.$positions());
 
     UI.$links.on("click", event => {
         event.preventDefault();
@@ -58,11 +56,7 @@ $document.on("ready", () => {
     trySearchFromHash();
 });
 
-$global.on("hashchange", () => trySearchFromHash());
-
-$global.on("scroll", () => Hash.setAfterScroll(UI.collapseMenu));
-
-$global.on("load", () => UI.loadVideoThumbnails());
+$(global).on("hashchange", trySearchFromHash).on("scroll", () => Hash.setAfterScroll(UI.collapseMenu)).on("load", UI.loadVideoThumbnails);
 
 import "ie10-viewport-bug-workaround.js";
 
