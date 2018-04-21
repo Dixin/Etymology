@@ -1,6 +1,7 @@
 ﻿const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const merge = require("webpack-merge");
 const common = require("./webpack.config.js");
@@ -21,9 +22,15 @@ module.exports = merge(common, {
                 collapseWhitespace: true
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            comments: false
-        }),
         new HtmlWebpackInlineSourcePlugin()
-    ]
+    ],
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    compress: true
+                }
+            })
+        ]
+    }
 });
