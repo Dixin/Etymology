@@ -1,7 +1,7 @@
 ﻿namespace Etymology.Web.Server.Controllers
 {
     using System;
-    using System.Linq;
+    using System.Diagnostics;
     using System.Threading.Tasks;
     using Etymology.Common;
     using Etymology.Data.Models;
@@ -37,25 +37,25 @@
 
             this.logger.LogInformation("Receisved {chinese} to analyze.", chinese);
 
-            AnalyzeResult result;
+            AnalyzeResult[] results;
+            Stopwatch stopwatch=Stopwatch.StartNew();
             try
             {
                 this.logger.LogInformation("Start to query database for {chinese}.", chinese);
-                result = await this.context.AnalyzeAsync(chinese);
+                results = await this.context.AnalyzeAsync(chinese);
                 this.logger.LogInformation("Database query is done successfully for {chinese}.", chinese);
             }
-            catch (Exception exception) when (exception.LogErrorWith(this.logger, "Database query fails for {chinese}.", chinese))
+            catch (Exception exception) when (exception.LogErrorWith(this.logger, "Database query fails for {chinese}.",
+                chinese))
             {
                 return null; // Never execute because LogErrorWith returns false.
             }
-
-            if (result.Etymologies.Any())
+            finally
             {
-                return this.View("~/Server/Views/Etymology/Analyze.cshtml", result);
+                stopwatch.Stop();
             }
 
-            this.logger.LogCritical("The etymology for {chinese} is not found.", chinese);
-            return this.View("~/Server/Views/Etymology/NotFound.cshtml", result);
+            return this.View("~/Server/Views/Etymology/Analyze.cshtml", (chinese, stopwatch.Elapsed, results));
         }
     }
 }

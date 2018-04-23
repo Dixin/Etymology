@@ -14,12 +14,12 @@ const trySearchFromHash = () => {
         Data.search(chinese).done(data => {
             UI.showResult(data);
 
-            Hash.updatePositions(UI.$positions());
+            Hash.setPositions(UI.$positions());
             Hash.scrollTo(chinese);
         }).fail((jqXHR, textStatus, error) => {
             UI.showError(jqXHR.status, jqXHR.responseText, textStatus, error);
 
-            Hash.updatePositions(UI.$positions());
+            Hash.setPositions(UI.$positions());
             Hash.scrollTo(UI.$error.prop("id"));
         }).always(() => UI.stopLoading());
     }
@@ -56,7 +56,7 @@ $(global.document).on("ready", () => {
     trySearchFromHash();
 });
 
-$(global).on("hashchange", trySearchFromHash).on("scroll", () => Hash.setAfterScroll(UI.collapseMenu)).on("load", UI.loadVideoThumbnails);
+$(global).on("hashchange", trySearchFromHash).on("scroll", () => Hash.setAfterScrollWithTimeout(UI.collapseMenu)).on("load", UI.loadVideoThumbnails).on("resize", () => Hash.setPositionsWithTimeout(UI.$positions()));
 
 import "ie10-viewport-bug-workaround.js";
 

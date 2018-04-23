@@ -4,11 +4,11 @@
 
     public class AnalyzeResult
     {
-        public AnalyzeResult(string chinese, Etymology[] etymologies, Oracle[] oracles, Bronze[] bronzes,
+        public AnalyzeResult(string chinese, Etymology etymologies, Oracle[] oracles, Bronze[] bronzes,
             Seal[] seals, Liushutong[] liushutongs)
         {
             this.Chinese = chinese;
-            this.Etymologies = etymologies ?? throw new ArgumentNullException(nameof(etymologies));
+            this.Etymology = etymologies ?? throw new ArgumentNullException(nameof(etymologies));
             this.Oracles = oracles ?? throw new ArgumentNullException(nameof(oracles));
             this.Bronzes = bronzes ?? throw new ArgumentNullException(nameof(bronzes));
             this.Seals = seals ?? throw new ArgumentNullException(nameof(seals));
@@ -17,7 +17,7 @@
 
         public string Chinese { get; }
 
-        public Etymology[] Etymologies { get; }
+        public Etymology Etymology { get; }
 
         public Oracle[] Oracles { get; }
 
@@ -27,10 +27,10 @@
 
         public Liushutong[] Liushutongs { get; }
 
-        public void Deconstruct(out string chinese, out Etymology[] etymologies, out Oracle[] oracles, out Bronze[] bronzes, out Seal[] seals, out Liushutong[] liushutongs)
+        public void Deconstruct(out string chinese, out Etymology etymologies, out Oracle[] oracles, out Bronze[] bronzes, out Seal[] seals, out Liushutong[] liushutongs)
         {
             chinese = this.Chinese;
-            etymologies = this.Etymologies;
+            etymologies = this.Etymology;
             oracles = this.Oracles;
             bronzes = this.Bronzes;
             seals = this.Seals;

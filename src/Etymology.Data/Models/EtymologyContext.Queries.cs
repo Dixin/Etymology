@@ -9,26 +9,9 @@
 
     public partial class EtymologyContext
     {
-        public async Task<AnalyzeResult> AnalyzeAsync(string chinese)
+        public async Task<AnalyzeResult[]> AnalyzeAsync(string chinese)
         {
             // LINQ to Entities queries creates multiple round trips to database and causes lower performance.
-            // Etymology[] etymologies = await this.Etymology
-            //   .Where(etymology => etymology.Simplified == @string && etymology.Traditional == @string)
-            //   .Concat(this.Etymology.Where(etymology => (etymology.Simplified == @string || etymology.Traditional == @string || etymology.OldKai == @string) && !(etymology.Simplified == @string && etymology.Traditional == @string)))
-            //   .ToArrayAsync();
-            // Oracle[] oracles = await this.Oracle
-            //   .Where(oracle => oracle.Character == @string && oracle.Image != null)
-            //   .ToArrayAsync();
-            // Bronze[] bronzes = await this.Bronze
-            //   .Where(bronze => bronze.Character == @string && bronze.Image != null)
-            //   .ToArrayAsync();
-            // Liushutong[] liushutongs = await this.Liushutong
-            //   .Where(liushutong => liushutong.Character == @string && liushutong.Image != null)
-            //   .ToArrayAsync();
-            // Seal[] seals = await this.Seal
-            //   .Where(seal => seal.Character == @string && seal.Image != null)
-            //   .ToArrayAsync();
-
             List<Etymology> etymologies = new List<Etymology>();
             List<Oracle> oracles = new List<Oracle>();
             List<Bronze> bronzes = new List<Bronze>();
@@ -42,111 +25,147 @@
                     using (DbCommand command = connection.CreateCommand())
                     {
                         command.CommandText = @"
-                            DECLARE
-	                            @Simplified nvarchar(5),
-	                            @Traditional nvarchar(5),
-	                            @OldTraditional nvarchar(10),
-	                            @Pinyin nvarchar(15),
-	                            @Index8105 nvarchar(10),
-	                            @SimplificationRule nvarchar(30),
-	                            @SimplificationClarified nvarchar(200),
-	                            @VariantRule nvarchar(40),
-	                            @VariantClarified nvarchar(255),
-	                            @AppliedRule nvarchar(30),
-	                            @FontRule nvarchar(10),
-	                            @Decomposition nvarchar(255),
-	                            @DecompositionClarified nvarchar(255),
-	                            @OriginalMeaning nvarchar(255),
-	                            @Videos nvarchar(50),
-	                            @WordExample nvarchar(255),
-	                            @EnglishSenses nvarchar(255),
-	                            @PinyinOther nvarchar(255),
-	                            @Pictures nvarchar(255),
-	                            @LearnOrder nvarchar(5),
-	                            @FrequencyOrder nvarchar(10),
-	                            @IdealForms nvarchar(25),
-	                            @Classification nvarchar(25),
-	                            @EtymologyId int,
-                                @TraditionalUnicode int,
-                                @SimplifiedInitial nvarchar(2),
-                                @SimplifiedUnicode int;
+                            DECLARE @Etymology TABLE
+							(
+	                            Simplified nvarchar(5) COLLATE Chinese_Simplified_Pinyin_100_CS_AS_KS_WS_SC,
+                                SimplifiedInitial nvarchar(2) COLLATE Chinese_Simplified_Pinyin_100_CS_AS_KS_WS_SC,
+                                SimplifiedUnicode int,
+	                            Traditional nvarchar(5) COLLATE Chinese_Traditional_Pinyin_100_CS_AS_KS_WS_SC,
+                                TraditionalUnicode int,
+	                            OldTraditional nvarchar(10) COLLATE Chinese_Traditional_Pinyin_100_CS_AS_KS_WS_SC,
+	                            Pinyin nvarchar(15),
+	                            Index8105 nvarchar(10),
+	                            SimplificationRule nvarchar(30),
+	                            SimplificationClarified nvarchar(200),
+	                            VariantRule nvarchar(40),
+	                            VariantClarified nvarchar(255),
+	                            AppliedRule nvarchar(30),
+	                            FontRule nvarchar(10),
+	                            Decomposition nvarchar(255),
+	                            DecompositionClarified nvarchar(255),
+	                            OriginalMeaning nvarchar(255),
+	                            Videos nvarchar(50),
+	                            WordExample nvarchar(255),
+	                            EnglishSenses nvarchar(255),
+	                            PinyinOther nvarchar(255),
+	                            Pictures nvarchar(255),
+	                            LearnOrder nvarchar(5),
+	                            FrequencyOrder nvarchar(10),
+	                            IdealForms nvarchar(25),
+	                            Classification nvarchar(25),
+	                            EtymologyId int
+							);
 
-                            SELECT TOP(1)
-                                @Simplified = Simplified, -- Simplified character
-                                @SimplifiedInitial = SUBSTRING(Simplified, 1, 1),
-                                @SimplifiedUnicode = UNICODE(SUBSTRING(Simplified, 1, 1)),
-                                @Traditional = Traditional, -- Traditional character
-                                @TraditionalUnicode = UNICODE(Traditional),
-                                @OldTraditional = OldTraditional, -- Older traditional characters
-                                @Pinyin = Pinyin, -- Main pronunciation
-                                @Index8105 = Index8105, -- Simplified character index number
-                                @SimplificationRule = SimplificationRule, -- Simplification rule
-                                @SimplificationClarified = SimplificationClarified, -- Simplification rule explained
-                                @VariantRule = VariantRule, -- Variant rule
-                                @VariantClarified = VariantClarified, -- Variant rule clarification
-                                @AppliedRule = AppliedRule, -- Applied rules
-                                @FontRule = FontRule, -- New font rule
-                                @Decomposition = Decomposition, -- Character decomposition
-                                @DecompositionClarified = DecompositionClarified, -- Decomposition notes
-                                @OriginalMeaning = OriginalMeaning, -- Original meaning
-                                @EnglishSenses = EnglishSenses, -- English senses
-                                @WordExample = WordExample, -- Usage example
-                                @PinyinOther = PinyinOther, -- Other pronunciations
-                                @Videos = Videos, -- Related videos
-                                @Pictures = Pictures, -- Related pictures
-                                @FrequencyOrder = FrequencyOrder, -- Importance by frequency
-                                @LearnOrder = LearnOrder, -- Importance in learning
-                                @IdealForms = IdealForms, -- Ideal ideographs
-                                @Classification = Classification -- Classification
+							INSERT INTO @Etymology
+							(
+								Simplified,
+                                SimplifiedInitial,
+                                SimplifiedUnicode,
+                                Traditional,
+                                TraditionalUnicode,
+                                OldTraditional,
+                                Pinyin,
+                                Index8105,
+                                SimplificationRule,
+                                SimplificationClarified,
+                                VariantRule,
+                                VariantClarified,
+                                AppliedRule,
+                                FontRule,
+                                Decomposition,
+                                DecompositionClarified,
+                                OriginalMeaning,
+                                EnglishSenses,
+                                WordExample,
+                                PinyinOther,
+                                Videos,
+                                Pictures,
+                                FrequencyOrder,
+                                LearnOrder,
+                                IdealForms,
+                                Classification
+							)
+                            SELECT 
+                                Simplified,
+                                SUBSTRING(Simplified, 1, 1) AS SimplifiedInitial,
+                                UNICODE(SUBSTRING(Simplified, 1, 1)) AS SimplifiedUnicode,
+                                Traditional,
+                                UNICODE(Traditional) AS TraditionalUnicode,
+                                OldTraditional,
+                                Pinyin,
+                                Index8105,
+                                SimplificationRule,
+                                SimplificationClarified,
+                                VariantRule,
+                                VariantClarified,
+                                AppliedRule,
+                                FontRule,
+                                Decomposition,
+                                DecompositionClarified,
+                                OriginalMeaning,
+                                EnglishSenses,
+                                WordExample,
+                                PinyinOther,
+                                Videos,
+                                Pictures,
+                                FrequencyOrder,
+                                LearnOrder,
+                                IdealForms,
+                                Classification
                             FROM dbo.Etymology 
-							WHERE Traditional = @chinese OR Simplified = @chinese OR OldTraditional = @chinese;
+							WHERE Traditional = @chinese OR Simplified LIKE @chinese + N'%' OR OldTraditional LIKE N'%' + @chinese + N'%';
 
 							SELECT 
-								@Simplified AS Simplified, -- Simplified character
-                                @SimplifiedInitial AS SimplifiedInitial,
-                                @SimplifiedUnicode AS SimplifiedUnicode,
-                                @Traditional AS Traditional, -- Traditional character
-                                @TraditionalUnicode AS TraditionalUnicode,
-                                @OldTraditional AS OldTraditional, -- Older traditional characters
-                                @Pinyin AS Pinyin, -- Main pronunciation
-                                @Index8105 AS Index8105, -- Simplified character index number
-                                @SimplificationRule AS SimplificationRule, -- Simplification rule
-                                @SimplificationClarified AS SimplificationClarified, -- Simplification rule explained
-                                @VariantRule AS VariantRule, -- Variant rule
-                                @VariantClarified AS VariantClarified, -- Variant rule clarification
-                                @AppliedRule AS AppliedRule, -- Applied rules
-                                @FontRule AS FontRule, -- New font rule
-                                @Decomposition AS Decomposition, -- Character decomposition
-                                @DecompositionClarified AS DecompositionClarified, -- Decomposition notes
-                                @OriginalMeaning AS OriginalMeaning, -- Original meaning
-                                @EnglishSenses AS EnglishSenses, -- English senses
-                                @WordExample AS WordExample, -- Usage example
-                                @PinyinOther AS PinyinOther, -- Other pronunciations
-                                @Videos AS Videos, -- Related videos
-                                @Pictures AS Pictures, -- Related pictures
-                                @FrequencyOrder AS FrequencyOrder, -- Importance by frequency
-                                @LearnOrder AS LearnOrder, -- Importance in learning
-                                @IdealForms AS IdealForms, -- Ideal ideographs
-                                @Classification AS Classification; -- Classification
+								Simplified, -- Simplified character
+                                SimplifiedInitial,
+                                SimplifiedUnicode,
+                                Traditional, -- Traditional character
+                                TraditionalUnicode,
+                                OldTraditional, -- Older traditional characters
+                                Pinyin, -- Main pronunciation
+                                Index8105, -- Simplified character index number
+                                SimplificationRule, -- Simplification rule
+                                SimplificationClarified, -- Simplification rule explained
+                                VariantRule, -- Variant rule
+                                VariantClarified, -- Variant rule clarification
+                                AppliedRule, -- Applied rules
+                                FontRule, -- New font rule
+                                Decomposition, -- Character decomposition
+                                DecompositionClarified, -- Decomposition notes
+                                OriginalMeaning, -- Original meaning
+                                EnglishSenses, -- English senses
+                                WordExample, -- Usage example
+                                PinyinOther, -- Other pronunciations
+                                Videos, -- Related videos
+                                Pictures, -- Related pictures
+                                FrequencyOrder, -- Importance by frequency
+                                LearnOrder, -- Importance in learning
+                                IdealForms, -- Ideal ideographs
+                                Classification -- Classification
+							FROM @Etymology;
 
-                            SELECT OracleId, ImageVectorBase64 
+                            SELECT OracleId, Oracle.Traditional, ImageVectorBase64 
 							FROM dbo.Oracle 
-							WHERE Traditional = @Traditional AND ImageVectorBase64 IS NOT NULL 
+							INNER JOIN @Etymology AS Etymology ON Oracle.Traditional = Etymology.Traditional
+							WHERE ImageVectorBase64 IS NOT NULL 
 							ORDER BY OracleId;
 
-                            SELECT BronzeId, ImageVectorBase64 
+                            SELECT BronzeId, Bronze.Traditional, ImageVectorBase64 
 							FROM dbo.Bronze 
-							WHERE Traditional = @Traditional AND ImageVectorBase64 IS NOT NULL 
+							INNER JOIN @Etymology AS Etymology ON Bronze.Traditional = Etymology.Traditional
+							WHERE ImageVectorBase64 IS NOT NULL 
 							ORDER BY BronzeId;
 
-                            SELECT SealId, ImageVectorBase64 
+                            SELECT SealId, Seal.Traditional, ImageVectorBase64, ShuowenTraditional
 							FROM dbo.Seal 
-							WHERE Traditional = @Traditional AND ImageVectorBase64 IS NOT NULL 
+							INNER JOIN @Etymology AS Etymology ON Seal.Traditional = Etymology.Traditional
+							WHERE ImageVectorBase64 IS NOT NULL 
 							ORDER BY SealId;
 
-                            SELECT LiushutongId, ImageVectorBase64 
+                            SELECT LiushutongId, Liushutong.Traditional, ImageVectorBase64 
 							FROM dbo.Liushutong 
-							WHERE Traditional = @Traditional AND ImageVectorBase64 IS NOT NULL 
+							INNER JOIN @Etymology AS Etymology ON Liushutong.Traditional = Etymology.Traditional
+							WHERE ImageVectorBase64 IS NOT NULL 
 							ORDER BY LiushutongId;";
                         DbParameter characterParameter = command.CreateParameter();
                         characterParameter.ParameterName = nameof(chinese);
@@ -193,6 +212,7 @@
                                     oracles.Add(new Oracle()
                                     {
                                         OracleId = (int)reader[nameof(Models.Oracle.OracleId)],
+                                        Traditional = (string)reader[nameof(Models.Oracle.Traditional)],
                                         ImageVectorBase64 = (string)reader[nameof(Models.Oracle.ImageVectorBase64)]
                                     });
                                 }
@@ -204,6 +224,7 @@
                                     bronzes.Add(new Bronze()
                                     {
                                         BronzeId = (int)reader[nameof(Models.Bronze.BronzeId)],
+                                        Traditional = (string)reader[nameof(Models.Bronze.Traditional)],
                                         ImageVectorBase64 = (string)reader[nameof(Models.Bronze.ImageVectorBase64)]
                                     });
                                 }
@@ -215,7 +236,9 @@
                                     seals.Add(new Seal()
                                     {
                                         SealId = (int)reader[nameof(Models.Seal.SealId)],
-                                        ImageVectorBase64 = (string)reader[nameof(Models.Seal.ImageVectorBase64)]
+                                        Traditional = (string)reader[nameof(Models.Seal.Traditional)],
+                                        ImageVectorBase64 = (string)reader[nameof(Models.Seal.ImageVectorBase64)],
+                                        ShuowenTraditional = reader.ToNullableAndTrim(nameof(Models.Seal.ShuowenTraditional))
                                     });
                                 }
                             }
@@ -226,6 +249,7 @@
                                     liushutongs.Add(new Liushutong()
                                     {
                                         LiushutongId = (int)reader[nameof(Models.Liushutong.LiushutongId)],
+                                        Traditional = (string)reader[nameof(Models.Liushutong.Traditional)],
                                         ImageVectorBase64 = (string)reader[nameof(Models.Liushutong.ImageVectorBase64)]
                                     });
                                 }
@@ -234,7 +258,15 @@
                     }
                 }
             });
-            return new AnalyzeResult(chinese, etymologies.ToArray(), oracles.ToArray(), bronzes.ToArray(), seals.ToArray(), liushutongs.ToArray());
+            return etymologies
+                .Select(etymology => new AnalyzeResult(
+                    chinese,
+                    etymology,
+                    oracles.Where(character => character.Traditional.Equals(etymology.Traditional, StringComparison.Ordinal)).ToArray(),
+                    bronzes.Where(character => character.Traditional.Equals(etymology.Traditional, StringComparison.Ordinal)).ToArray(),
+                    seals.Where(character => character.Traditional.Equals(etymology.Traditional, StringComparison.Ordinal)).ToArray(),
+                    liushutongs.Where(character => character.Traditional.Equals(etymology.Traditional, StringComparison.Ordinal)).ToArray()))
+                .ToArray();
         }
 
         public IQueryable<Bronze> BronzeImages() =>

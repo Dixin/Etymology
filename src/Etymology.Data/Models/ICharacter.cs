@@ -10,6 +10,8 @@
         [NotMapped]
         int Id { get; }
 
+        string Traditional { get; set; }
+
         string ImageBase64 { get; set; }
 
         string ImageVector { get; set; }

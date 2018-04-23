@@ -1,8 +1,0 @@
-﻿@using Etymology.Data.Models
-
-@model AnalyzeResult
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
-@{ var (chinese, _, _, _, _, _) = this.Model; }
-
-<div class="alert alert-warning m-0" role="alert" id="@chinese">Character "@chinese" is not found. Our current database has 4,000+ common Chinese characters. Our new database has much more characters and will be online soon. Please try a different character or try "@chinese" later. <br />未找到汉字 "@chinese". 我们目前的数据库包含4,000+最常用汉字. 我们的新数据库包含大量更多汉字的分析, 稍后即将上线. 请查询其它汉字, 或者稍后再查询汉字 "@chinese".</div>

@@ -1,137 +1,163 @@
 ﻿@using Etymology.Data.Models
 
-@model AnalyzeResult
+@model ValueTuple<string, TimeSpan, AnalyzeResult[]>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-@{ var (chinese, etymologies, oracles, bronzes, seals, liushutongs) = this.Model; }
+@{var (chinese, timeSpan, results) = this.Model;}
 
-<div class="row mx-0 bg-info row-eq-height etymology-nav" id="@chinese">
-    <div class="col-md-3  col-sm-4 p-0">
-        <div class="p-1">
-            @{ Etymology etymology = etymologies.First(); }
-            <p><b>Traditional in browser:</b> <span class="text-lg">@etymology.Traditional</span></p>
-            <p><b>Traditional in Unicode:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicodeMessage" target="_blank">U+@etymology.TraditionalUnicodeMessage</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicodeMessage" /></p>
-            <p><b>Older traditional characters:</b> @etymology.OldTraditional</p>
-            <p>
-                <b>Simplified in browser:</b>
-                @if (etymology.HasSimplified)
+<div class="etymology-nav" id="@chinese">
+    @if (results.Length > 0)
+    {
+        <div class="alert alert-success m-0 etymology-alert" role="alert">
+            @{int sum = results.Sum(result => result.Oracles.Length + result.Bronzes.Length + result.Seals.Length + result.Liushutongs.Length);}
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>@sum</strong> characters in <strong>@timeSpan.TotalSeconds.ToString("0.000")</strong> seconds.
+            @if (results.Length == 1)
+            {
+                var (_, etymology, oracles, bronzes, seals, liushutongs) = results.Single();
+                <span class="label label-success">@etymology.Title()</span>
+            }
+            else
+            {
+                foreach (AnalyzeResult result in results)
                 {
-                    <span class="text-lg">@etymology.SimplifiedInitial</span>
+                    var (_, etymology, oracles, bronzes, seals, liushutongs) = result;
+                    <a href="#@chinese-@etymology.Traditional" class="btn btn-success btn-xs">@etymology.Title()</a>
                 }
-                else
-                {
-                    <text>Not exist</text>
-                }
-            </p>
-            <p>
-                <b>Simplified in Unicode:</b> 
-                @if (etymology.HasSimplified)
-                {
-                    <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.SimplifiedUnicodeMessage" target="_blank">U+@etymology.SimplifiedUnicodeMessage</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.SimplifiedUnicodeMessage" />
-                }
-                else
-                {
-                    <text>Not exist</text>
-                }
-            </p>
-            <p><b>Simplified character index number:</b> @etymology.Index8105</p>
-            <p><b>Main pronunciation:</b> @etymology.Pinyin</p>
-            <p><b>Other pronunciations:</b> @etymology.PinyinOther</p>
-            <p class="pre-inline"><b>Character decomposition:</b> @Environment.NewLine@etymology.Decomposition</p>
-            <p class="pre-inline"><b>Decomposition notes:</b> @Environment.NewLine@etymology.DecompositionClarified</p>
-            <p><b>Original meaning:</b> @etymology.OriginalMeaning</p>
-            <p><b>English senses:</b> @etymology.EnglishSenses</p>
-            <p><b>Usage example:</b> @etymology.WordExample</p>
-            <p><b>Importance by frequency:</b> @etymology.FrequencyOrder</p>
-            <p><b>Importance in learning:</b> @etymology.LearnOrder</p>
-            <p><b>Classification:</b> @etymology.Classification</p>
-            <p><b>Simplification rule:</b> @etymology.SimplificationRule</p>
-            <p class="pre-inline"><b>Simplification rule explained:</b> @Environment.NewLine@etymology.SimplificationClarified</p>
-            <p><b>Variant rule:</b> @etymology.VariantRule</p>
-            <p class="pre-inline"><b>Variant rule clarification:</b> @Environment.NewLine@etymology.VariantClarified</p>
-            <p><b>Applied rules:</b> @etymology.AppliedRule</p>
-            <p><b>New font rule:</b> @etymology.FontRule</p>
-            <a class="btn btn-warning ladda-button" data-style="zoom-in" href="https://github.com/Dixin/Etymology/issues/new" target="_blank"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Report issue 报错/留言</a>
+            }
         </div>
-    </div>
-    <div class="col-md-9 col-sm-8 etymology-result bg-primary p-1" id="etymologyCharacters">
-        <h3><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Oracle characters 甲骨文 (@oracles.Length)</h3>
-        @if (!oracles.Any())
-        {
-            <p>There is no known oracle characters found. 没有找到已知的甲骨文.</p>
-        }
-        else
-        {
-            <ul class="list-inline list-unstyled">
+    }
+    else
+    {
+        <div class="alert alert-warning m-0" role="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>0</strong> characters in <strong>@timeSpan.TotalSeconds.ToString("0.000")</strong> seconds.</div>
+    }
+    @foreach (AnalyzeResult result in results)
+    {
+        var (_, etymology, oracles, bronzes, seals, liushutongs) = result;
+        <div class="row mx-0 bg-info row-eq-height border-top border-purple" id="@(results.Length > 1 ? $"{chinese}-{etymology.Traditional}" : string.Empty)">
+            <div class="col-md-3  col-sm-4 p-0">
+                <div class="p-1">
+                    <p><b>Traditional in your browser 繁体字的浏览器显示:</b> <span class="text-lg">@etymology.Traditional</span></p>
+                    <p><b>Traditional in Unicode standard 繁体字的Unicode标准:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicode.ToHex()" target="_blank">U+@etymology.TraditionalUnicode.ToHex()</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicode.ToHex()" /></p>
+                    <p><b>Older traditional characters 异体字:</b> @etymology.OldTraditional</p>
+                    <p>
+                        <b>Simplified in your browser 简体字的浏览器显示:</b>
+                        @if (etymology.HasSimplified())
+                        {
+                            <span class="text-lg">@etymology.Simplified</span>
+                        }
+                        else
+                        {
+                            <text>Not exist</text>
+                        }
+                    </p>
+                    <p>
+                        <b>Simplified in Unicode standard 简体字的Unicode标准:</b>
+                        @if (etymology.HasSimplified())
+                        {
+                            <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.SimplifiedUnicode.ToHex()" target="_blank">U+@etymology.SimplifiedUnicode.ToHex()</a>
+                            <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.SimplifiedUnicode.ToHex()" />
+                        }
+                        else
+                        {
+                            <text>Not exist</text>
+                        }
+                    </p>
+                    <p><b>Main pronunciation 主要发音:</b> @etymology.Pinyin</p>
+                    <p><b>Other pronunciations 其它发音:</b> @etymology.PinyinOther</p>
+                    <p><b>Original meaning 原始含义:</b> @etymology.OriginalMeaning</p>
+                    <p><b>English senses 英语理解:</b> @etymology.EnglishSenses</p>
+                    <p><b>Usage example 用法举例:</b> @etymology.WordExample</p>
+                    <p><b>Importance by frequency 频率及重要性:</b> @etymology.FrequencyOrder</p>
+                    <p class="pre-inline"><b>Character decomposition 字符分解:</b> <br />@etymology.Decomposition</p>
+                    <p class="pre-inline"><b>Decomposition notes 字符分解说明:</b> <br />@etymology.DecompositionClarified</p>
+                    <p><b>Simplification rule 简化规则:</b> @etymology.SimplificationRule.Message()</p>
+                    <p class="pre-inline"><b>Simplification rule explained 简化规则说明:</b> <br />@etymology.SimplificationClarified.Message()</p>
+                    <p><b>Variant rule 变体规则:</b> @etymology.VariantRule.Message()</p>
+                    <p class="pre-inline"><b>Variant rule clarification 变体规则说明:</b> <br />@etymology.VariantClarified.Message()</p>
+                    <p><b>Applied rules 应用规则:</b> @etymology.AppliedRule.Message()</p>
+                    <p><b>New font rule 新字体规则:</b> @etymology.FontRule.Message()</p>
+                    <p><b>Shuowen 说文解字:</b> @seals.FirstOrDefault()?.ShuowenTraditional</p>
+                    <a class="btn btn-warning ladda-button" data-style="zoom-in" href="https://github.com/Dixin/Etymology/issues/new" target="_blank"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Report issue 报错/留言</a>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-8 etymology-result bg-primary p-1" id="etymologyCharacters">
+                <h3><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Oracle characters 甲骨文 (@oracles.Length)</h3>
+                @if (!oracles.Any())
+                {
+                    <p>There is no known oracle characters found. 没有找到已知的甲骨文.</p>
+                }
+                else
+                {
+                    <ul class="list-inline list-unstyled">
+                        @foreach (Oracle character in oracles)
+                        {
+                            <li class="text-center">
+                                <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
+                            </li>
+                        }
+                    </ul>
+                }
+                <hr />
+                <h3><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span> Bronze characters 金文 (@bronzes.Length)</h3>
+                @if (!bronzes.Any())
+                {
+                    <p>There is no known bronze characters found. 没有找到已知的金文.</p>
+                }
+                else
+                {
+                    <ul class="list-inline list-unstyled">
+                        @foreach (Bronze character in bronzes)
+                        {
+                            <li class="text-center">
+                                <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
+                            </li>
+                        }
+                    </ul>
+                }
+                <hr />
+                <h3><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Seal characters 说文解字的篆字 (@seals.Length)</h3>
+                @if (!seals.Any())
+                {
+                    <p>There is no known seal characters found. 没有找到已知的说文解字的篆字.</p>
+                }
+                else
+                {
+                    <ul class="list-inline list-unstyled">
+                        @foreach (Seal character in seals)
+                        {
+                            <li class="text-center">
+                                <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
+                            </li>
+                        }
+                    </ul>
+                }
+                <hr />
+                <h3><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Liushutong characters 六书通的篆字 (@liushutongs.Length)</h3>
+                @if (!liushutongs.Any())
+                {
+                    <p>There is no known Liushutong characters found. 没有找到已知的六书通的字.</p>
+                }
+                else
+                {
+                    <ul class="list-inline list-unstyled">
+                        @foreach (Liushutong character in liushutongs)
+                        {
+                            <li class="text-center">
+                                <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+            <style type="text/css">
                 @foreach (Oracle character in oracles)
                 {
-                    <li class="text-center">
-                        <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
-                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
-                    </li>
+                    <text>#@(character.FormattedId), #etymology@(character.FormattedId) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
                 }
-            </ul>
-        }
-        <hr />
-        <h3><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span> Bronze characters 金文 (@bronzes.Length)</h3>
-        @if (!bronzes.Any())
-        {
-            <p>There is no known bronze characters found. 没有找到已知的金文.</p>
-        }
-        else
-        {
-            <ul class="list-inline list-unstyled">
-                @foreach (Bronze character in bronzes)
-                {
-                    <li class="text-center">
-                        <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
-                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
-                    </li>
-                }
-            </ul>
-        }
-        <hr />
-        <h3><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Seal characters 说文解字的篆字 (@seals.Length)</h3>
-        @if (!seals.Any())
-        {
-            <p>There is no known seal characters found. 没有找到已知的说文解字的篆字.</p>
-        }
-        else
-        {
-            <ul class="list-inline list-unstyled">
-                @foreach (Seal character in seals)
-                {
-                    <li class="text-center">
-                        <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
-                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
-                    </li>
-                }
-            </ul>
-        }
-        <hr />
-        <h3><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Liushutong characters 六书通的篆字 (@liushutongs.Length)</h3>
-        @if (!liushutongs.Any())
-        {
-            <p>There is no known Liushutong characters found. 没有找到已知的六书通的字.</p>
-        }
-        else
-        {
-            <ul class="list-inline list-unstyled">
-                @foreach (Liushutong character in liushutongs)
-                {
-                    <li class="text-center">
-                        <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
-                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
-                    </li>
-                }
-            </ul>
-        }
-    </div>
-    <style type="text/css">
-        @foreach (Oracle character in oracles)
-        {
-            <text>#@(character.FormattedId), #etymology@(character.FormattedId) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
-        }
         @foreach (Bronze character in bronzes)
         {
             <text>#@(character.FormattedId), #etymology@(character.FormattedId) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
@@ -144,5 +170,7 @@
         {
             <text>#@(character.FormattedId), #etymology@(character.FormattedId) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
         }
-    </style>
+            </style>
+        </div>
+    }
 </div>

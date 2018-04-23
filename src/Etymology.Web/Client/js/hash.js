@@ -1,14 +1,17 @@
 ﻿const global = window;
 const location = global.location;
+const setTimeout = global.setTimeout;
 const $ = global.$;
 const $document = $(global.document);
+const timeout = 500;
 
 let navOffset = 0;
 let positions = null;
 let oldTop = 0;
 let scrollTimeoutId = null;
+let setPositionsTimeoutId = null;
 
-const updatePositions = $elements => positions = $.map($elements, element => {
+const setPositions = $elements => positions = $.map($elements, element => {
     const $element = $(element);
     const position = $element.position();
     return {
@@ -17,6 +20,13 @@ const updatePositions = $elements => positions = $.map($elements, element => {
         id: element.id
     };
 });
+
+const setPositionsWithTimeout = $elements => {
+    if (setPositionsTimeoutId) {
+        global.clearTimeout(setPositionsTimeoutId);
+    }
+    setPositionsTimeoutId = setTimeout(() => setPositions($elements), timeout);
+}
 
 const set = hash => {
     if (hash.indexOf("#") === 0) { // IE does not support starsWith.
@@ -37,7 +47,7 @@ const get = () => global.decodeURIComponent(location.hash.substring(1));
 export default {
     init: (value, $elements) => {
         navOffset = value;
-        updatePositions($elements);
+        setPositions($elements);
         oldTop = $document.scrollTop();
     },
 
@@ -59,9 +69,11 @@ export default {
         return false;
     },
 
-    updatePositions: updatePositions,
+    setPositions: setPositions,
 
-    setAfterScroll: callback => {
+    setPositionsWithTimeout: setPositionsWithTimeout,
+
+    setAfterScrollWithTimeout: callback => {
         if (scrollTimeoutId) {
             global.clearTimeout(scrollTimeoutId);
         }

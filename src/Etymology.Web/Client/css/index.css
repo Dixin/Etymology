@@ -36,6 +36,11 @@ body {
     margin-right: 0;
 }
 
+.my-1 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
 .px-0 {
     padding-right: 0;
     padding-left: 0;
@@ -69,6 +74,14 @@ body {
 
 .bg-black {
     background-color: #000000;
+}
+
+.border-purple {
+    border-color: #563d7c;
+}
+
+.border-top {
+    border-top: 1px solid;
 }
 
 .text-black {
@@ -170,6 +183,10 @@ a.text-white, a.text-white:visited {
 
 .etymology-stat h3 {
     margin-top: 10px;
+}
+
+.etymology-alert a{
+    margin: 5px 0px;
 }
 
 .etymology-result ul {

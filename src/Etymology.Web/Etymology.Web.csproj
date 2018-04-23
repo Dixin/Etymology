@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Etymology.Common\Etymology.Common.csproj" />
     <ProjectReference Include="..\Etymology.Data\Etymology.Data.csproj" />
   </ItemGroup>
 
