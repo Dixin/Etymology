@@ -33,9 +33,7 @@
                 ? $"{etymology.Traditional}(U+{etymology.TraditionalUnicode.ToHex()}) → {etymology.Simplified}(U+{etymology.SimplifiedUnicode.ToHex()})"
                 : $"{etymology.Traditional}(U+{etymology.TraditionalUnicode.ToHex()})";
 
-        public static string Message(this string value) =>
-            string.Equals(value, "z", StringComparison.OrdinalIgnoreCase)
-                ? "Not exist."
-                : value;
+        public static bool IsVisible(this string value) =>
+            !string.Equals(value, "z", StringComparison.OrdinalIgnoreCase);
     }
 }

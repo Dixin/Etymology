@@ -262,10 +262,10 @@
                 .Select(etymology => new AnalyzeResult(
                     chinese,
                     etymology,
-                    oracles.Where(character => character.Traditional.Equals(etymology.Traditional, StringComparison.Ordinal)).ToArray(),
-                    bronzes.Where(character => character.Traditional.Equals(etymology.Traditional, StringComparison.Ordinal)).ToArray(),
-                    seals.Where(character => character.Traditional.Equals(etymology.Traditional, StringComparison.Ordinal)).ToArray(),
-                    liushutongs.Where(character => character.Traditional.Equals(etymology.Traditional, StringComparison.Ordinal)).ToArray()))
+                    oracles.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray(),
+                    bronzes.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray(),
+                    seals.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray(),
+                    liushutongs.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray()))
                 .ToArray();
         }
 
