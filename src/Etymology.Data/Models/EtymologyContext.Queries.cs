@@ -83,7 +83,8 @@
                                 FrequencyOrder,
                                 LearnOrder,
                                 IdealForms,
-                                Classification
+                                Classification,
+	                            EtymologyId
 							)
                             SELECT 
                                 Simplified,
@@ -111,7 +112,8 @@
                                 FrequencyOrder,
                                 LearnOrder,
                                 IdealForms,
-                                Classification
+                                Classification,
+	                            EtymologyId
                             FROM dbo.Etymology 
 							WHERE Traditional = @chinese OR Simplified LIKE @chinese + N'%' OR OldTraditional LIKE N'%' + @chinese + N'%';
 
@@ -141,7 +143,8 @@
                                 FrequencyOrder, -- Importance by frequency
                                 LearnOrder, -- Importance in learning
                                 IdealForms, -- Ideal ideographs
-                                Classification -- Classification
+                                Classification, -- Classification
+	                            EtymologyId
 							FROM @Etymology;
 
                             SELECT OracleId, Oracle.Traditional, ImageVectorBase64 
@@ -203,6 +206,7 @@
                                     LearnOrder = reader.ToNullableAndTrim(nameof(Models.Etymology.LearnOrder)),
                                     IdealForms = reader.ToNullableAndTrim(nameof(Models.Etymology.IdealForms)),
                                     Classification = reader.ToNullableAndTrim(nameof(Models.Etymology.Classification)),
+                                    EtymologyId = (int)reader[nameof(Models.Etymology.EtymologyId)],
                                 });
                             }
                             if (await reader.NextResultAsync())

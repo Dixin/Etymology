@@ -21,7 +21,7 @@
                 foreach (AnalyzeResult result in results)
                 {
                     var (_, etymology, oracles, bronzes, seals, liushutongs) = result;
-                    <a href="#@chinese-@etymology.Traditional" class="btn btn-success btn-xs ladda-button">@etymology.Title()</a>
+                    <a href="#@etymology.FormattedId()" class="btn btn-success btn-xs ladda-button">@etymology.Title()</a>
                 }
             }
         </div>
@@ -33,12 +33,16 @@
     @foreach (AnalyzeResult result in results)
     {
         var (_, etymology, oracles, bronzes, seals, liushutongs) = result;
-        <div class="row mx-0 bg-info row-eq-height border-top border-purple" id="@(results.Length > 1 ? $"{chinese}-{etymology.Traditional}" : string.Empty)">
+        <div class="row mx-0 bg-info row-eq-height border-top border-purple" id="@etymology.FormattedId()">
             <div class="col-md-3  col-sm-4 p-0">
                 <div class="p-1">
+                    <p><span class="label label-success">@etymology.Title()</span></p>
                     <p><b>Traditional in your browser 繁体字的浏览器显示:</b> <span class="text-lg">@etymology.Traditional</span></p>
-                    <p><b>Traditional in Unicode standard 繁体字的Unicode标准:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicode.ToHex()" target="_blank">U+@etymology.TraditionalUnicode.ToHex()</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicode.ToHex()" /></p>
-                    <p><b>Older traditional characters 异体字:</b> @etymology.OldTraditional</p>
+                    <p><b>Traditional in Unicode standard 繁体字的Unicode标准:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicode.ToHex()" target="_blank">U+@etymology.TraditionalUnicode.ToHex()</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicode.ToHex()"/></p>
+                    @if (etymology.OldTraditional.IsVisible())
+                    {
+                        <p><b>Older traditional characters 异体字:</b> @etymology.OldTraditional</p>
+                    }
                     <p>
                         <b>Simplified in your browser 简体字的浏览器显示:</b>
                         @if (etymology.HasSimplified())
@@ -55,7 +59,7 @@
                         @if (etymology.HasSimplified())
                         {
                             <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.SimplifiedUnicode.ToHex()" target="_blank">U+@etymology.SimplifiedUnicode.ToHex()</a>
-                            <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.SimplifiedUnicode.ToHex()" />
+                            <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.SimplifiedUnicode.ToHex()"/>
                         }
                         else
                         {
@@ -68,33 +72,39 @@
                     <p><b>English senses 英语理解:</b> @etymology.EnglishSenses</p>
                     <p><b>Usage example 用法举例:</b> @etymology.WordExample</p>
                     <p><b>Importance by frequency 频率及重要性:</b> @etymology.FrequencyOrder</p>
-                    <p class="pre-inline"><b>Character decomposition 字符分解:</b> <br />@etymology.Decomposition</p>
-                    <p class="pre-inline"><b>Decomposition notes 字符分解说明:</b> <br />@etymology.DecompositionClarified</p>
+                    @if (@seals.FirstOrDefault()?.ShuowenTraditional?.IsVisible() == true)
+                    {
+                        <p><b>Shuowen 说文解字:</b> @seals.FirstOrDefault()?.ShuowenTraditional</p>
+                    }
+                    <p class="pre-inline"><b>Character decomposition 字符分解 <a href="https://dixin.github.io/Etymology/decomposition-of-chinese-character" target="_blank">[?]</a>:</b> <br/>@etymology.Decomposition</p>
+                    @if (@etymology.DecompositionClarified.IsVisible())
+                    {
+                        <p class="pre-inline"><b>Decomposition notes 字符分解说明 <a href="https://dixin.github.io/Etymology/decomposition-of-chinese-character" target="_blank">[?]</a>:</b> <br/>@etymology.DecompositionClarified</p>
+                    }
                     @if (@etymology.SimplificationRule.IsVisible())
                     {
-                        <p><b>Simplification rule 简化规则:</b> @etymology.SimplificationRule</p>
+                        <p><b>Simplification rule 简化规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank">[?]</a>:</b> @etymology.SimplificationRule</p>
                     }
                     @if (@etymology.SimplificationClarified.IsVisible())
                     {
-                        <p class="pre-inline"><b>Simplification rule explained 简化规则说明:</b> <br />@etymology.SimplificationClarified</p>
+                        <p class="pre-inline"><b>Simplification rule explained 简化规则说明 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank">[?]</a>:</b> <br/>@etymology.SimplificationClarified</p>
                     }
                     @if (@etymology.VariantRule.IsVisible())
                     {
-                        <p><b>Variant rule 变体规则:</b> @etymology.VariantRule</p>
+                        <p><b>Variant rule 异体规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank">[?]</a>:</b> @etymology.VariantRule</p>
                     }
                     @if (@etymology.VariantClarified.IsVisible())
                     {
-                        <p class="pre-inline"><b>Variant rule clarification 变体规则说明:</b> <br />@etymology.VariantClarified</p>
+                        <p class="pre-inline"><b>Variant rule clarification 异体规则说明 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank">[?]</a>:</b> <br/>@etymology.VariantClarified</p>
                     }
                     @if (@etymology.AppliedRule.IsVisible())
                     {
-                        <p><b>Applied rules 应用规则:</b> @etymology.AppliedRule</p>
+                        <p><b>Applied rules 应用规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank">[?]</a>:</b> @etymology.AppliedRule</p>
                     }
                     @if (@etymology.FontRule.IsVisible())
                     {
-                        <p><b>New font rule 新字体规则:</b> @etymology.FontRule</p>
+                        <p><b>New font rule 新字体规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank">[?]</a>:</b> @etymology.FontRule</p>
                     }
-                    <p><b>Shuowen 说文解字:</b> @seals.FirstOrDefault()?.ShuowenTraditional</p>
                     <a class="btn btn-warning btn-xs ladda-button" data-style="zoom-in" href="https://github.com/Dixin/Etymology/issues/new" target="_blank"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Report issue 报错/留言</a>
                 </div>
             </div>
@@ -102,7 +112,7 @@
                 <h3><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Oracle characters 甲骨文 (@oracles.Length)</h3>
                 @if (!oracles.Any())
                 {
-                    <p>There is no known oracle characters found. 没有找到已知的甲骨文.</p>
+                    <p>There is no known oracle characters found. 没有已知的甲骨文.</p>
                 }
                 else
                 {
@@ -110,8 +120,8 @@
                         @foreach (Oracle character in oracles)
                         {
                             <li class="text-center">
-                                <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
-                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
+                                <div id="etymology@(character.FormattedId())" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId()</div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId()</button>
                             </li>
                         }
                     </ul>
@@ -120,7 +130,7 @@
                 <h3><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span> Bronze characters 金文 (@bronzes.Length)</h3>
                 @if (!bronzes.Any())
                 {
-                    <p>There is no known bronze characters found. 没有找到已知的金文.</p>
+                    <p>There is no known bronze characters found. 没有已知的金文.</p>
                 }
                 else
                 {
@@ -128,8 +138,8 @@
                         @foreach (Bronze character in bronzes)
                         {
                             <li class="text-center">
-                                <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
-                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
+                                <div id="etymology@(character.FormattedId())" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId()</div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId()</button>
                             </li>
                         }
                     </ul>
@@ -138,7 +148,7 @@
                 <h3><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Seal characters 说文解字的篆字 (@seals.Length)</h3>
                 @if (!seals.Any())
                 {
-                    <p>There is no known seal characters found. 没有找到已知的说文解字的篆字.</p>
+                <p>There is no known seal characters found. 没有已知的说文解字的篆字.</p>
                 }
                 else
                 {
@@ -146,17 +156,17 @@
                         @foreach (Seal character in seals)
                         {
                             <li class="text-center">
-                                <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
-                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
+                                <div id="etymology@(character.FormattedId())" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId()</div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId()</button>
                             </li>
                         }
                     </ul>
                 }
                 <hr />
-                <h3><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Liushutong characters 六书通的篆字 (@liushutongs.Length)</h3>
+                <h3><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Liushutong characters 六书通的字 (@liushutongs.Length)</h3>
                 @if (!liushutongs.Any())
                 {
-                    <p>There is no known Liushutong characters found. 没有找到已知的六书通的字.</p>
+                    <p>There is no known Liushutong characters found. 没有已知的六书通的字.</p>
                 }
                 else
                 {
@@ -164,8 +174,8 @@
                         @foreach (Liushutong character in liushutongs)
                         {
                             <li class="text-center">
-                                <div id="etymology@(character.FormattedId)" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId</div>
-                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId</button>
+                                <div id="etymology@(character.FormattedId())" data-toggle="modal" data-target="#etymologyModal">@character.FormattedId()</div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#etymologyModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @character.FormattedId()</button>
                             </li>
                         }
                     </ul>
@@ -174,19 +184,19 @@
             <style type="text/css">
                 @foreach (Oracle character in oracles)
                 {
-                    <text>#@(character.FormattedId), #etymology@(character.FormattedId) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
+                    <text>#@(character.FormattedId()), #etymology@(character.FormattedId()) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
                 }
         @foreach (Bronze character in bronzes)
         {
-            <text>#@(character.FormattedId), #etymology@(character.FormattedId) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
+            <text>#@(character.FormattedId()), #etymology@(character.FormattedId()) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
         }
         @foreach (Seal character in seals)
         {
-            <text>#@(character.FormattedId), #etymology@(character.FormattedId) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
+            <text>#@(character.FormattedId()), #etymology@(character.FormattedId()) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
         }
         @foreach (Liushutong character in liushutongs)
         {
-            <text>#@(character.FormattedId), #etymology@(character.FormattedId) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
+            <text>#@(character.FormattedId()), #etymology@(character.FormattedId()) { background-image: url('data:image/svg+xml;base64,@this.Html.Raw(character.ImageVectorBase64)') } </text>
         }
             </style>
         </div>
