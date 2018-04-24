@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_posts", "_posts", "{53EE1C
 		docs\_posts\2017-09-18-spoken-chinese-and-other-languages.md = docs\_posts\2017-09-18-spoken-chinese-and-other-languages.md
 		docs\_posts\2017-09-19-what-is-a-simplified-chinese-character.md = docs\_posts\2017-09-19-what-is-a-simplified-chinese-character.md
 		docs\_posts\2017-09-19-what-is-a-traditional-chinese-character.md = docs\_posts\2017-09-19-what-is-a-traditional-chinese-character.md
+		docs\_posts\2018-04-23-decomposition-of-chinese-character.md = docs\_posts\2018-04-23-decomposition-of-chinese-character.md
 		docs\_posts\2018-04-23-simplification-of-chinese-character.md = docs\_posts\2018-04-23-simplification-of-chinese-character.md
 	EndProjectSection
 EndProject
