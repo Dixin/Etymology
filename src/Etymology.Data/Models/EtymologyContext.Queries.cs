@@ -31,6 +31,7 @@
                                 SimplifiedInitial nvarchar(2) COLLATE Chinese_Simplified_Pinyin_100_CS_AS_KS_WS_SC,
                                 SimplifiedUnicode int,
 	                            Traditional nvarchar(5) COLLATE Chinese_Traditional_Pinyin_100_CS_AS_KS_WS_SC,
+                                TraditionalInitial nvarchar(2) COLLATE Chinese_Simplified_Pinyin_100_CS_AS_KS_WS_SC,
                                 TraditionalUnicode int,
 	                            OldTraditional nvarchar(10) COLLATE Chinese_Traditional_Pinyin_100_CS_AS_KS_WS_SC,
 	                            Pinyin nvarchar(15),
@@ -62,6 +63,7 @@
                                 SimplifiedInitial,
                                 SimplifiedUnicode,
                                 Traditional,
+                                TraditionalInitial,
                                 TraditionalUnicode,
                                 OldTraditional,
                                 Pinyin,
@@ -91,6 +93,7 @@
                                 SUBSTRING(Simplified, 1, 1) AS SimplifiedInitial,
                                 UNICODE(SUBSTRING(Simplified, 1, 1)) AS SimplifiedUnicode,
                                 Traditional,
+                                SUBSTRING(Traditional, 1, 1) AS SimplifiedInitial,
                                 UNICODE(Traditional) AS TraditionalUnicode,
                                 OldTraditional,
                                 Pinyin,
@@ -122,6 +125,7 @@
                                 SimplifiedInitial,
                                 SimplifiedUnicode,
                                 Traditional, -- Traditional character
+                                TraditionalInitial,
                                 TraditionalUnicode,
                                 OldTraditional, -- Older traditional characters
                                 Pinyin, -- Main pronunciation
@@ -184,6 +188,7 @@
                                     SimplifiedInitial = reader.ToNullableAndTrim(nameof(Models.Etymology.SimplifiedInitial)),
                                     SimplifiedUnicode = (int)reader[nameof(Models.Etymology.SimplifiedUnicode)],
                                     Traditional = reader.ToNullableAndTrim(nameof(Models.Etymology.Traditional)),
+                                    TraditionalInitial = reader.ToNullableAndTrim(nameof(Models.Etymology.TraditionalInitial)),
                                     TraditionalUnicode = (int)reader[nameof(Models.Etymology.TraditionalUnicode)],
                                     OldTraditional = reader.ToNullableAndTrim(nameof(Models.Etymology.OldTraditional)),
                                     Pinyin = reader.ToNullableAndTrim(nameof(Models.Etymology.Pinyin)),
