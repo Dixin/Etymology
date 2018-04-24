@@ -10,8 +10,12 @@
     <Content Include="..\Etymology.Web\Server\settings.json" Link="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Etymology.Web\Server\settings.Production.json" Link="settings.Production.json" />
-    <Content Include="..\Etymology.Web\Server\settings.Staging.json" Link="settings.Staging.json" />
+    <Content Include="..\Etymology.Web\Server\settings.Production.json" Link="settings.Production.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Etymology.Web\Server\settings.Staging.json" Link="settings.Staging.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
