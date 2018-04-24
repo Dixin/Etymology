@@ -3,9 +3,10 @@
     using System;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Diagnostics;
+    using System.Linq;
 
     [DebuggerDisplay("{" + nameof(Traditional) + "}, {" + nameof(Simplified) + "}, {" + nameof(EtymologyId) + "}, {" + nameof(OldTraditional) + "}")]
-    public partial class Etymology
+    public partial class Etymology: IFormattable
     {
         [NotMapped]
         public string SimplifiedInitial { get; set; }
@@ -15,9 +16,15 @@
 
         [NotMapped]
         public int TraditionalUnicode { get; set; }
+
+        [NotMapped]
+        public string Prefix => "E";
+
+        [NotMapped]
+        public int Id => this.EtymologyId;
     }
 
-    public static class EtymologyExtensions
+    public static class DisplayExtensions
     {
         public static string ToHex(this int value) =>
             value.ToString("X4");
@@ -30,10 +37,13 @@
 
         public static string Title(this Etymology etymology) =>
             etymology.HasSimplified()
-                ? $"{etymology.Traditional}(U+{etymology.TraditionalUnicode.ToHex()}) → {etymology.Simplified}(U+{etymology.SimplifiedUnicode.ToHex()})"
-                : $"{etymology.Traditional}(U+{etymology.TraditionalUnicode.ToHex()})";
+                ? $"{etymology.FormattedId()} {etymology.Traditional}{etymology.TraditionalUnicode.ToHex()} → {etymology.Simplified}{etymology.SimplifiedUnicode.ToHex()}"
+                : $"{etymology.FormattedId()} {etymology.Traditional}{etymology.TraditionalUnicode.ToHex()}";
 
         public static bool IsVisible(this string value) =>
-            !string.Equals(value, "z", StringComparison.OrdinalIgnoreCase);
+            !string.IsNullOrWhiteSpace(value)
+            && !string.Equals(value, "z", StringComparison.OrdinalIgnoreCase);
+
+        public static string FormattedId(this IFormattable formattable) => $"{formattable.Prefix.First()}{formattable.Id:00000}";
     }
 }

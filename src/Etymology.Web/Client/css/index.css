@@ -208,7 +208,12 @@ a.text-white, a.text-white:visited {
         margin-top: 5px;
         margin-bottom: 15px;
         width: 105px;
+        font-weight: bold;
     }
+
+.etymology-research a {
+    font-weight: bold;
+}
 
 .etymology-news .media-body {
     color: #ccc;
