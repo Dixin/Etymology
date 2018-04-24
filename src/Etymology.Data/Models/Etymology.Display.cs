@@ -15,6 +15,9 @@
         public int SimplifiedUnicode { get; set; }
 
         [NotMapped]
+        public string TraditionalInitial { get; set; }
+
+        [NotMapped]
         public int TraditionalUnicode { get; set; }
 
         [NotMapped]
@@ -37,12 +40,17 @@
 
         public static string Title(this Etymology etymology) =>
             etymology.HasSimplified()
-                ? $"{etymology.FormattedId()} {etymology.Traditional}{etymology.TraditionalUnicode.ToHex()} → {etymology.Simplified}{etymology.SimplifiedUnicode.ToHex()}"
-                : $"{etymology.FormattedId()} {etymology.Traditional}{etymology.TraditionalUnicode.ToHex()}";
+                ? $"{etymology.FormattedId()} {etymology.TraditionalInitial}{etymology.TraditionalUnicode.ToHex()} → {etymology.SimplifiedInitial}{etymology.SimplifiedUnicode.ToHex()}"
+                : $"{etymology.FormattedId()} {etymology.TraditionalInitial}{etymology.TraditionalUnicode.ToHex()}";
 
         public static bool IsVisible(this string value) =>
             !string.IsNullOrWhiteSpace(value)
             && !string.Equals(value, "z", StringComparison.OrdinalIgnoreCase);
+
+        public static string Message(this string value) =>
+            string.IsNullOrWhiteSpace(value) || string.Equals(value, "z", StringComparison.OrdinalIgnoreCase)
+                ? "Not applicable."
+                : value;
 
         public static string FormattedId(this IFormattable formattable) => $"{formattable.Prefix.First()}{formattable.Id:00000}";
     }
