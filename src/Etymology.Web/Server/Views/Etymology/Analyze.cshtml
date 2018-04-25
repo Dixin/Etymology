@@ -38,7 +38,7 @@
                 <div class="p-1">
                     <p><span class="label label-success">@etymology.Title()</span></p>
                     <p><b>Traditional in your browser 繁体字的浏览器显示:</b> <span class="text-lg">@etymology.TraditionalInitial</span></p>
-                    <p><b>Traditional in Unicode standard 繁体字的Unicode标准:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicode.ToHex()" target="_blank">U+@etymology.TraditionalUnicode.ToHex()</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicode.ToHex()" /></p>
+                    <p><b>Traditional in Unicode standard 繁体字的Unicode标准:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicode.ToHex()" target="_blank">U@etymology.TraditionalUnicode.ToHex()</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicode.ToHex()" /></p>
                     @if (etymology.OldTraditional.IsVisible())
                     {
                         <p><b>Older traditional characters 旧繁体字/异体字:</b> @etymology.OldTraditional</p>
@@ -58,7 +58,7 @@
                         <b>Simplified in Unicode standard 简体字的Unicode标准:</b>
                         @if (etymology.HasSimplified())
                         {
-                            <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.SimplifiedUnicode.ToHex()" target="_blank">U+@etymology.SimplifiedUnicode.ToHex()</a>
+                            <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.SimplifiedUnicode.ToHex()" target="_blank">U@etymology.SimplifiedUnicode.ToHex()</a>
                             <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.SimplifiedUnicode.ToHex()" />
                         }
                         else

@@ -64,5 +64,20 @@
             //    return null;
             // }
         }
+
+        public static byte[] HexToBytes(this string hex)
+        {
+            int length = hex.Length;
+            byte[] bytes = new byte[length / 2];
+            for (int index = 0; index < length; index += 2)
+            {
+                bytes[index / 2] = Convert.ToByte(hex.Substring(index, 2), 16);
+            }
+
+            return bytes;
+        }
+
+        public static string BytesToHex(this byte[] bytes) =>
+            BitConverter.ToString(bytes).Replace("=", string.Empty);
     }
 }
