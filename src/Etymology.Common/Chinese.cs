@@ -67,6 +67,11 @@
 
         public static byte[] HexToBytes(this string hex)
         {
+            if (hex.Length % 2 != 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(hex));
+            }
+
             int length = hex.Length;
             byte[] bytes = new byte[length / 2];
             for (int index = 0; index < length; index += 2)
