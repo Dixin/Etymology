@@ -2,6 +2,7 @@
 {
     using System;
     using System.Text;
+    using System.Text.RegularExpressions;
 
     public static class Chinese
     {
@@ -67,6 +68,7 @@
 
         public static byte[] HexToBytes(this string hex)
         {
+            hex = Regex.Replace(hex, @"\s+", string.Empty);
             if (hex.Length % 2 != 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(hex));
@@ -79,10 +81,28 @@
                 bytes[index / 2] = Convert.ToByte(hex.Substring(index, 2), 16);
             }
 
+            return bytes.Adjust();
+        }
+
+        private static byte[] Adjust(this byte[] bytes)
+        {
+            if (bytes.Length % 2 != 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bytes));
+            }
+
+            for (int index = 0; index < bytes.Length; index += 2)
+            {
+                (bytes[index], bytes[index + 1]) = (bytes[index + 1], bytes[index]);
+            }
+
             return bytes;
         }
 
-        public static string BytesToHex(this byte[] bytes) =>
-            BitConverter.ToString(bytes).Replace("=", string.Empty);
+        public static string FromUnicodeCodePoint(this string hex) => Encoding.Unicode.GetString(HexToBytes(hex));
+
+        public static string ToUnicodeCodePoint(this string character) => Encoding.Unicode.GetBytes(character).BytesToHex();
+
+        public static string BytesToHex(this byte[] bytes) => BitConverter.ToString(bytes.Adjust()).Replace("-", string.Empty);
     }
 }

@@ -1,1 +1,1 @@
-Scaffold-DbContext -Connection "Server=(localdb)\mssqllocaldb;Database=ChineseEtymology;Trusted_Connection=True;" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context EtymologyContext -Schemas dbo -DataAnnotations -Project Etymology.Data
+Scaffold-DbContext -Connection "Server=.;Database=ChineseEtymology;Trusted_Connection=True;" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context EtymologyContext -Schemas dbo -DataAnnotations -Project Etymology.Data

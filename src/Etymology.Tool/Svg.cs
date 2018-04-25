@@ -1,5 +1,4 @@
-﻿
-namespace Etymology.Tool
+﻿namespace Etymology.Tool
 {
     using CommandLine;
     using Etymology.Data.Models;
