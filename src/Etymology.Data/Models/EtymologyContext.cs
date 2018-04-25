@@ -22,6 +22,10 @@ namespace Etymology.Data.Models
 
             modelBuilder.Entity<Etymology>(entity =>
             {
+                entity.HasIndex(e => e.OldTraditional);
+
+                entity.HasIndex(e => e.Simplified);
+
                 entity.HasIndex(e => e.Traditional)
                     .IsUnique()
                     .ForSqlServerIsClustered();

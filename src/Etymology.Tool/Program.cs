@@ -1,18 +1,19 @@
 ﻿namespace Etymology.Tool
 {
-    using CommandLine;
     using System;
     using System.Linq;
+    using CommandLine;
 
     internal class Program
     {
         private static int Main(string[] args) => 
-            Parser.Default.ParseArguments<SvgOptions>(args).MapResult(
-                svgOptions => Svg.Save(svgOptions),
+            Parser.Default.ParseArguments<SvgOptions, UnicodeOptions>(args).MapResult<SvgOptions, UnicodeOptions, int>(
+                Svg.Save,
+                Unicode.Convert,
                 errors =>
-                    {
-                        errors.ForEach(error => Console.WriteLine(error.ToString()));
-                        return 1;
-                    });
+                {
+                    errors.ForEach(error => Console.WriteLine(error.ToString()));
+                    return 1;
+                });
     }
 }
