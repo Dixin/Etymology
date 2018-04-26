@@ -7,25 +7,25 @@
     [Verb("unicode", HelpText = "Convert from or to Unicode code point.")]
     internal class UnicodeOptions
     {
-        [Option('f', "from", Required = false, HelpText = "Convert from Unicode code point.")]
-        public string From { get; set; } = string.Empty;
+        [Option('c', "codepoint", Required = false, HelpText = "Convert from Unicode code point.")]
+        public string CodePoint { get; set; } = string.Empty;
 
-        [Option('t', "to", Required = false, HelpText = "Convert from Unicode code point.")]
-        public string To { get; set; } = string.Empty;
+        [Option('t', "text", Required = false, HelpText = "Convert from Unicode code point.")]
+        public string Text { get; set; } = string.Empty;
     }
 
     internal static class Unicode
     {
         internal static int Convert(UnicodeOptions unicodeOptions)
         {
-            if (!string.IsNullOrWhiteSpace(unicodeOptions.From))
+            if (!string.IsNullOrEmpty(unicodeOptions.CodePoint))
             {
-                Console.WriteLine(unicodeOptions.From.FromUnicodeCodePoint());
+                Console.WriteLine(unicodeOptions.CodePoint.CodePointToText());
             }
 
-            if (!string.IsNullOrWhiteSpace(unicodeOptions.To))
+            if (!string.IsNullOrEmpty(unicodeOptions.Text))
             {
-                Console.WriteLine(unicodeOptions.To.ToUnicodeCodePoint());
+                Console.WriteLine(unicodeOptions.Text.TextToCodePoint());
             }
 
             return 1;
