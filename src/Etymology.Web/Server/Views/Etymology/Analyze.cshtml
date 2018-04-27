@@ -9,7 +9,7 @@
     @if (results.Length > 0)
     {
         <div class="alert alert-success m-0 etymology-alert" role="alert">
-            @{int sum = results.Sum(result => result.Oracles.Length + result.Bronzes.Length + result.Seals.Length + result.Liushutongs.Length);}
+            @{int sum = results.Sum(result => result.CharacterCount);}
             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>@sum</strong> characters in <strong>@duration.TotalSeconds.ToString("0.000")</strong> seconds.
             @if (results.Length == 1)
             {
