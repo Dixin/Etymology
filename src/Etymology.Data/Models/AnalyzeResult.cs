@@ -13,6 +13,7 @@
             this.Bronzes = bronzes ?? throw new ArgumentNullException(nameof(bronzes));
             this.Seals = seals ?? throw new ArgumentNullException(nameof(seals));
             this.Liushutongs = liushutongs ?? throw new ArgumentNullException(nameof(liushutongs));
+            this.CharacterCount = oracles.Length + bronzes.Length + seals.Length + liushutongs.Length;
         }
 
         public string Chinese { get; }
@@ -27,6 +28,8 @@
 
         public Liushutong[] Liushutongs { get; }
 
+        public int CharacterCount { get; }
+
         public void Deconstruct(out string chinese, out Etymology etymologies, out Oracle[] oracles, out Bronze[] bronzes, out Seal[] seals, out Liushutong[] liushutongs)
         {
             chinese = this.Chinese;
@@ -36,5 +39,5 @@
             seals = this.Seals;
             liushutongs = this.Liushutongs;
         }
-}
+    }
 }

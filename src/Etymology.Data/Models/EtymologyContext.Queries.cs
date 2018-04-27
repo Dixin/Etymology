@@ -275,6 +275,7 @@
                     bronzes.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray(),
                     seals.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray(),
                     liushutongs.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray()))
+                .OrderBy(result => result.CharacterCount)
                 .ToArray();
         }
 
