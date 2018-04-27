@@ -6,7 +6,7 @@
     using System.Linq;
 
     [DebuggerDisplay("{" + nameof(Traditional) + "}, {" + nameof(Simplified) + "}, {" + nameof(EtymologyId) + "}, {" + nameof(OldTraditional) + "}")]
-    public partial class Etymology: IFormattable
+    public partial class Etymology : IFormattable
     {
         [NotMapped]
         public string SimplifiedInitial { get; set; }
@@ -29,14 +29,13 @@
 
     public static class DisplayExtensions
     {
+        private static string CharacterPartPrefix = "p";
+
         public static string ToHex(this int value) =>
             value.ToString("X4");
 
         public static bool HasSimplified(this Etymology etymology) =>
-            string.Equals(etymology.Simplified, etymology.SimplifiedInitial, StringComparison.Ordinal)
-            || etymology.Simplified.Length - etymology.SimplifiedInitial.Length == 1
-            && int.TryParse(etymology.Simplified.Substring(etymology.SimplifiedInitial.Length), out int value)
-            && value < 10;
+            !string.IsNullOrEmpty(etymology.Simplified) && !etymology.Simplified.StartsWith(CharacterPartPrefix, StringComparison.OrdinalIgnoreCase);
 
         public static string Title(this Etymology etymology) =>
             etymology.HasSimplified()
