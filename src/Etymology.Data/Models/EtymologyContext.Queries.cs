@@ -275,21 +275,21 @@
                     bronzes.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray(),
                     seals.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray(),
                     liushutongs.Where(character => string.Equals(character.Traditional, etymology.Traditional, StringComparison.Ordinal)).ToArray()))
-                .OrderBy(result => result.CharacterCount)
+                .OrderByDescending(result => result.CharacterCount)
                 .ToArray();
         }
 
         public IQueryable<Bronze> BronzeImages() =>
-            this.Bronze.Where(bonze => bonze.ImageBase64 != null);
+            this.Bronze.Where(bonze => bonze.ImageVectorBase64 != null);
 
         public IQueryable<Liushutong> LiushutongImages() =>
-            this.Liushutong.Where(liushutong => liushutong.ImageBase64 != null);
+            this.Liushutong.Where(liushutong => liushutong.ImageVectorBase64 != null);
 
         public IQueryable<Oracle> OracleImages() =>
-            this.Oracle.Where(oracle => oracle.ImageBase64 != null);
+            this.Oracle.Where(oracle => oracle.ImageVectorBase64 != null);
 
         public IQueryable<Seal> SealImages() =>
-            this.Seal.Where(seal => seal.ImageBase64 != null);
+            this.Seal.Where(seal => seal.ImageVectorBase64 != null);
     }
 
     internal static class DbDataReaderExtensions
