@@ -22,9 +22,9 @@
 
         [HttpPost]
         [Route(nameof(Etymology))]
-        public async Task<IActionResult> Analyze(string chinese)
+        public async Task<IActionResult> AnalyzeAsync(string chinese)
         {
-            Exception inputException = Chinese.ValidateSingleChineseCharacter(chinese, nameof(chinese));
+            (Exception inputException, _) = Chinese.ValidateSingleChineseCharacter(chinese, nameof(chinese));
             if (inputException != null)
             {
                 this.logger.LogWarning("Received {chinese} is invalid. {message}", chinese, inputException.Message);
@@ -35,7 +35,7 @@
 #endif
             }
 
-            this.logger.LogInformation("Receisved {chinese} to analyze.", chinese);
+            this.logger.LogInformation("Received {chinese} to analyze.", chinese);
 
             AnalyzeResult[] results;
             Stopwatch stopwatch=Stopwatch.StartNew();

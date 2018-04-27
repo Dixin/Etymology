@@ -1,5 +1,7 @@
 ﻿namespace Etymology.Tests.Common
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,6 +10,35 @@
     [TestClass]
     public class ChineseTests
     {
+        internal static readonly List<(string HexCodePoint, string Text)> ChineseCharacters = new List<(string HexCodePoint, string Text)>()
+        {
+            ("4E00", "一"),
+            ("3400", "㐀"),
+            ("3426", "㐦"),
+            ("20000", "𠀀"),
+            ("2A700", "𪜀"),
+            ("2B740", "𫝀"),
+            ("2F800", "丽"),
+            ("2E80", "⺀"),
+            ("2F00", "⼀"),
+            ("2FF0", "⿰"),
+            ("3025", "〥"),
+            ("3044", "い"),
+            ("30A2", "ア"),
+            ("3106", "ㄆ"),
+            ("31A1", "ㆡ"),
+            ("31CF", "㇏"),
+            ("31F0", "ㇰ"),
+            ("F900", "豈"),
+            ("FE3D", "︽"),
+            ("FF6C", "ｬ")
+        };
+
+        internal static readonly List<string> OtherCharacters = new List<string>()
+        {
+            null, string.Empty, " ", "  ", ".", "@", "a", "A", "1", "𠀀".Substring(0, 1)
+        };
+
         static ChineseTests()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -16,38 +47,13 @@
         [TestMethod]
         public void ValidateSingleChineseCharacterTest()
         {
-            Assert.IsNull(ValidateSingleChineseCharacter("一"));
-            Assert.IsNull(ValidateSingleChineseCharacter("㐦"));
-            Assert.IsNull(ValidateSingleChineseCharacter("𠀀"));
-            Assert.IsNull(ValidateSingleChineseCharacter("𪜀"));
-            Assert.IsNull(ValidateSingleChineseCharacter("𫝀"));
-            Assert.IsNull(ValidateSingleChineseCharacter("丽"));
-            Assert.IsNull(ValidateSingleChineseCharacter("⺀"));
-            Assert.IsNull(ValidateSingleChineseCharacter("⼀"));
-            Assert.IsNull(ValidateSingleChineseCharacter("⿰"));
-            Assert.IsNull(ValidateSingleChineseCharacter("〥"));
-            Assert.IsNull(ValidateSingleChineseCharacter("い"));
-            Assert.IsNull(ValidateSingleChineseCharacter("ア"));
-            Assert.IsNull(ValidateSingleChineseCharacter("ㄆ"));
-            Assert.IsNull(ValidateSingleChineseCharacter("ㆡ"));
-            Assert.IsNull(ValidateSingleChineseCharacter("㇏"));
-            Assert.IsNull(ValidateSingleChineseCharacter("ㇰ"));
-            Assert.IsNull(ValidateSingleChineseCharacter("豈"));
-            Assert.IsNull(ValidateSingleChineseCharacter("︽"));
-            Assert.IsNull(ValidateSingleChineseCharacter("ｬ"));
+            ChineseCharacters.ForEach(item => Assert.IsNull(ValidateSingleChineseCharacter(item.Text).Exception));
 
-            Assert.IsNotNull(ValidateSingleChineseCharacter(string.Empty));
-            Assert.IsNotNull(ValidateSingleChineseCharacter(null));
-            Assert.IsNotNull(ValidateSingleChineseCharacter(" "));
-            Assert.IsNotNull(ValidateSingleChineseCharacter("  "));
-            Assert.IsNotNull(ValidateSingleChineseCharacter("."));
-            Assert.IsNotNull(ValidateSingleChineseCharacter("a"));
-            Assert.IsNotNull(ValidateSingleChineseCharacter("1"));
-            Assert.IsNotNull(ValidateSingleChineseCharacter("𠀀".Substring(0, 1)));
+            OtherCharacters.ForEach(item => Assert.IsNotNull(ValidateSingleChineseCharacter(item).Exception));
         }
 
         [TestMethod]
-        public void TextToCodeTest()
+        public void TextToCodePointTest()
         {
             Assert.AreEqual("4E00", "一".TextToCodePoint());
             Assert.AreEqual("3400", "㐀".TextToCodePoint());
@@ -72,28 +78,21 @@
         }
 
         [TestMethod]
-        public void CodeToTextTest()
+        public void CodePointToTextTest()
         {
-            Assert.AreEqual("4E00".CodePointToText(), "一");
-            Assert.AreEqual("3400".CodePointToText(), "㐀");
-            Assert.AreEqual("3426".CodePointToText(), "㐦");
-            Assert.AreEqual("20000".CodePointToText(), "𠀀");
-            Assert.AreEqual("2A700".CodePointToText(), "𪜀");
-            Assert.AreEqual("2B740".CodePointToText(), "𫝀");
-            Assert.AreEqual("2F800".CodePointToText(), "丽");
-            Assert.AreEqual("2E80".CodePointToText(), "⺀");
-            Assert.AreEqual("2F00".CodePointToText(), "⼀");
-            Assert.AreEqual("2FF0".CodePointToText(), "⿰");
-            Assert.AreEqual("3025".CodePointToText(), "〥");
-            Assert.AreEqual("3044".CodePointToText(), "い");
-            Assert.AreEqual("30A2".CodePointToText(), "ア");
-            Assert.AreEqual("3106".CodePointToText(), "ㄆ");
-            Assert.AreEqual("31A1".CodePointToText(), "ㆡ");
-            Assert.AreEqual("31CF".CodePointToText(), "㇏");
-            Assert.AreEqual("31F0".CodePointToText(), "ㇰ");
-            Assert.AreEqual("F900".CodePointToText(), "豈");
-            Assert.AreEqual("FE3D".CodePointToText(), "︽");
-            Assert.AreEqual("FF6C".CodePointToText(), "ｬ");
+            ChineseCharacters.ForEach(item => Assert.AreEqual(item.Text, item.HexCodePoint.CodePointToText()));
+        }
+
+        [TestMethod]
+        public void CodePointToBytesTest()
+        {
+            ChineseCharacters.ForEach(item => Assert.IsTrue(Encoding.Unicode.GetBytes(item.Text).SequenceEqual(item.HexCodePoint.CodePointToBytes())));
+        }
+
+        [TestMethod]
+        public void BytesToCodePointTest()
+        {
+            ChineseCharacters.ForEach(item => Assert.AreEqual(item.HexCodePoint, Encoding.Unicode.GetBytes(item.Text).BytesToCodePoint()));
         }
     }
 }
