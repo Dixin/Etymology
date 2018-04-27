@@ -3,14 +3,14 @@
 @model ValueTuple<string, TimeSpan, AnalyzeResult[]>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-@{var (chinese, timeSpan, results) = this.Model;}
+@{var (chinese, duration, results) = this.Model;}
 
 <div class="etymology-nav" id="@chinese">
     @if (results.Length > 0)
     {
         <div class="alert alert-success m-0 etymology-alert" role="alert">
             @{int sum = results.Sum(result => result.Oracles.Length + result.Bronzes.Length + result.Seals.Length + result.Liushutongs.Length);}
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>@sum</strong> characters in <strong>@timeSpan.TotalSeconds.ToString("0.000")</strong> seconds.
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>@sum</strong> characters in <strong>@duration.TotalSeconds.ToString("0.000")</strong> seconds.
             @if (results.Length == 1)
             {
                 var (_, etymology, oracles, bronzes, seals, liushutongs) = results.Single();
@@ -28,7 +28,7 @@
     }
     else
     {
-        <div class="alert alert-warning m-0" role="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>0</strong> characters in <strong>@timeSpan.TotalSeconds.ToString("0.000")</strong> seconds.</div>
+        <div class="alert alert-warning m-0" role="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>0</strong> characters in <strong>@duration.TotalSeconds.ToString("0.000")</strong> seconds.</div>
     }
     @foreach (AnalyzeResult result in results)
     {

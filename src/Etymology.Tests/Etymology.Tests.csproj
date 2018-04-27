@@ -6,6 +6,10 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="..\Etymology.Web\Server\settings.json" Link="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -30,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Etymology.Common\Etymology.Common.csproj" />
     <ProjectReference Include="..\Etymology.Data\Etymology.Data.csproj" />
+    <ProjectReference Include="..\Etymology.Web\Etymology.Web.csproj" />
   </ItemGroup>
 
 </Project>
