@@ -1,6 +1,5 @@
 ﻿const global = window;
 const location = global.location;
-const setTimeout = global.setTimeout;
 const $ = global.$;
 const $document = $(global.document);
 const timeout = 500;
@@ -25,7 +24,7 @@ const setPositionsWithTimeout = $elements => {
     if (setPositionsTimeoutId) {
         global.clearTimeout(setPositionsTimeoutId);
     }
-    setPositionsTimeoutId = setTimeout(() => setPositions($elements), timeout);
+    setPositionsTimeoutId = global.setTimeout(() => setPositions($elements), timeout);
 }
 
 const set = hash => {
