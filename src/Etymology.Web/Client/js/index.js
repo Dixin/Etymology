@@ -7,7 +7,7 @@ const $ = global.$;
 
 const trySearchFromHash = () => {
     const chinese = Hash.get();
-    if (Data.isChinese(chinese) && $(`#${chinese}`).length === 0) {
+    if (Data.isSingleChinese(chinese) && $(`#${chinese}`).length === 0) {
         UI.$chinese.val(chinese);
         UI.startLoading();
 
@@ -39,7 +39,7 @@ $(global.document).on("ready", () => {
     UI.$search.on("submit", event => {
         event.preventDefault();
         const chinese = UI.getChinese(event.currentTarget);
-        if (Data.isChinese(chinese)) {
+        if (Data.isSingleChinese(chinese)) {
             UI.collapseMenu();
             if (!Hash.scrollTo(chinese)) {
                 Hash.set(chinese);
