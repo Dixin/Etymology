@@ -1,4 +1,5 @@
-﻿@using Etymology.Data.Models
+﻿@using Etymology.Common
+@using Etymology.Data.Models
 
 @model ValueTuple<string, TimeSpan, AnalyzeResult[]>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -28,7 +29,8 @@
     }
     else
     {
-        <div class="alert alert-warning m-0" role="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>0</strong> characters in <strong>@duration.TotalSeconds.ToString("0.000")</strong> seconds.</div>
+        string codePoint = chinese.TextToCodePoint();
+        <div class="alert alert-warning m-0" role="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>0</strong> characters in <strong>@duration.TotalSeconds.ToString("0.000")</strong> seconds. Unicode standard:  U+@codePoint <img src="http://www.unicode.org/cgi-bin/refglyph?24-@codePoint" />.</div>
     }
     @foreach (AnalyzeResult result in results)
     {
