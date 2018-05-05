@@ -45,9 +45,7 @@ export default {
             data: { chinese, Bronze: token },
             dataType: "html",
             url: "etymology",
-            headers: {
-                Seal: token
-            }
+            headers: { chinese: chinese.codePointAt(0), Seal: token }
         });
     },
 

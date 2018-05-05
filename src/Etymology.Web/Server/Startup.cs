@@ -43,6 +43,8 @@
 
             services.AddDataAccess(this.configuration);
 
+            services.AddResponseCaching();
+
             if (!this.environment.IsDevelopment())
             {
                 services.AddApplicationInsightsTelemetry(this.configuration);
@@ -72,6 +74,8 @@
 
             application.UseDefaultFiles();
             application.UseStaticFiles();
+
+            application.UseResponseCaching();
 
             application.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller}/{action}"));
 

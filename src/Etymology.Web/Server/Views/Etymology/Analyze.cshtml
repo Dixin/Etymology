@@ -41,10 +41,17 @@
                     <p><span class="label label-success">@etymology.Title()</span></p>
                     <p><b>Traditional in your browser 繁体字的浏览器显示:</b> <span class="text-lg">@etymology.TraditionalInitial</span></p>
                     <p><b>Traditional in Unicode standard 繁体字的Unicode标准:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicode.ToHex()" target="_blank">U+@etymology.TraditionalUnicode.ToHex()</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicode.ToHex()" /></p>
-                    @if (etymology.OldTraditional.IsVisible())
-                    {
-                        <p><b>Older traditional characters 旧繁体字/异体字:</b> @etymology.OldTraditional</p>
-                    }
+                    <p>
+                        <b>Older traditional characters 旧繁体字/异体字:</b>
+                        @if (!etymology.OldTraditional.IsNullOrWhiteSpace())
+                        {
+                            <span class="text-lg">@etymology.OldTraditional</span>
+                        }
+                        else
+                        {
+                            <text>Not exist</text>
+                        }
+                    </p>
                     <p>
                         <b>Simplified in your browser 简体字的浏览器显示:</b>
                         @if (etymology.HasSimplified())
@@ -69,20 +76,20 @@
                         }
                     </p>
                     <p><b>Main pronunciation 主要发音:</b> @etymology.Pinyin</p>
-                    <p><b>Other pronunciations 其它发音:</b> @etymology.PinyinOther</p>
+                    <p><b>Other pronunciations 其它发音:</b> @etymology.PinyinOther.WithNotExsist()</p>
                     <p><b>Original meaning 本义:</b> @etymology.OriginalMeaning</p>
                     <p><b>English senses 英语理解:</b> @etymology.EnglishSenses</p>
                     <p><b>Usage example 用法举例:</b> @etymology.WordExample</p>
                     <p><b>Importance by frequency 常用频率:</b> @etymology.FrequencyOrder</p>
-                    <p><b>Shuowen 说文解字:</b> @seals.FirstOrDefault()?.ShuowenTraditional.Message()</p>
-                    <p class="pre-inline"><b>Character decomposition 字形分解 <a href="https://dixin.github.io/Etymology/decomposition-of-chinese-character" target="_blank" title="Help: Decomposition of Chinese character">[?]</a>:</b> <br />@etymology.Decomposition.Message()</p>
-                    <p class="pre-inline"><b>Decomposition notes 字形分解说明 <a href="https://dixin.github.io/Etymology/decomposition-of-chinese-character" target="_blank" title="Help: Decomposition of Chinese character">[?]</a>:</b> <br />@etymology.DecompositionClarified.Message()</p>
-                    <p><b>Simplification rule 简化规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> @etymology.SimplificationRule.Message()</p>
-                    <p class="pre-inline"><b>Simplification rule explained 简化规则说明 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> <br />@etymology.SimplificationClarified.Message()</p>
-                    <p><b>Variant rule 异体规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank">[?]</a>:</b> @etymology.VariantRule.Message()</p>
-                    <p class="pre-inline"><b>Variant rule clarification 异体规则说明 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> <br />@etymology.VariantClarified.Message()</p>
-                    <p><b>Applied rules 应用规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> @etymology.AppliedRule.Message()</p>
-                    <p><b>New font rule 新字形规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> @etymology.FontRule.Message()</p>
+                    <p><b>Shuowen 说文解字:</b> @seals.FirstOrDefault()?.ShuowenTraditional.WithNotApplicable()</p>
+                    <p class="pre-inline"><b>Character decomposition 字形分解 <a href="https://dixin.github.io/Etymology/decomposition-of-chinese-character" target="_blank" title="Help: Decomposition of Chinese character">[?]</a>:</b> <br />@etymology.Decomposition.WithNotApplicable()</p>
+                    <p class="pre-inline"><b>Decomposition notes 字形分解说明 <a href="https://dixin.github.io/Etymology/decomposition-of-chinese-character" target="_blank" title="Help: Decomposition of Chinese character">[?]</a>:</b> <br />@etymology.DecompositionClarified.WithNotApplicable()</p>
+                    <p><b>Simplification rule 简化规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> @etymology.SimplificationRule.WithNotApplicable()</p>
+                    <p class="pre-inline"><b>Simplification rule explained 简化规则说明 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> <br />@etymology.SimplificationClarified.WithNotApplicable()</p>
+                    <p><b>Variant rule 异体规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank">[?]</a>:</b> @etymology.VariantRule.WithNotApplicable()</p>
+                    <p class="pre-inline"><b>Variant rule clarification 异体规则说明 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> <br />@etymology.VariantClarified.WithNotApplicable()</p>
+                    <p><b>Applied rules 应用规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> @etymology.AppliedRule.WithNotApplicable()</p>
+                    <p><b>New font rule 新字形规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> @etymology.FontRule.WithNotApplicable()</p>
                     <a class="btn btn-warning btn-xs ladda-button" data-style="zoom-in" href="https://github.com/Dixin/Etymology/issues/new" target="_blank" title="Help: Simplification of Chinese character"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Report issue 报错/留言</a>
                 </div>
             </div>

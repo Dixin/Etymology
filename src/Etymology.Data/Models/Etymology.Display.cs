@@ -42,13 +42,17 @@
                 ? $"{etymology.FormattedId()} {etymology.TraditionalInitial}{etymology.TraditionalUnicode.ToHex()} → {etymology.SimplifiedInitial}{etymology.SimplifiedUnicode.ToHex()}"
                 : $"{etymology.FormattedId()} {etymology.TraditionalInitial}{etymology.TraditionalUnicode.ToHex()}";
 
-        public static bool IsVisible(this string value) =>
-            !string.IsNullOrWhiteSpace(value)
-            && !string.Equals(value, "z", StringComparison.OrdinalIgnoreCase);
+        public static bool IsNullOrWhiteSpace(this string value) =>
+            string.IsNullOrWhiteSpace(value);
 
-        public static string Message(this string value) =>
+        public static string WithNotApplicable(this string value) =>
             string.IsNullOrWhiteSpace(value) || string.Equals(value, "z", StringComparison.OrdinalIgnoreCase)
                 ? "Not applicable."
+                : value;
+
+        public static string WithNotExsist(this string value) =>
+            string.IsNullOrWhiteSpace(value) || string.Equals(value, "z", StringComparison.OrdinalIgnoreCase)
+                ? "Not exists."
                 : value;
 
         public static string FormattedId(this IFormattable formattable) => $"{formattable.Prefix.First()}{formattable.Id:00000}";
