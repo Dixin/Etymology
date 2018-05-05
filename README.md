@@ -12,5 +12,6 @@ Etymology is a ASP.NET Core architecture demonstration of SPA (single page appli
 - ES2015+ transpile with Babel
 - Responsible UX design based on Boostrap
 - Content protection from hot link and crawler
+- Server-side cache
 
 To run the code, open Etymology.sln with visual Studio 2017 or open the root folder with Visual Studio Code, build and run Etymology.Web. csproj.

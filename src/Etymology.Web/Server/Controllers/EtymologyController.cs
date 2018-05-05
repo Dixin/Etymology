@@ -6,18 +6,25 @@
     using Etymology.Common;
     using Etymology.Data.Models;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Primitives;
 
     public class EtymologyController : Controller
     {
+        private static readonly MemoryCacheEntryOptions MemoryCacheEntryOptions = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(1) };
+
         private readonly ILogger<EtymologyController> logger;
+
+        private readonly IMemoryCache memoryCache;
 
         private readonly EtymologyContext context;
 
-        public EtymologyController(EtymologyContext context, ILogger<EtymologyController> logger)
+        public EtymologyController(EtymologyContext context, ILogger<EtymologyController> logger, IMemoryCache memoryCache)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.memoryCache = memoryCache;
         }
 
         [HttpPost]
@@ -35,15 +42,36 @@
 #endif
             }
 
+            if (!(this.Request.Headers.TryGetValue(nameof(chinese), out StringValues codePointString)
+                && int.TryParse(codePointString.ToString(), out int codePoint)
+                && codePoint == char.ConvertToUtf32(chinese, 0)))
+            {
+#if DEBUG
+                return this.BadRequest("Received code point is invalid.");
+#else
+                return this.BadRequest();
+#endif
+            }
+
             this.logger.LogInformation("Received {chinese} to analyze.", chinese);
 
             AnalyzeResult[] results;
-            Stopwatch stopwatch=Stopwatch.StartNew();
+            Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
-                this.logger.LogInformation("Start to query database for {chinese}.", chinese);
-                results = await this.context.AnalyzeAsync(chinese);
-                this.logger.LogInformation("Database query is done successfully for {chinese}.", chinese);
+                if (this.memoryCache.TryGetValue(codePoint, out AnalyzeResult[] cachedResults))
+                {
+                    this.logger.LogInformation("Query result is found in cache for {chinese}.", chinese);
+                    results = cachedResults;
+                }
+                else
+                {
+                    this.logger.LogInformation("Start to query database for {chinese}.", chinese);
+                    results = await this.context.AnalyzeAsync(chinese);
+                    this.logger.LogInformation("Database query is done successfully for {chinese}.", chinese);
+                    this.memoryCache.Set(codePoint, results, MemoryCacheEntryOptions);
+                    this.logger.LogInformation("Query result is added to cache for {chinese}.", chinese);
+                }
             }
             catch (Exception exception) when (exception.LogErrorWith(this.logger, "Database query fails for {chinese}.",
                 chinese))
