@@ -12,8 +12,6 @@
 
     public class EtymologyController : Controller
     {
-        private static readonly MemoryCacheEntryOptions MemoryCacheEntryOptions = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(1) };
-
         private readonly ILogger<EtymologyController> logger;
 
         private readonly IMemoryCache memoryCache;
@@ -29,6 +27,7 @@
 
         [HttpPost]
         [Route(nameof(Etymology))]
+        [ResponseCache(NoStore = true)]
         public async Task<IActionResult> AnalyzeAsync(string chinese)
         {
             (Exception inputException, _) = Chinese.ValidateSingleChineseCharacter(chinese, nameof(chinese));
@@ -69,12 +68,11 @@
                     this.logger.LogInformation("Start to query database for {chinese}.", chinese);
                     results = await this.context.AnalyzeAsync(chinese);
                     this.logger.LogInformation("Database query is done successfully for {chinese}.", chinese);
-                    this.memoryCache.Set(codePoint, results, MemoryCacheEntryOptions);
+                    this.memoryCache.Set(codePoint, results, Cache.ServerCacheOptions);
                     this.logger.LogInformation("Query result is added to cache for {chinese}.", chinese);
                 }
             }
-            catch (Exception exception) when (exception.LogErrorWith(this.logger, "Database query fails for {chinese}.",
-                chinese))
+            catch (Exception exception) when (exception.LogErrorWith(this.logger, "Database query fails for {chinese}.", chinese))
             {
                 return null; // Never execute because LogErrorWith returns false.
             }

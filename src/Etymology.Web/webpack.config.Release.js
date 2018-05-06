@@ -1,6 +1,5 @@
 ﻿const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const merge = require("webpack-merge");
@@ -10,11 +9,11 @@ const Paths = common.Paths;
 delete common.Paths;
 
 module.exports = merge(common, {
+    mode: "production",
     plugins: [
         new HtmlWebpackPlugin({
             template: Paths.indexTemplate,
             filename: Paths.indexHTML,
-            inlineSource: ".js$",
             inject: "body",
             showErrors: true,
             minify: {
@@ -22,13 +21,27 @@ module.exports = merge(common, {
                 collapseWhitespace: true
             }
         }),
-        new HtmlWebpackInlineSourcePlugin()
+        new webpack.ProvidePlugin({
+            jQuery: "jquery"
+        })
     ],
     optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
+        },
         minimizer: [
             new UglifyJsPlugin({
                 uglifyOptions: {
-                    compress: true
+                    compress: true,
+                    output: {
+                        comments: false
+                    }
                 }
             })
         ]

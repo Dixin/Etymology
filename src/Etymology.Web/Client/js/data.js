@@ -1,8 +1,8 @@
 ﻿import Cookies from "js-cookie";
 import "String.prototype.codePointAt";
+import $ from "jquery";
 
 const global = window;
-const $ = global.$;
 const Math = global.Math;
 
 const commonChars =

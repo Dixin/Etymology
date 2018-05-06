@@ -10,6 +10,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using Microsoft.Net.Http.Headers;
 
     public class Startup
     {
@@ -73,7 +74,10 @@
             application.UseAntiforgery(options.Value, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)));
 
             application.UseDefaultFiles();
-            application.UseStaticFiles();
+            application.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = staticFileResponseContext => staticFileResponseContext.Context.Response.Headers[HeaderNames.CacheControl] = $"public,max-age={Cache.ClientCacheMaxAge}"
+            });
 
             application.UseResponseCaching();
 

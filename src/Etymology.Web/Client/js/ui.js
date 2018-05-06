@@ -1,8 +1,8 @@
 ﻿import "spin.js";
 import Ladda from "ladda";
+import $ from "jquery";
 
 const global = window;
-const $ = global.$;
 
 const ui = {
     init: () => {
