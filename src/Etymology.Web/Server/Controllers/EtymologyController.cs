@@ -41,7 +41,7 @@
 #endif
             }
 
-            if (!(this.Request.Headers.TryGetValue(nameof(chinese), out StringValues codePointString)
+            if (!(this.Request.Headers.TryGetValue(nameof(Chinese), out StringValues codePointString)
                 && int.TryParse(codePointString.ToString(), out int codePoint)
                 && codePoint == char.ConvertToUtf32(chinese, 0)))
             {
