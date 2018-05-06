@@ -1,9 +1,10 @@
-﻿import Data from "./data";
+﻿import $ from "jquery";
+import "bootstrap";
+import Data from "./data";
 import UI from "./ui";
 import Hash from "./hash";
 
 const global = window;
-const $ = global.$;
 
 const trySearchFromHash = () => {
     const chinese = Hash.get();

@@ -3,17 +3,18 @@
 const Paths = {
     source: path.join(__dirname, "Client"),
     build: path.join(__dirname, "wwwroot"),
-    indexJavaScript: "js/index.js",
+    indexSourcceJavaScript: "js/index.js",
+    indexBuildJavaScript: "js/[name].[chunkhash].js",
     indexTemplate: "index.ejs",
     indexHTML: "index.htm"
 };
 
 module.exports = {
     context: Paths.source,
-    entry: path.join(Paths.source, Paths.indexJavaScript),
+    entry: path.join(Paths.source, Paths.indexSourcceJavaScript),
     output: {
-        path: path.join(Paths.build),
-        filename: Paths.indexJavaScript
+        path: Paths.build,
+        filename: Paths.indexBuildJavaScript
     },
     stats: {
         colors: true,

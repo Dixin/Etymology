@@ -1,6 +1,7 @@
-﻿const global = window;
+﻿import $ from "jquery";
+
+const global = window;
 const location = global.location;
-const $ = global.$;
 const $document = $(global.document);
 const timeout = 500;
 
