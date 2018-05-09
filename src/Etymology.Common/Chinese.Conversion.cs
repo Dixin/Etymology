@@ -1,6 +1,7 @@
 ﻿namespace Etymology.Common
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -147,5 +148,14 @@
         public static string TextToCodePoint(this string text, Encoding encoding = null) =>
             // Equivalent to: text.TextToBytes(encoding).BytesToCodePoint();
             char.ConvertToUtf32(text, 0).ToString("X4");
+
+        public static IEnumerable<string> Characters(this string text)
+        {
+            StringInfo parsed = new StringInfo(text);
+            for (int index = 0; index < parsed.LengthInTextElements; index++)
+            {
+                yield return parsed.SubstringByTextElements(index);
+            }
+        }
     }
 }

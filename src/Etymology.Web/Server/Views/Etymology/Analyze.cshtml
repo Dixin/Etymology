@@ -45,7 +45,12 @@
                         <b>Older traditional characters 旧繁体字/异体字:</b>
                         @if (!etymology.OldTraditional.IsNullOrWhiteSpace())
                         {
-                            <span class="text-lg">@etymology.OldTraditional</span>
+                            <span class="text-lg">
+                                @foreach (string character in @etymology.OldTraditional.Characters())
+                                {
+                                    <text>@character</text>
+                                }
+                            </span>
                         }
                         else
                         {
