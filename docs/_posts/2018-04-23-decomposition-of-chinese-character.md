@@ -36,7 +36,7 @@ metal-bell-jin 钅釒金 jīn
 
 In this example I have three characters 钅釒金 which I consider to be "exact equivalents" 
 
-# Compounds and Components
+# #Compound and #Component
 If in the modern character, you can draw a line between two or more logical parts it is called a compound.
 If it can not be broken into two or more parts then it is a component. By components, I mean basic modern components, not primitive components. 
 
@@ -54,13 +54,53 @@ I have analyzed about 15,000 different characters and come up with about 900 mod
 
 # (rem- Character Pinyin) from
 
+A large percentage of modern characters have components that are not logical. They are in fact mistakes. I refere to these as remnants.
+
+example: 
+
+Compound 肚
+
+from (rem- 月 yuè) from 
+
+ribs-rou ⺼肉 ròu and 
+
+phonetic potters-clay-tu 土 tǔ.
 
 # (rem+ Character explanation)
-# from
-# Character-standard-reference
-# Character-standard-name character(s) Standard-pinyin
-# Phonetic
+
+Some remnants are not mistakin characters, but 
+
+# #phonetic
+Sometimes a character component acts as a phonetic. 
+
+Compound 肚
+
+from (rem- 月 yuè) from 
+
+ribs-rou ⺼肉 ròu and 
+
+phonetic potters-clay-tu 土 tǔ.
+
+
 # Related
+Sometimes a phonetic is also related to the meaning.
+
+# etymogical equivalents #older 
+
+example:
+
+Compound 報 older 𡙈 
+
+from (rem- 扌 shǒu) from 
+
+(rem- 幸 xìng) from 
+
+hand-cuffs-nie 㚔 niè and 
+
+to-regulate-fu 𠬝 fú
+
+new-char 报.
+
 # Std-var
 # New-char
 # Simp 
