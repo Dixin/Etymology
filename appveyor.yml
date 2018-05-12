@@ -12,11 +12,11 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 install:
-- ps: >-
+- ps: Install-Product node 8
+before_build:
+- cmd: >-
     dotnet restore
 
-
-    Install-Product node 8
 
     cd ./src/Etymology.Web
 
