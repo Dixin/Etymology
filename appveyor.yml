@@ -24,3 +24,4 @@ before_build:
 build:
   parallel: true
   verbosity: detailed
+test: off
