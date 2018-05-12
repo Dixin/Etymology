@@ -12,7 +12,15 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 install:
-- cmd: dotnet restore
+- ps: >-
+    dotnet restore
+
+
+    Install-Product node 8
+
+    cd ./src/Etymology.Web
+
+    npm install
 build:
   parallel: true
   verbosity: detailed
