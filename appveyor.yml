@@ -22,9 +22,19 @@ environment:
     secure: UzHGGTiu63CYQPT9rPKhJA==
   Password:
     secure: aii6TuA5V1pzlqRiUOXyTQ==
-  APPVEYOR_RDP_PASSWORD: P@ssword123
+  APPVEYOR_RDP_PASSWORD:
+    secure: aii6TuA5V1pzlqRiUOXyTQ==
+  ASPNETCORE_ENVIRONMENT: Production
 install:
-- ps: Install-Product node 8
+- ps: >-
+    Install-Product node 8
+
+
+    $file = "$($env:appveyor_build_folder)\src\Etymology.Web\Server\settings.Production.json"
+
+    (Get-Content $file).Replace("{server}", $env:Server).Replace("{database}", $env:Database).Replace("{user}", $env:User).Replace("{password}", $env:Password) | Set-Content $file
+
+    Get-Content $file | Write-Host
 before_build:
 - cmd: >-
     dotnet restore
