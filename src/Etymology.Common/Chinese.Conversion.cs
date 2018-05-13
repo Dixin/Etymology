@@ -154,7 +154,7 @@
             StringInfo parsed = new StringInfo(text);
             for (int index = 0; index < parsed.LengthInTextElements; index++)
             {
-                yield return parsed.SubstringByTextElements(index);
+                yield return parsed.SubstringByTextElements(index, 1);
             }
         }
     }
