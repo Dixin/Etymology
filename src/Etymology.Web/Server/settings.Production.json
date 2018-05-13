@@ -1,5 +1,5 @@
 ﻿{
   "ConnectionStrings": {
-    "Etymology": "Server=tcp:{server}.database.windows.net,1433;Initial Catalog=Production;Persist Security Info=False;User ID={user};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    "Etymology": "Server=tcp:dixinyan.database.windows.net,1433;Initial Catalog=Production;Persist Security Info=False;User ID=dixinyan;Password=ftSq1@zure;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
 }

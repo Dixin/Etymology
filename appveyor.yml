@@ -3,6 +3,8 @@ image: Visual Studio 2017
 configuration:
 - Debug
 - Release
+init:
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -11,6 +13,17 @@ dotnet_csproj:
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
+environment:
+  Server:
+    secure: UzHGGTiu63CYQPT9rPKhJA==
+  Database:
+    secure: DqXxLd3D/+1o2EtQvqhbgA==
+  User:
+    secure: UzHGGTiu63CYQPT9rPKhJA==
+  Password:
+    secure: aii6TuA5V1pzlqRiUOXyTQ==
+  APPVEYOR_RDP_PASSWORD:
+    secure: aii6TuA5V1pzlqRiUOXyTQ==
 install:
 - ps: Install-Product node 8
 before_build:
