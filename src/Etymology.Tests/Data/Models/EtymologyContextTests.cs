@@ -40,6 +40,7 @@
         }
 
         [TestMethod]
+        [Ignore]
         public void AnalyzeAllImagesTest()
         {
             Etymology[] etymologies = null;

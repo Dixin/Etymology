@@ -15,11 +15,27 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Etymology.Web": {
+    "Etymology.Web-Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:50518/"
+    },
+    "Etymology.Web-Staging": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      },
+      "applicationUrl": "http://localhost:50518/"
+    },
+    "Etymology.Web-Production": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "applicationUrl": "http://localhost:50518/"
     }
