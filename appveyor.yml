@@ -47,6 +47,11 @@ build:
   publish_wap_xcopy: true
   parallel: true
   verbosity: detailed
+after_build:
+- ps: dotnet publish ./src/Etymology.Web/Etymology.Web.csproj -c Release -o ./publish/Release
+artifacts:
+- path: ./publish/Release
+  name: Azure
 deploy:
 - provider: AzureAppServiceZipDeploy
   appservice_environment: false
@@ -54,3 +59,4 @@ deploy:
   username: dixinyan
   password:
     secure: aii6TuA5V1pzlqRiUOXyTQ==
+  artifact: Azure
