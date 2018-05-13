@@ -44,5 +44,13 @@ before_build:
 
     npm install
 build:
+  publish_wap_xcopy: true
   parallel: true
   verbosity: detailed
+deploy:
+- provider: AzureAppServiceZipDeploy
+  appservice_environment: false
+  website: etymology
+  username: dixinyan
+  password:
+    secure: aii6TuA5V1pzlqRiUOXyTQ==
