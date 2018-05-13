@@ -50,7 +50,7 @@ build:
   parallel: true
   verbosity: detailed
 after_build:
-- ps: dotnet publish ./src/Etymology.Web/Etymology.Web.csproj -c Release -o ./publish/Release
+- ps: dotnet publish ./src/Etymology.Web/Etymology.Web.csproj -c Release -o ../../publish/Release
 artifacts:
 - path: ./publish/Release
   name: Azure
