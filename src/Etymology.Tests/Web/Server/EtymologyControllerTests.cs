@@ -67,9 +67,16 @@
                     Trace.WriteLine(exception);
                 }
 
+                Trace.WriteLine(item);
+#if DEBUG
                 BadRequestObjectResult badRequest = await controller.AnalyzeAsync(item) as BadRequestObjectResult;
+#else
+                BadRequestResult badRequest = await controller.AnalyzeAsync(item) as BadRequestResult;
+#endif
                 Assert.IsNotNull(badRequest);
+#if DEBUG
                 Assert.IsInstanceOfType(badRequest.Value, typeof(ArgumentException));
+#endif
                 Assert.AreEqual((int)HttpStatusCode.BadRequest, badRequest.StatusCode);
             });
             await Task.WhenAll(testTasks);
