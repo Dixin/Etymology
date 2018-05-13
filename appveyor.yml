@@ -33,8 +33,6 @@ install:
     $file = "$($env:appveyor_build_folder)\src\Etymology.Web\Server\settings.$($env:ASPNETCORE_ENVIRONMENT).json"
 
     (Get-Content $file).Replace("{server}", $env:Server).Replace("{database}", $env:Database).Replace("{user}", $env:User).Replace("{password}", $env:Password) | Set-Content $file
-
-    Get-Content $file | Write-Host
 before_build:
 - cmd: >-
     dotnet restore
@@ -49,11 +47,11 @@ build:
   publish_wap_xcopy: true
   parallel: true
   verbosity: detailed
-after_build:
-- ps: dotnet publish ./src/Etymology.Web/Etymology.Web.csproj -c Release -o ../../publish/Release
+after_test:
+- ps: dotnet publish ./src/Etymology.Web/Etymology.Web.csproj -c $env:CONFIGURATION -o ../../Publish/$env:CONFIGURATION
 artifacts:
-- path: ./publish/Release
-  name: Azure
+- path: ./Publish/Release
+  name: PublishRelease
 deploy:
 - provider: AzureAppServiceZipDeploy
   appservice_environment: false
@@ -61,4 +59,4 @@ deploy:
   username: dixinyan
   password:
     secure: aii6TuA5V1pzlqRiUOXyTQ==
-  artifact: Azure
+  artifact: PublishRelease
