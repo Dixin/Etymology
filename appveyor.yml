@@ -43,6 +43,8 @@ before_build:
     cd ./src/Etymology.Web
 
     npm install
+
+    cd ../..
 build:
   publish_wap_xcopy: true
   parallel: true
