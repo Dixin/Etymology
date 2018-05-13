@@ -22,8 +22,7 @@ environment:
     secure: UzHGGTiu63CYQPT9rPKhJA==
   Password:
     secure: aii6TuA5V1pzlqRiUOXyTQ==
-  APPVEYOR_RDP_PASSWORD:
-    secure: aii6TuA5V1pzlqRiUOXyTQ==
+  APPVEYOR_RDP_PASSWORD: P@ssword123
 install:
 - ps: Install-Product node 8
 before_build:
