@@ -13,7 +13,7 @@
   "dependencies": {
     "bootstrap": "<4.0.0-alpha.2",
     "ie10-viewport-bug-workaround.js": "^1.0.0",
-    "jquery": "<2.0.0",
+    "jquery": "^3.3.1",
     "js-cookie": "^2.2.0",
     "ladda": "^1.0.6",
     "string.prototype.codepointat": "^0.2.1"
@@ -29,7 +29,7 @@
     "html-webpack-plugin": "^3.2.0",
     "to-string-loader": "^1.1.5",
     "uglifyjs-webpack-plugin": "^1.2.5",
-    "webpack": "^4.8.2",
+    "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3",
     "webpack-merge": "^4.1.2"
   },
