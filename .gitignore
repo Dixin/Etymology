@@ -289,3 +289,7 @@ __pycache__/
 
 # Logs
 logs/
+
+# Access
+*.accdb
+
