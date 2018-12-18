@@ -29,7 +29,7 @@
         private static bool IsBasicCodePoint(this string hexCodePoint) => // Basic Multilingual Plane.
             !string.IsNullOrWhiteSpace(hexCodePoint) && hexCodePoint.Length == 4;
 
-        private static bool IsSurrogatedCodePoint(this string hexCodePoint) => // Surrogate pair.
+        private static bool IsSurrogateCodePoint(this string hexCodePoint) => // Surrogate pair.
             !string.IsNullOrWhiteSpace(hexCodePoint) && hexCodePoint.Length == 5;
 
         // "4E00" => 一
@@ -53,24 +53,24 @@
             return bytes;
         }
 
-        private static byte[] FormatSurrogatedBytes(this byte[] bytes)
+        private static byte[] FormatSurrogateBytes(this byte[] bytes)
         {
             Array.Reverse(bytes);
             return bytes;
         }
 
-        private const string SurrogatedCodePointPrefix = "000";
+        private const string SurrogateCodePointPrefix = "000";
 
         // "2B740" => 𫝀
-        public static byte[] SurrogatedCodePointToUtf16Bytes(this string hexCodePoint) =>
-            !hexCodePoint.IsSurrogatedCodePoint()
+        public static byte[] SurrogateCodePointToUtf16Bytes(this string hexCodePoint) =>
+            !hexCodePoint.IsSurrogateCodePoint()
                 ? throw new ArgumentOutOfRangeException(nameof(hexCodePoint))
-                : Encoding.Convert(Encoding.UTF32, Encoding.Unicode, hexCodePoint.SurrogatedCodePointToUtf32Bytes());
+                : Encoding.Convert(Encoding.UTF32, Encoding.Unicode, hexCodePoint.SurrogateCodePointToUtf32Bytes());
 
         // "2B740" => 𫝀
-        public static byte[] SurrogatedCodePointToUtf32Bytes(this string hexCodePoint) =>
-            hexCodePoint.IsSurrogatedCodePoint()
-                ? $"{SurrogatedCodePointPrefix}{hexCodePoint}".HexToBytes().FormatSurrogatedBytes()
+        public static byte[] SurrogateCodePointToUtf32Bytes(this string hexCodePoint) =>
+            hexCodePoint.IsSurrogateCodePoint()
+                ? $"{SurrogateCodePointPrefix}{hexCodePoint}".HexToBytes().FormatSurrogateBytes()
                 : throw new ArgumentOutOfRangeException(nameof(hexCodePoint));
 
         // "4E00" => [一], "020000" => [𫝀]
@@ -100,9 +100,9 @@
                 return hexCodePoint.BasicCodePointToBytes();
             }
 
-            if (hexCodePoint.IsSurrogatedCodePoint())
+            if (hexCodePoint.IsSurrogateCodePoint())
             {
-                return hexCodePoint.SurrogatedCodePointToUtf16Bytes();
+                return hexCodePoint.SurrogateCodePointToUtf16Bytes();
             }
 
             throw new ArgumentOutOfRangeException(nameof(hexCodePoint));
@@ -116,12 +116,12 @@
         public static string BytesToUtf32CodePoint(this byte[] bytes)
         {
             byte[] utf32Bytes = bytes.ConvertBytes(Encoding.Unicode, Encoding.UTF32);
-            return BitConverter.ToString(utf32Bytes.FormatSurrogatedBytes()).Replace("-", string.Empty).Substring(SurrogatedCodePointPrefix.Length);
+            return BitConverter.ToString(utf32Bytes.FormatSurrogateBytes()).Replace("-", string.Empty).Substring(SurrogateCodePointPrefix.Length);
         }
 
         public static bool IsBasicBytes(this byte[] bytes) => bytes?.Length == 2;
 
-        public static bool IsSurrogatedBytes(this byte[] bytes) => bytes?.Length == 4;
+        public static bool IsSurrogateBytes(this byte[] bytes) => bytes?.Length == 4;
 
         // [一] => "4E00", [𫝀] => "2B740"
         public static string BytesToCodePoint(this byte[] bytes)
@@ -131,7 +131,7 @@
                 return bytes.BytesToUtf16CodePoint();
             }
 
-            if (bytes.IsSurrogatedBytes())
+            if (bytes.IsSurrogateBytes())
             {
                 return bytes.BytesToUtf32CodePoint();
             }

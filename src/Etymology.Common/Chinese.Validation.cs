@@ -11,6 +11,8 @@
 
         private static readonly List<(int Min, int Max)> SurrogateRanges = new List<(int Min, int Max)>();
 
+        private static readonly List<(int Min, int Max)> StrokeRanges = new List<(int Min, int Max)>();
+
         private static void Add(this List<(int Min, int Max)> ranges, params (string Min, string Max)[] hexCodePoints) =>
             ranges.AddRange(hexCodePoints.Select(hexCodePoint =>
                 (int.Parse(hexCodePoint.Min, NumberStyles.HexNumber), int.Parse(hexCodePoint.Max, NumberStyles.HexNumber))));
@@ -41,6 +43,9 @@
                 ("2B820", "2CEAF"), // 𫢸 CJK Ideographs Extension E: (U+2B820 to U+2CEAF).
                 ("2CEB0", "2EBEF"), // 𬺰 CJK Ideographs Extension F: (U+2CEB0 to U+2EBEF).
                 ("2F800", "2FA1F")); // “丽” CJK Comparability Ideographs Supplement: (U+2F800 to U+2FA1F).
+
+            StrokeRanges.Add(
+                ("31C0", "31E3")); // Strokes are not handled by SQL Server collation.
         }
 
         public static (Exception Exception, bool IsSingleSurrogatePair) ValidateSingleCharacter(string text, string argument = null)

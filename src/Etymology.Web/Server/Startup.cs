@@ -51,6 +51,15 @@
                 services.AddApplicationInsightsTelemetry(this.configuration);
             }
 
+            services.AddLogging(loggingBuilder =>
+            {
+                if (!this.environment.IsProduction())
+                {
+                    loggingBuilder.AddConsole(consoleLoggerOptions => consoleLoggerOptions.IncludeScopes = true)
+                        .AddDebug();
+                }
+            });
+
             // Add support for GB18030.
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
@@ -67,8 +76,6 @@
             else
             {
                 application.UseDeveloperExceptionPage().UseBrowserLink();
-
-                loggerFactory.AddConsole(LogLevel.Trace, true).AddDebug().AddFile("logs/{Date}.txt");
             }
 
             application.UseAntiforgery(options.Value, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)));

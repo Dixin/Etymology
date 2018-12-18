@@ -50,7 +50,7 @@
                 ? "Not applicable."
                 : value;
 
-        public static string WithNotExsist(this string value) =>
+        public static string WithNotExist(this string value) =>
             string.IsNullOrWhiteSpace(value) || string.Equals(value, "z", StringComparison.OrdinalIgnoreCase)
                 ? "Not exists."
                 : value;

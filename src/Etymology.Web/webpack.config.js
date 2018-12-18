@@ -3,7 +3,7 @@
 const Paths = {
     source: path.join(__dirname, "Client"),
     build: path.join(__dirname, "wwwroot"),
-    indexSourcceJavaScript: "js/index.js",
+    indexSourceJavaScript: "js/index.js",
     indexBuildJavaScript: "js/[name].[chunkhash].js",
     indexTemplate: "index.ejs",
     indexHTML: "index.htm"
@@ -11,7 +11,7 @@ const Paths = {
 
 module.exports = {
     context: Paths.source,
-    entry: path.join(Paths.source, Paths.indexSourcceJavaScript),
+    entry: path.join(Paths.source, Paths.indexSourceJavaScript),
     output: {
         path: Paths.build,
         filename: Paths.indexBuildJavaScript

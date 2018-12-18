@@ -57,68 +57,133 @@
 	                            EtymologyId int
 							);
 
-							INSERT INTO @Etymology
-							(
-								Simplified,
-                                SimplifiedInitial,
-                                SimplifiedUnicode,
-                                Traditional,
-                                TraditionalInitial,
-                                TraditionalUnicode,
-                                OldTraditional,
-                                Pinyin,
-                                Index8105,
-                                SimplificationRule,
-                                SimplificationClarified,
-                                VariantRule,
-                                VariantClarified,
-                                AppliedRule,
-                                FontRule,
-                                Decomposition,
-                                DecompositionClarified,
-                                OriginalMeaning,
-                                EnglishSenses,
-                                WordExample,
-                                PinyinOther,
-                                Videos,
-                                Pictures,
-                                FrequencyOrder,
-                                LearnOrder,
-                                IdealForms,
-                                Classification,
-	                            EtymologyId
-							)
-                            SELECT 
-                                Simplified,
-                                SUBSTRING(Simplified, 1, 1) AS SimplifiedInitial,
-                                UNICODE(SUBSTRING(Simplified, 1, 1)) AS SimplifiedUnicode,
-                                Traditional,
-                                SUBSTRING(Traditional, 1, 1) AS SimplifiedInitial,
-                                UNICODE(Traditional) AS TraditionalUnicode,
-                                OldTraditional,
-                                Pinyin,
-                                Index8105,
-                                SimplificationRule,
-                                SimplificationClarified,
-                                VariantRule,
-                                VariantClarified,
-                                AppliedRule,
-                                FontRule,
-                                Decomposition,
-                                DecompositionClarified,
-                                OriginalMeaning,
-                                EnglishSenses,
-                                WordExample,
-                                PinyinOther,
-                                Videos,
-                                Pictures,
-                                FrequencyOrder,
-                                LearnOrder,
-                                IdealForms,
-                                Classification,
-	                            EtymologyId
-                            FROM dbo.Etymology 
-							WHERE Traditional = @chinese OR Simplified LIKE @chinese + N'%' OR OldTraditional LIKE N'%' + @chinese + N'%';
+                            DECLARE @CharacterUnicodeHex nvarchar(8) = FORMAT(UNICODE(@chinese), N'X');
+                            IF (@CharacterUnicodeHex >= N'31C0' AND @CharacterUnicodeHex <= N'31E3') -- Is stroke.
+	                            INSERT INTO @Etymology
+							    (
+								    Simplified,
+                                    SimplifiedInitial,
+                                    SimplifiedUnicode,
+                                    Traditional,
+                                    TraditionalInitial,
+                                    TraditionalUnicode,
+                                    OldTraditional,
+                                    Pinyin,
+                                    Index8105,
+                                    SimplificationRule,
+                                    SimplificationClarified,
+                                    VariantRule,
+                                    VariantClarified,
+                                    AppliedRule,
+                                    FontRule,
+                                    Decomposition,
+                                    DecompositionClarified,
+                                    OriginalMeaning,
+                                    EnglishSenses,
+                                    WordExample,
+                                    PinyinOther,
+                                    Videos,
+                                    Pictures,
+                                    FrequencyOrder,
+                                    LearnOrder,
+                                    IdealForms,
+                                    Classification,
+	                                EtymologyId
+							    )
+                                SELECT 
+                                    Simplified,
+                                    SUBSTRING(Simplified, 1, 1) AS SimplifiedInitial,
+                                    UNICODE(SUBSTRING(Simplified, 1, 1)) AS SimplifiedUnicode,
+                                    Traditional,
+                                    SUBSTRING(Traditional, 1, 1) AS SimplifiedInitial,
+                                    UNICODE(Traditional) AS TraditionalUnicode,
+                                    OldTraditional,
+                                    Pinyin,
+                                    Index8105,
+                                    SimplificationRule,
+                                    SimplificationClarified,
+                                    VariantRule,
+                                    VariantClarified,
+                                    AppliedRule,
+                                    FontRule,
+                                    Decomposition,
+                                    DecompositionClarified,
+                                    OriginalMeaning,
+                                    EnglishSenses,
+                                    WordExample,
+                                    PinyinOther,
+                                    Videos,
+                                    Pictures,
+                                    FrequencyOrder,
+                                    LearnOrder,
+                                    IdealForms,
+                                    Classification,
+	                                EtymologyId
+                                FROM dbo.Etymology 
+							    WHERE Traditional = @chinese + @CharacterUnicodeHex;
+                            ELSE -- Is not stroke.
+	                            INSERT INTO @Etymology
+							    (
+								    Simplified,
+                                    SimplifiedInitial,
+                                    SimplifiedUnicode,
+                                    Traditional,
+                                    TraditionalInitial,
+                                    TraditionalUnicode,
+                                    OldTraditional,
+                                    Pinyin,
+                                    Index8105,
+                                    SimplificationRule,
+                                    SimplificationClarified,
+                                    VariantRule,
+                                    VariantClarified,
+                                    AppliedRule,
+                                    FontRule,
+                                    Decomposition,
+                                    DecompositionClarified,
+                                    OriginalMeaning,
+                                    EnglishSenses,
+                                    WordExample,
+                                    PinyinOther,
+                                    Videos,
+                                    Pictures,
+                                    FrequencyOrder,
+                                    LearnOrder,
+                                    IdealForms,
+                                    Classification,
+	                                EtymologyId
+							    )
+                                SELECT 
+                                    Simplified,
+                                    SUBSTRING(Simplified, 1, 1) AS SimplifiedInitial,
+                                    UNICODE(SUBSTRING(Simplified, 1, 1)) AS SimplifiedUnicode,
+                                    Traditional,
+                                    SUBSTRING(Traditional, 1, 1) AS SimplifiedInitial,
+                                    UNICODE(Traditional) AS TraditionalUnicode,
+                                    OldTraditional,
+                                    Pinyin,
+                                    Index8105,
+                                    SimplificationRule,
+                                    SimplificationClarified,
+                                    VariantRule,
+                                    VariantClarified,
+                                    AppliedRule,
+                                    FontRule,
+                                    Decomposition,
+                                    DecompositionClarified,
+                                    OriginalMeaning,
+                                    EnglishSenses,
+                                    WordExample,
+                                    PinyinOther,
+                                    Videos,
+                                    Pictures,
+                                    FrequencyOrder,
+                                    LearnOrder,
+                                    IdealForms,
+                                    Classification,
+	                                EtymologyId
+                                FROM dbo.Etymology 
+							    WHERE Traditional = @chinese OR Simplified LIKE @chinese + N'%' OR OldTraditional LIKE N'%' + @chinese + N'%';
 
 							SELECT 
 								Simplified, -- Simplified character
@@ -280,7 +345,7 @@
         }
 
         public IQueryable<Bronze> BronzeImages() =>
-            this.Bronze.Where(bonze => bonze.ImageVectorBase64 != null);
+            this.Bronze.Where(bronze => bronze.ImageVectorBase64 != null);
 
         public IQueryable<Liushutong> LiushutongImages() =>
             this.Liushutong.Where(liushutong => liushutong.ImageVectorBase64 != null);
