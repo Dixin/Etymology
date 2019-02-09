@@ -4,7 +4,7 @@
 
     public class Settings
     {
-        public Dictionary<string, string> ConnectionStrings { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Connections { get; } = new Dictionary<string, string>();
 
         public List<string> RefererHosts { get; } = new List<string>();
 

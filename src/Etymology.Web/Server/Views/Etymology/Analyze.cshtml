@@ -30,7 +30,7 @@
     else
     {
         string codePoint = chinese.TextToCodePoint();
-        <div class="alert alert-warning m-0" role="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>0</strong> characters in <strong>@duration.TotalSeconds.ToString("0.000")</strong> seconds. Unicode standard:  U+@codePoint <img src="http://www.unicode.org/cgi-bin/refglyph?24-@codePoint" />.</div>
+        <div class="alert alert-warning m-0" role="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>0</strong> characters in <strong>@duration.TotalSeconds.ToString("0.000")</strong> seconds. Unicode standard:  U+@codePoint <img src="https://www.unicode.org/cgi-bin/refglyph?24-@codePoint" />.</div>
     }
     @foreach (AnalyzeResult result in results)
     {
@@ -40,7 +40,7 @@
                 <div class="p-1">
                     <p><span class="label label-success">@etymology.Title()</span></p>
                     <p><b>Traditional in your browser 繁体字的浏览器显示:</b> <span class="text-lg">@etymology.TraditionalInitial</span></p>
-                    <p><b>Traditional in Unicode standard 繁体字的Unicode标准:</b> <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicode.ToHex()" target="_blank">U+@etymology.TraditionalUnicode.ToHex()</a> <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicode.ToHex()" /></p>
+                    <p><b>Traditional in Unicode standard 繁体字的Unicode标准:</b> <a href="https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.TraditionalUnicode.ToHex()" target="_blank">U+@etymology.TraditionalUnicode.ToHex()</a> <img src="https://www.unicode.org/cgi-bin/refglyph?24-@etymology.TraditionalUnicode.ToHex()" /></p>
                     <p>
                         <b>Older traditional characters 旧繁体字/异体字:</b>
                         @if (!etymology.OldTraditional.IsNullOrWhiteSpace())
@@ -72,8 +72,8 @@
                         <b>Simplified in Unicode standard 简体字的Unicode标准:</b>
                         @if (etymology.HasSimplified())
                         {
-                            <a href="http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.SimplifiedUnicode.ToHex()" target="_blank">U+@etymology.SimplifiedUnicode.ToHex()</a>
-                            <img src="http://www.unicode.org/cgi-bin/refglyph?24-@etymology.SimplifiedUnicode.ToHex()" />
+                            <a href="https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=@etymology.SimplifiedUnicode.ToHex()" target="_blank">U+@etymology.SimplifiedUnicode.ToHex()</a>
+                            <img src="https://www.unicode.org/cgi-bin/refglyph?24-@etymology.SimplifiedUnicode.ToHex()" />
                         }
                         else
                         {

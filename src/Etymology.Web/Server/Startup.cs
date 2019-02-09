@@ -9,7 +9,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
     using Microsoft.Net.Http.Headers;
 
     public class Startup
@@ -31,20 +30,28 @@
             {
                 configuration.AddApplicationInsightsSettings(developerMode: environment.IsStaging());
             }
+
             this.configuration = configuration.Build();
             this.environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services) // Container.
         {
-            services.Configure<Settings>(options => this.configuration.Bind(options));
+            Settings settings = new Settings();
+            this.configuration.Bind(settings);
+            services.AddSingleton(settings);
 
             services.AddMvc(options => options.AddAntiforgery());
             services.AddAntiforgery();
 
-            services.AddDataAccess(this.configuration);
+            services.AddDataAccess(settings.Connections[nameof(Etymology)]);
 
             services.AddResponseCaching();
+
+            if (this.environment.IsProduction())
+            {
+                services.AddHttpsRedirection(options => options.HttpsPort = 443);
+            }
 
             if (!this.environment.IsDevelopment())
             {
@@ -64,12 +71,13 @@
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
-        public void Configure(IApplicationBuilder application, ILoggerFactory loggerFactory, IAntiforgery antiforgery, IOptions<Settings> options) // HTTP pipeline.
+        public void Configure(IApplicationBuilder application, ILoggerFactory loggerFactory, IAntiforgery antiforgery, Settings settings) // HTTP pipeline.
         {
             if (this.environment.IsProduction())
             {
                 application.UseExceptionHandler("/error");
                 application.UseStatusCodePagesWithReExecute("/error");
+                application.UseHsts();
 
                 loggerFactory.AddApplicationInsights(application.ApplicationServices);
             }
@@ -78,7 +86,9 @@
                 application.UseDeveloperExceptionPage().UseBrowserLink();
             }
 
-            application.UseAntiforgery(options.Value, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)));
+            application.UseHttpsRedirection();
+
+            application.UseAntiforgery(settings, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)));
 
             application.UseDefaultFiles();
             application.UseStaticFiles(new StaticFileOptions

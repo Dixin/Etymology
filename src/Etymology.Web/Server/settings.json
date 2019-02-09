@@ -6,7 +6,7 @@
     }
   },
   "ImageCache": "Contents/Images",
-  "ConnectionStrings": {
+  "Connections": {
     "Etymology": "Server=localhost;Initial Catalog=Etymology;Integrated Security=true;MultipleActiveResultSets=False;Connection Timeout=30;"
   },
   "RefererHosts": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net", "etymologystaging.azurewebsites.net", "localhost", "127.0.0.1" ],
