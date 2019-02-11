@@ -78,6 +78,7 @@
                 application.UseExceptionHandler("/error");
                 application.UseStatusCodePagesWithReExecute("/error");
                 application.UseHsts();
+                application.UseHttpsRedirection();
 
                 loggerFactory.AddApplicationInsights(application.ApplicationServices);
             }
@@ -85,8 +86,6 @@
             {
                 application.UseDeveloperExceptionPage().UseBrowserLink();
             }
-
-            application.UseHttpsRedirection();
 
             application.UseAntiforgery(settings, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)));
 
