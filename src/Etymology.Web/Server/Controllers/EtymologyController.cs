@@ -1,9 +1,11 @@
 ﻿namespace Etymology.Web.Server.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Etymology.Common;
+    using Etymology.Data.Cache;
     using Etymology.Data.Models;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
@@ -14,15 +16,18 @@
     {
         private readonly ILogger<EtymologyController> logger;
 
-        private readonly IMemoryCache memoryCache;
+        private readonly IMemoryCache etymologyCache;
+
+        private readonly ICharacterCache characterCache;
 
         private readonly EtymologyContext context;
 
-        public EtymologyController(EtymologyContext context, ILogger<EtymologyController> logger, IMemoryCache memoryCache)
+        public EtymologyController(EtymologyContext context, ILogger<EtymologyController> logger, IMemoryCache etymologyCache, ICharacterCache characterCache)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.memoryCache = memoryCache;
+            this.etymologyCache = etymologyCache;
+            this.characterCache = characterCache;
         }
 
         [HttpPost]
@@ -58,7 +63,7 @@
             Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
-                if (this.memoryCache.TryGetValue(codePoint, out AnalyzeResult[] cachedResults))
+                if (this.etymologyCache.TryGetValue(codePoint, out AnalyzeResult[] cachedResults))
                 {
                     this.logger.LogInformation("Query result is found in cache for {chinese}.", chinese);
                     results = cachedResults;
@@ -66,9 +71,10 @@
                 else
                 {
                     this.logger.LogInformation("Start to query database for {chinese}.", chinese);
-                    results = await this.context.AnalyzeAsync(chinese);
+                    IEnumerable<(string Traditional, int CodePoint)> allTraditional = this.characterCache.AllTraditional(codePoint);
+                    results = await this.context.AnalyzeAsync(chinese, allTraditional);
                     this.logger.LogInformation("Database query is done successfully for {chinese}.", chinese);
-                    this.memoryCache.Set(codePoint, results, Cache.ServerCacheOptions);
+                    this.etymologyCache.Set(codePoint, results, Cache.ServerCacheOptions);
                     this.logger.LogInformation("Query result is added to cache for {chinese}.", chinese);
                 }
             }

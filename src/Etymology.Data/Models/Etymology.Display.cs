@@ -4,21 +4,22 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Diagnostics;
     using System.Linq;
+    using global::Etymology.Common;
 
     [DebuggerDisplay("{" + nameof(Traditional) + "}, {" + nameof(Simplified) + "}, {" + nameof(EtymologyId) + "}, {" + nameof(OldTraditional) + "}")]
     public partial class Etymology : IFormattable
     {
         [NotMapped]
-        public string SimplifiedInitial { get; set; }
+        public string SimplifiedInitial => this.Simplified.Characters().First();
 
         [NotMapped]
-        public int SimplifiedUnicode { get; set; }
+        public int SimplifiedUnicode => char.ConvertToUtf32(this.Simplified, 0);
 
         [NotMapped]
-        public string TraditionalInitial { get; set; }
+        public string TraditionalInitial => this.Traditional.Characters().First();
 
         [NotMapped]
-        public int TraditionalUnicode { get; set; }
+        public int TraditionalUnicode => char.ConvertToUtf32(this.Traditional, 0);
 
         [NotMapped]
         public string Prefix => "E";
@@ -29,13 +30,13 @@
 
     public static class DisplayExtensions
     {
-        private static string CharacterPartPrefix = "p";
+        private static readonly string[] SpecialSimplifiedPrefixes = { "p", "c" };
 
         public static string ToHex(this int value) =>
             value.ToString("X4");
 
         public static bool HasSimplified(this Etymology etymology) =>
-            !string.IsNullOrEmpty(etymology.Simplified) && !etymology.Simplified.StartsWith(CharacterPartPrefix, StringComparison.OrdinalIgnoreCase);
+            !string.IsNullOrEmpty(etymology.Simplified) && SpecialSimplifiedPrefixes.All(prefix => !etymology.Simplified.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
 
         public static string Title(this Etymology etymology) =>
             etymology.HasSimplified()

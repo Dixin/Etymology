@@ -9,8 +9,19 @@
 
     public partial class EtymologyContext
     {
-        public async Task<AnalyzeResult[]> AnalyzeAsync(string chinese)
+        private static IEnumerable<string> FilterStokesForSqlServer(IEnumerable<(string Traditional, int CodePoint)> allTraditional) =>
+            allTraditional.Select(traditional => traditional.CodePoint >= 0x31C0 && traditional.CodePoint <= 0x31E3
+                ? $"{traditional.Traditional}{traditional.CodePoint:X}"
+                : traditional.Traditional);
+
+        public async Task<AnalyzeResult[]> AnalyzeAsync(string chinese, IEnumerable<(string Traditional, int CodePoint)> allTraditional)
         {
+            string[] traditionalCharacters = FilterStokesForSqlServer(allTraditional).ToArray();
+            if (traditionalCharacters.Length < 1)
+            {
+                return Array.Empty<AnalyzeResult>();
+            }
+
             // LINQ to Entities queries creates multiple round trips to database and causes lower performance.
             List<Etymology> etymologies = new List<Etymology>();
             List<Oracle> oracles = new List<Oracle>();
@@ -24,225 +35,70 @@
                     await connection.OpenAsync();
                     using (DbCommand command = connection.CreateCommand())
                     {
-                        command.CommandText = @"
-                            DECLARE @Etymology TABLE
-							(
-	                            Simplified nvarchar(5) COLLATE Chinese_Simplified_Pinyin_100_CS_AS_KS_WS_SC,
-                                SimplifiedInitial nvarchar(2) COLLATE Chinese_Simplified_Pinyin_100_CS_AS_KS_WS_SC,
-                                SimplifiedUnicode int,
-	                            Traditional nvarchar(5) COLLATE Chinese_Traditional_Pinyin_100_CS_AS_KS_WS_SC,
-                                TraditionalInitial nvarchar(2) COLLATE Chinese_Simplified_Pinyin_100_CS_AS_KS_WS_SC,
-                                TraditionalUnicode int,
-	                            OldTraditional nvarchar(10) COLLATE Chinese_Traditional_Pinyin_100_CS_AS_KS_WS_SC,
-	                            Pinyin nvarchar(15),
-	                            Index8105 nvarchar(10),
-	                            SimplificationRule nvarchar(30),
-	                            SimplificationClarified nvarchar(200),
-	                            VariantRule nvarchar(40),
-	                            VariantClarified nvarchar(255),
-	                            AppliedRule nvarchar(30),
-	                            FontRule nvarchar(10),
-	                            Decomposition nvarchar(255),
-	                            DecompositionClarified nvarchar(255),
-	                            OriginalMeaning nvarchar(255),
-	                            Videos nvarchar(50),
-	                            WordExample nvarchar(255),
-	                            EnglishSenses nvarchar(255),
-	                            PinyinOther nvarchar(255),
-	                            Pictures nvarchar(255),
-	                            LearnOrder nvarchar(5),
-	                            FrequencyOrder nvarchar(10),
-	                            IdealForms nvarchar(25),
-	                            Classification nvarchar(25),
-	                            EtymologyId int
-							);
+                        DbParameter[] traditionalParameters = traditionalCharacters
+                            .Select((traditional, index) =>
+                            {
+                                DbParameter traditionalParameter = command.CreateParameter();
+                                traditionalParameter.ParameterName =
+                                    $"{nameof(Models.Etymology.Traditional)}{index}";
+                                traditionalParameter.Value = traditional;
+                                command.Parameters.Add(traditionalParameter);
+                                return traditionalParameter;
+                            })
+                            .ToArray();
 
-                            DECLARE @CharacterUnicodeHex nvarchar(8) = FORMAT(UNICODE(@chinese), N'X');
-                            IF (@CharacterUnicodeHex >= N'31C0' AND @CharacterUnicodeHex <= N'31E3') -- Is stroke.
-	                            INSERT INTO @Etymology
-							    (
-								    Simplified,
-                                    SimplifiedInitial,
-                                    SimplifiedUnicode,
-                                    Traditional,
-                                    TraditionalInitial,
-                                    TraditionalUnicode,
-                                    OldTraditional,
-                                    Pinyin,
-                                    Index8105,
-                                    SimplificationRule,
-                                    SimplificationClarified,
-                                    VariantRule,
-                                    VariantClarified,
-                                    AppliedRule,
-                                    FontRule,
-                                    Decomposition,
-                                    DecompositionClarified,
-                                    OriginalMeaning,
-                                    EnglishSenses,
-                                    WordExample,
-                                    PinyinOther,
-                                    Videos,
-                                    Pictures,
-                                    FrequencyOrder,
-                                    LearnOrder,
-                                    IdealForms,
-                                    Classification,
-	                                EtymologyId
-							    )
-                                SELECT 
-                                    Simplified,
-                                    SUBSTRING(Simplified, 1, 1) AS SimplifiedInitial,
-                                    UNICODE(SUBSTRING(Simplified, 1, 1)) AS SimplifiedUnicode,
-                                    Traditional,
-                                    SUBSTRING(Traditional, 1, 1) AS SimplifiedInitial,
-                                    UNICODE(Traditional) AS TraditionalUnicode,
-                                    OldTraditional,
-                                    Pinyin,
-                                    Index8105,
-                                    SimplificationRule,
-                                    SimplificationClarified,
-                                    VariantRule,
-                                    VariantClarified,
-                                    AppliedRule,
-                                    FontRule,
-                                    Decomposition,
-                                    DecompositionClarified,
-                                    OriginalMeaning,
-                                    EnglishSenses,
-                                    WordExample,
-                                    PinyinOther,
-                                    Videos,
-                                    Pictures,
-                                    FrequencyOrder,
-                                    LearnOrder,
-                                    IdealForms,
-                                    Classification,
-	                                EtymologyId
-                                FROM dbo.Etymology 
-							    WHERE Traditional = @chinese + @CharacterUnicodeHex;
-                            ELSE -- Is not stroke.
-	                            INSERT INTO @Etymology
-							    (
-								    Simplified,
-                                    SimplifiedInitial,
-                                    SimplifiedUnicode,
-                                    Traditional,
-                                    TraditionalInitial,
-                                    TraditionalUnicode,
-                                    OldTraditional,
-                                    Pinyin,
-                                    Index8105,
-                                    SimplificationRule,
-                                    SimplificationClarified,
-                                    VariantRule,
-                                    VariantClarified,
-                                    AppliedRule,
-                                    FontRule,
-                                    Decomposition,
-                                    DecompositionClarified,
-                                    OriginalMeaning,
-                                    EnglishSenses,
-                                    WordExample,
-                                    PinyinOther,
-                                    Videos,
-                                    Pictures,
-                                    FrequencyOrder,
-                                    LearnOrder,
-                                    IdealForms,
-                                    Classification,
-	                                EtymologyId
-							    )
-                                SELECT 
-                                    Simplified,
-                                    SUBSTRING(Simplified, 1, 1) AS SimplifiedInitial,
-                                    UNICODE(SUBSTRING(Simplified, 1, 1)) AS SimplifiedUnicode,
-                                    Traditional,
-                                    SUBSTRING(Traditional, 1, 1) AS SimplifiedInitial,
-                                    UNICODE(Traditional) AS TraditionalUnicode,
-                                    OldTraditional,
-                                    Pinyin,
-                                    Index8105,
-                                    SimplificationRule,
-                                    SimplificationClarified,
-                                    VariantRule,
-                                    VariantClarified,
-                                    AppliedRule,
-                                    FontRule,
-                                    Decomposition,
-                                    DecompositionClarified,
-                                    OriginalMeaning,
-                                    EnglishSenses,
-                                    WordExample,
-                                    PinyinOther,
-                                    Videos,
-                                    Pictures,
-                                    FrequencyOrder,
-                                    LearnOrder,
-                                    IdealForms,
-                                    Classification,
-	                                EtymologyId
-                                FROM dbo.Etymology 
-							    WHERE Traditional = @chinese OR Simplified LIKE @chinese + N'%' OR OldTraditional LIKE N'%' + @chinese + N'%';
-
-							SELECT 
-								Simplified, -- Simplified character
-                                SimplifiedInitial,
-                                SimplifiedUnicode,
-                                Traditional, -- Traditional character
-                                TraditionalInitial,
-                                TraditionalUnicode,
-                                OldTraditional, -- Older traditional characters
-                                Pinyin, -- Main pronunciation
-                                Index8105, -- Simplified character index number
-                                SimplificationRule, -- Simplification rule
-                                SimplificationClarified, -- Simplification rule explained
-                                VariantRule, -- Variant rule
-                                VariantClarified, -- Variant rule clarification
-                                AppliedRule, -- Applied rules
-                                FontRule, -- New font rule
-                                Decomposition, -- Character decomposition
-                                DecompositionClarified, -- Decomposition notes
-                                OriginalMeaning, -- Original meaning
-                                EnglishSenses, -- English senses
-                                WordExample, -- Usage example
-                                PinyinOther, -- Other pronunciations
-                                Videos, -- Related videos
-                                Pictures, -- Related pictures
-                                FrequencyOrder, -- Importance by frequency
-                                LearnOrder, -- Importance in learning
-                                IdealForms, -- Ideal ideographs
-                                Classification, -- Classification
+                        string traditionalParameterText = string.Join(
+                            ",",
+                            traditionalParameters.Select(traditionalParameter => $"@{traditionalParameter.ParameterName}"));
+                        command.CommandText = $@"
+                            SELECT 
+                                Simplified,
+                                Traditional,
+                                OldTraditional,
+                                Pinyin,
+                                Index8105,
+                                SimplificationRule,
+                                SimplificationClarified,
+                                VariantRule,
+                                VariantClarified,
+                                AppliedRule,
+                                FontRule,
+                                Decomposition,
+                                DecompositionClarified,
+                                OriginalMeaning,
+                                EnglishSenses,
+                                WordExample,
+                                PinyinOther,
+                                Videos,
+                                Pictures,
+                                FrequencyOrder,
+                                LearnOrder,
+                                IdealForms,
+                                Classification,
 	                            EtymologyId
-							FROM @Etymology;
+                            FROM dbo.Etymology 
+							WHERE Traditional IN ({traditionalParameterText});
 
                             SELECT OracleId, Oracle.Traditional, ImageVectorBase64 
 							FROM dbo.Oracle 
-							INNER JOIN @Etymology AS Etymology ON Oracle.Traditional = Etymology.Traditional
-							WHERE ImageVectorBase64 IS NOT NULL 
+							WHERE ImageVectorBase64 IS NOT NULL AND Traditional IN ({traditionalParameterText})
 							ORDER BY OracleId;
 
                             SELECT BronzeId, Bronze.Traditional, ImageVectorBase64 
 							FROM dbo.Bronze 
-							INNER JOIN @Etymology AS Etymology ON Bronze.Traditional = Etymology.Traditional
-							WHERE ImageVectorBase64 IS NOT NULL 
+							WHERE ImageVectorBase64 IS NOT NULL AND Traditional IN ({traditionalParameterText})
 							ORDER BY BronzeId;
 
                             SELECT SealId, Seal.Traditional, ImageVectorBase64, ShuowenTraditional
 							FROM dbo.Seal 
-							INNER JOIN @Etymology AS Etymology ON Seal.Traditional = Etymology.Traditional
-							WHERE ImageVectorBase64 IS NOT NULL 
+							WHERE ImageVectorBase64 IS NOT NULL AND Traditional IN ({traditionalParameterText})
 							ORDER BY SealId;
 
                             SELECT LiushutongId, Liushutong.Traditional, ImageVectorBase64 
 							FROM dbo.Liushutong 
-							INNER JOIN @Etymology AS Etymology ON Liushutong.Traditional = Etymology.Traditional
-							WHERE ImageVectorBase64 IS NOT NULL 
+							WHERE ImageVectorBase64 IS NOT NULL AND Traditional IN ({traditionalParameterText})
 							ORDER BY LiushutongId;";
-                        DbParameter characterParameter = command.CreateParameter();
-                        characterParameter.ParameterName = nameof(chinese);
-                        characterParameter.Value = chinese;
-                        command.Parameters.Add(characterParameter);
+
                         using (DbDataReader reader = await command.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
@@ -250,11 +106,7 @@
                                 etymologies.Add(new Etymology()
                                 {
                                     Simplified = reader.ToNullableAndTrim(nameof(Models.Etymology.Simplified)),
-                                    SimplifiedInitial = reader.ToNullableAndTrim(nameof(Models.Etymology.SimplifiedInitial)),
-                                    SimplifiedUnicode = (int)reader[nameof(Models.Etymology.SimplifiedUnicode)],
                                     Traditional = reader.ToNullableAndTrim(nameof(Models.Etymology.Traditional)),
-                                    TraditionalInitial = reader.ToNullableAndTrim(nameof(Models.Etymology.TraditionalInitial)),
-                                    TraditionalUnicode = (int)reader[nameof(Models.Etymology.TraditionalUnicode)],
                                     OldTraditional = reader.ToNullableAndTrim(nameof(Models.Etymology.OldTraditional)),
                                     Pinyin = reader.ToNullableAndTrim(nameof(Models.Etymology.Pinyin)),
                                     Index8105 = reader.ToNullableAndTrim(nameof(Models.Etymology.Index8105)),
@@ -343,18 +195,6 @@
                 .OrderByDescending(result => result.CharacterCount)
                 .ToArray();
         }
-
-        public IQueryable<Bronze> BronzeImages() =>
-            this.Bronze.Where(bronze => bronze.ImageVectorBase64 != null);
-
-        public IQueryable<Liushutong> LiushutongImages() =>
-            this.Liushutong.Where(liushutong => liushutong.ImageVectorBase64 != null);
-
-        public IQueryable<Oracle> OracleImages() =>
-            this.Oracle.Where(oracle => oracle.ImageVectorBase64 != null);
-
-        public IQueryable<Seal> SealImages() =>
-            this.Seal.Where(seal => seal.ImageVectorBase64 != null);
     }
 
     internal static class DbDataReaderExtensions

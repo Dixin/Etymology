@@ -7,6 +7,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using Etymology.Common;
+    using Etymology.Data.Cache;
     using Etymology.Data.Models;
     using Etymology.Tests.Common;
     using Etymology.Tests.Data.Models;
@@ -22,17 +23,22 @@
     [TestClass]
     public class EtymologyControllerTests
     {
-        private static EtymologyController CreateController() =>
-            new EtymologyController(
-                EtymologyContextTests.CreateDatabase(), 
-                new NullLogger<EtymologyController>(), 
-                new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions())))
-            {
-                ControllerContext = new ControllerContext()
+        private static EtymologyController CreateController()
+        {
+            CharacterCache characterCache = new CharacterCache();
+            characterCache.Initialize(EtymologyContextTests.CreateDatabase()).Wait();
+            return new EtymologyController(
+                EtymologyContextTests.CreateDatabase(),
+                new NullLogger<EtymologyController>(),
+                new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions())),
+                characterCache)
                 {
-                    HttpContext = new DefaultHttpContext()
-                }
-            };
+                    ControllerContext = new ControllerContext()
+                        {
+                            HttpContext = new DefaultHttpContext()
+                        }
+                };
+        }
 
         [TestMethod]
         public async Task AnalyzeAsyncTest()
@@ -41,7 +47,16 @@
             {
                 EtymologyController controller = CreateController();
                 controller.ControllerContext.HttpContext.Request.Headers.Add(nameof(Chinese), new StringValues(char.ConvertToUtf32(item.Text, 0).ToString("D")));
-                ViewResult view = await controller.AnalyzeAsync(item.Text) as ViewResult;
+                ViewResult view;
+                try
+                {
+                    view = await controller.AnalyzeAsync(item.Text) as ViewResult;
+                }
+                catch (Exception exception)
+                {
+                    Trace.WriteLine(exception);
+                    throw;
+                }
                 Assert.IsNotNull(view);
                 Assert.IsInstanceOfType(view.Model, typeof((string, TimeSpan, AnalyzeResult[])));
                 var (chinese, duration, results) = ((string, TimeSpan, AnalyzeResult[]))view.Model;

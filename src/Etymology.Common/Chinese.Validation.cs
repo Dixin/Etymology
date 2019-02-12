@@ -103,5 +103,72 @@
                 ? (null, isSurrogate)
                 : (new ArgumentOutOfRangeException(argument, "Input is a single character but not Chinese."), isSurrogate);
         }
+
+        public static bool IsSingleChineseCharacter(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+
+            int length = text.Length;
+            if (length > 2)
+            {
+                return false;
+            }
+
+            bool isSurrogate = char.IsHighSurrogate(text, 0);
+            if (isSurrogate)
+            {
+                // length must be 2.
+                if (length != 2)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                // length must be 1.
+                if (length != 1)
+                {
+                    return false;
+                }
+            }
+
+            int codePoint = isSurrogate ? char.ConvertToUtf32(text, 0) : text[0];
+            List<(int Min, int Max)> ranges = isSurrogate ? SurrogateRanges : BasicRanges;
+            return ranges.Any(range => range.Min <= codePoint && range.Max >= codePoint);
+        }
+
+        public static bool HasChineseCharacter(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+
+            for (int index = 0; index < text.Length; index++)
+            {
+                bool isSurrogate = char.IsHighSurrogate(text, index);
+                if (isSurrogate && index == text.Length - 1)
+                {
+                    return false;
+                }
+
+                int codePoint = isSurrogate ? char.ConvertToUtf32(text, index) : text[index];
+                List<(int Min, int Max)> ranges = isSurrogate ? SurrogateRanges : BasicRanges;
+                if (ranges.Any(range => range.Min <= codePoint && range.Max >= codePoint))
+                {
+                    return true;
+                }
+
+                if (isSurrogate)
+                {
+                    index++;
+                }
+            }
+
+            return false;
+        }
     }
 }

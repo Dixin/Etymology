@@ -2,6 +2,7 @@
 {
     using System.IO;
     using System.Text;
+    using Etymology.Data.Cache;
     using Etymology.Data.Models;
     using Microsoft.AspNetCore.Antiforgery;
     using Microsoft.AspNetCore.Builder;
@@ -38,15 +39,25 @@
         public void ConfigureServices(IServiceCollection services) // Container.
         {
             Settings settings = new Settings();
-            this.configuration.Bind(settings);
-            services.AddSingleton(settings);
-
-            services.AddMvc(options => options.AddAntiforgery());
-            services.AddAntiforgery();
-
-            services.AddDataAccess(settings.Connections[nameof(Etymology)]);
-
-            services.AddResponseCaching();
+            services.AddSettings(this.configuration, settings)
+                .AddAntiforgery()
+                .AddDataAccess(settings.Connections[nameof(Etymology)])
+                .AddResponseCaching()
+                .AddCharacterCache()
+                .AddLogging(loggingBuilder =>
+                {
+                    if (this.environment.IsProduction())
+                    {
+                        loggingBuilder.AddApplicationInsights();
+                    }
+                    else
+                    {
+                        loggingBuilder
+                            .AddConsole(consoleLoggerOptions => consoleLoggerOptions.IncludeScopes = true)
+                            .AddDebug();
+                    }
+                })
+                .AddMvc(options => options.AddAntiforgery());
 
             if (this.environment.IsProduction())
             {
@@ -57,50 +68,39 @@
             {
                 services.AddApplicationInsightsTelemetry(this.configuration);
             }
-
-            services.AddLogging(loggingBuilder =>
-            {
-                if (!this.environment.IsProduction())
-                {
-                    loggingBuilder.AddConsole(consoleLoggerOptions => consoleLoggerOptions.IncludeScopes = true)
-                        .AddDebug();
-                }
-            });
-
-            // Add support for GB18030.
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
-        public void Configure(IApplicationBuilder application, ILoggerFactory loggerFactory, IAntiforgery antiforgery, Settings settings) // HTTP pipeline.
+        public void Configure(IApplicationBuilder application, ILoggerFactory loggerFactory, IAntiforgery antiforgery, Settings settings, EtymologyContext etymologyContext, ICharacterCache characterCache) // HTTP pipeline.
         {
             if (this.environment.IsProduction())
             {
-                application.UseExceptionHandler("/error");
-                application.UseStatusCodePagesWithReExecute("/error");
-                application.UseHsts();
-                application.UseHttpsRedirection();
-
-                loggerFactory.AddApplicationInsights(application.ApplicationServices);
+                application
+                    .UseExceptionHandler("/error")
+                    .UseStatusCodePagesWithReExecute("/error")
+                    .UseHsts()
+                    .UseHttpsRedirection();
             }
             else
             {
                 application.UseDeveloperExceptionPage().UseBrowserLink();
             }
 
-            application.UseAntiforgery(settings, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)));
+            application
+                .UseAntiforgery(settings, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)))
+                .UseDefaultFiles()
+                .UseStaticFiles(new StaticFileOptions
+                {
+                    OnPrepareResponse = staticFileResponseContext => staticFileResponseContext.Context.Response.Headers[HeaderNames.CacheControl] = $"public,max-age={Cache.ClientCacheMaxAge}"
+                })
+                .UseResponseCaching()
+                .UseMvc(routes => routes.MapRoute(name: "default", template: "{controller}/{action}"));
 
-            application.UseDefaultFiles();
-            application.UseStaticFiles(new StaticFileOptions
-            {
-                OnPrepareResponse = staticFileResponseContext => staticFileResponseContext.Context.Response.Headers[HeaderNames.CacheControl] = $"public,max-age={Cache.ClientCacheMaxAge}"
-            });
-
-            application.UseResponseCaching();
-
-            application.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller}/{action}"));
-
+            characterCache.Initialize(etymologyContext).Wait();
             // Async Configure method is not supported by ASP.NET.
             // https://github.com/aspnet/Hosting/issues/373
+
+            // Add support for GB18030.
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
     }
 }

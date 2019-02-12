@@ -23,21 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
-=======
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
->>>>>>> 8794f58d5e90fb887f73c131fbacaa330fa3322a
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>
