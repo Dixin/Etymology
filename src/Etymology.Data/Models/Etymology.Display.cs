@@ -30,13 +30,11 @@
 
     public static class DisplayExtensions
     {
-        private static readonly string[] SpecialSimplifiedPrefixes = { "p", "c" };
-
         public static string ToHex(this int value) =>
             value.ToString("X4");
 
         public static bool HasSimplified(this Etymology etymology) =>
-            !string.IsNullOrEmpty(etymology.Simplified) && SpecialSimplifiedPrefixes.All(prefix => !etymology.Simplified.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+            !string.IsNullOrEmpty(etymology.Simplified) && etymology.Simplified.Characters().First().IsSingleChineseCharacter();
 
         public static string Title(this Etymology etymology) =>
             etymology.HasSimplified()

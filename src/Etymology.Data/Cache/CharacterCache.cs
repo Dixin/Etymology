@@ -32,8 +32,8 @@
                     Simplified: char.ConvertToUtf32(etymology.Simplified.Characters().First(), 0),
                     OldTraditional: string.IsNullOrWhiteSpace(etymology.OldTraditional)
                         ? null
-                        : etymology.OldTraditional.Characters().Select(old => char.ConvertToUtf32(old, 0)).ToArray())
-                )
+                        : etymology.OldTraditional.Characters().Select(old => char.ConvertToUtf32(old, 0)).ToArray()
+                ))
                 .ToArray();
             this.traditional = etymologies.ToDictionary(etymology => etymology.Traditional, etymology => (object)null);
             this.simplifiedToTraditional = etymologies.ToLookup(etymology => etymology.Simplified, etymology => etymology.Traditional);
@@ -52,7 +52,9 @@
                 allTraditional.Add(codePoint);
             }
 
-            return allTraditional.Distinct().Select(traditional => (char.ConvertFromUtf32(traditional), codePage: traditional));
+            return allTraditional
+                .Distinct()
+                .Select(traditional => (Traditional: char.ConvertFromUtf32(traditional), CodePoint: traditional));
         }
     }
 }

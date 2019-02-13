@@ -104,7 +104,7 @@
                 : (new ArgumentOutOfRangeException(argument, "Input is a single character but not Chinese."), isSurrogate);
         }
 
-        public static bool IsSingleChineseCharacter(string text)
+        public static bool IsSingleChineseCharacter(this string text)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -140,7 +140,7 @@
             return ranges.Any(range => range.Min <= codePoint && range.Max >= codePoint);
         }
 
-        public static bool HasChineseCharacter(string text)
+        public static bool HasChineseCharacter(this string text)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
