@@ -5,10 +5,10 @@
 
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddSettings<TSettings>(this IServiceCollection services, IConfiguration configuration, TSettings settings)
+        public static IServiceCollection AddSettings<TSettings>(this IServiceCollection services, IConfiguration configuration, out TSettings settings)
             where TSettings : class
         {
-            configuration.Bind(settings);
+            settings = configuration.Get<TSettings>();
             return services.AddSingleton(settings);
         }
     }

@@ -38,8 +38,7 @@
 
         public void ConfigureServices(IServiceCollection services) // Container.
         {
-            Settings settings = new Settings();
-            services.AddSettings(this.configuration, settings)
+            services.AddSettings(this.configuration, out Settings settings)
                 .AddAntiforgery()
                 .AddDataAccess(settings.Connections[nameof(Etymology)])
                 .AddResponseCaching()

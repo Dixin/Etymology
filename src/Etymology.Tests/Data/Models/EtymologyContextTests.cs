@@ -133,8 +133,7 @@
                 .AddJsonFile("settings.json")
                 .AddJsonFile($"settings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
                 .Build();
-            Settings settings = new Settings();
-            configuration.Bind(settings);
+            Settings settings = configuration.Get<Settings>();
             return new EtymologyContext(new DbContextOptionsBuilder<EtymologyContext>().UseSqlServer(
                 settings.Connections[nameof(Etymology)],
                 options => options
