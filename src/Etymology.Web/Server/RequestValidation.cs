@@ -105,16 +105,9 @@
             }
 
             string referrerHost = referrerUri.Host;
-            if (!settings.RefererHosts.Contains(referrerHost, StringComparer.OrdinalIgnoreCase))
+            if (!settings.AllowedHosts.Contains(referrerHost, StringComparer.OrdinalIgnoreCase))
             {
                 return (false, $"Header's referrer {referrer} host {referrerHost} is not allowed.");
-            }
-
-            // Host.
-            string host = request.Host.Host;
-            if (!settings.RefererHosts.Contains(host, StringComparer.OrdinalIgnoreCase))
-            {
-                return (false, $"Requested host {host} is not allowed.");
             }
 
             // User agent.

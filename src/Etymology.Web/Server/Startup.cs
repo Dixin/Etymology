@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Microsoft.Net.Http.Headers;
 
@@ -18,9 +19,9 @@
 
         private readonly IConfiguration configuration;
 
-        private readonly IHostingEnvironment environment;
+        private readonly IWebHostEnvironment environment;
 
-        public Startup(IHostingEnvironment environment)
+        public Startup(IWebHostEnvironment environment)
         {
             IConfigurationBuilder configuration = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
@@ -56,7 +57,10 @@
                             .AddDebug();
                     }
                 })
-                .AddMvc(options => options.AddAntiforgery());
+                .AddHostFiltering(hostFiltering => hostFiltering.AllowedHosts = settings.AllowedHosts)
+                .AddMvc(options => options.AddAntiforgery()); //services.AddControllersWithViews(options => options.AddAntiforgery());
+
+            services.AddRazorPages().AddRazorRuntimeCompilation();
 
             if (this.environment.IsProduction())
             {
@@ -92,7 +96,9 @@
                     OnPrepareResponse = staticFileResponseContext => staticFileResponseContext.Context.Response.Headers[HeaderNames.CacheControl] = $"public,max-age={Cache.ClientCacheMaxAge}"
                 })
                 .UseResponseCaching()
-                .UseMvc(routes => routes.MapRoute(name: "default", template: "{controller}/{action}"));
+                .UseRouting()
+                .UseEndpoints(endpoints => endpoints.MapControllerRoute("default", "{controller}/{action}"))
+                .UseHostFiltering();
 
             characterCache.Initialize(etymologyContext).Wait();
             // Async Configure method is not supported by ASP.NET.

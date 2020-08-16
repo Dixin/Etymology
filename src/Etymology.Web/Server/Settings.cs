@@ -6,7 +6,7 @@
     {
         public Dictionary<string, string> Connections { get; } = new Dictionary<string, string>();
 
-        public List<string> RefererHosts { get; } = new List<string>();
+        public List<string> AllowedHosts { get; } = new List<string>();
 
         public List<string> IndexPageUrls { get; } = new List<string>();
 
