@@ -10,14 +10,15 @@ namespace Etymology.Data.Models
         [Required]
         [StringLength(20)]
         public string Traditional { get; set; }
+        [Key]
         public int LiushutongId { get; set; }
         public int? SealId { get; set; }
         public string ImageBase64 { get; set; }
         public string ImageVector { get; set; }
         public string ImageVectorBase64 { get; set; }
 
-        [ForeignKey("SealId")]
+        [ForeignKey(nameof(SealId))]
         [InverseProperty("Liushutong")]
-        public Seal Seal { get; set; }
+        public virtual Seal Seal { get; set; }
     }
 }

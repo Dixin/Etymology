@@ -1,1 +1,3 @@
 Scaffold-DbContext -Connection "Server=.;Database=ChineseEtymology;Trusted_Connection=True;" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context EtymologyContext -Schemas dbo -DataAnnotations -Project Etymology.Data
+
+dotnet ef dbcontext scaffold "Server=tcp:etymology.database.windows.net,1433;Initial Catalog=Staging;Persist Security Info=False;User ID=dixinyan;Password=Russi@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o Models -t Blog -t Post --context-dir Context -c EtymologyContext --context-namespace New.Namespace

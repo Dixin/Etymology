@@ -13,6 +13,7 @@ namespace Etymology.Data.Models
         public int? Rank { get; set; }
         public string ImageBase64 { get; set; }
         public string ImageVector { get; set; }
+        [Key]
         public int BronzeId { get; set; }
         public string ImageVectorBase64 { get; set; }
     }

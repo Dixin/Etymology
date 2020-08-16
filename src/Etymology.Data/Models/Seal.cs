@@ -12,6 +12,7 @@ namespace Etymology.Data.Models
             Liushutong = new HashSet<Liushutong>();
         }
 
+        [Key]
         public int SealId { get; set; }
         [Required]
         [StringLength(20)]
@@ -51,6 +52,6 @@ namespace Etymology.Data.Models
         public string ImageVectorBase64 { get; set; }
 
         [InverseProperty("Seal")]
-        public ICollection<Liushutong> Liushutong { get; set; }
+        public virtual ICollection<Liushutong> Liushutong { get; set; }
     }
 }

@@ -6,35 +6,50 @@ namespace Etymology.Data.Models
 {
     public partial class EtymologyContext : DbContext
     {
+        public EtymologyContext(DbContextOptions<EtymologyContext> options)
+            : base(options)
+        {
+        }
+
         public virtual DbSet<Bronze> Bronze { get; set; }
         public virtual DbSet<Etymology> Etymology { get; set; }
         public virtual DbSet<Liushutong> Liushutong { get; set; }
         public virtual DbSet<Oracle> Oracle { get; set; }
         public virtual DbSet<Seal> Seal { get; set; }
+        public virtual DbSet<VEtymology> VEtymology { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Bronze>(entity =>
             {
+                entity.HasKey(e => e.BronzeId)
+                    .IsClustered(false);
+
                 entity.HasIndex(e => e.Traditional)
-                    .ForSqlServerIsClustered();
+                    .IsClustered();
             });
 
             modelBuilder.Entity<Etymology>(entity =>
             {
+                entity.HasKey(e => e.EtymologyId)
+                    .IsClustered(false);
+
                 entity.HasIndex(e => e.OldTraditional);
 
                 entity.HasIndex(e => e.Simplified);
 
                 entity.HasIndex(e => e.Traditional)
                     .IsUnique()
-                    .ForSqlServerIsClustered();
+                    .IsClustered();
             });
 
             modelBuilder.Entity<Liushutong>(entity =>
             {
+                entity.HasKey(e => e.LiushutongId)
+                    .IsClustered(false);
+
                 entity.HasIndex(e => e.Traditional)
-                    .ForSqlServerIsClustered();
+                    .IsClustered();
 
                 entity.HasOne(d => d.Seal)
                     .WithMany(p => p.Liushutong)
@@ -44,15 +59,34 @@ namespace Etymology.Data.Models
 
             modelBuilder.Entity<Oracle>(entity =>
             {
+                entity.HasKey(e => e.OracleId)
+                    .IsClustered(false);
+
                 entity.HasIndex(e => e.Traditional)
-                    .ForSqlServerIsClustered();
+                    .IsClustered();
             });
 
             modelBuilder.Entity<Seal>(entity =>
             {
+                entity.HasKey(e => e.SealId)
+                    .IsClustered(false);
+
                 entity.HasIndex(e => e.Traditional)
-                    .ForSqlServerIsClustered();
+                    .IsClustered();
             });
+
+            modelBuilder.Entity<VEtymology>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vEtymology");
+
+                entity.Property(e => e.EtymologyId).ValueGeneratedOnAdd();
+            });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

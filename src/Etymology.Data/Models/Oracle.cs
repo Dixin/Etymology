@@ -7,6 +7,7 @@ namespace Etymology.Data.Models
 {
     public partial class Oracle
     {
+        [Key]
         public int OracleId { get; set; }
         [Required]
         [StringLength(20)]

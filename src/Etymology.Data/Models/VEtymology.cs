@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Etymology.Data.Models
 {
-    public partial class Etymology
+    public partial class VEtymology
     {
         [Required]
         [StringLength(5)]
@@ -55,7 +55,6 @@ namespace Etymology.Data.Models
         public string IdealForms { get; set; }
         [StringLength(25)]
         public string Classification { get; set; }
-        [Key]
         public int EtymologyId { get; set; }
     }
 }
