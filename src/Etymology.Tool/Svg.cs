@@ -38,20 +38,18 @@
             string[] liushutongCharacters = Directory.GetFiles(svgOptions.Directory, "l*.svg", SearchOption.AllDirectories);
             Array.Sort(liushutongCharacters);
 
-            using (EtymologyContext database = Database(svgOptions.Connection))
+            using EtymologyContext database = Database(svgOptions.Connection);
+            if (!(Update<Oracle>(database, oracleCharacters)
+                && Update<Bronze>(database, bronzeCharacters)
+                && Update<Seal>(database, sealCharacters)
+                && Update<Liushutong>(database, liushutongCharacters)))
             {
-                if (!(Update<Oracle>(database, oracleCharacters)
-                    && Update<Bronze>(database, bronzeCharacters)
-                    && Update<Seal>(database, sealCharacters)
-                    && Update<Liushutong>(database, liushutongCharacters)))
-                {
-                    return 1;
-                }
-
-                int count = database.SaveChanges();
-                Console.WriteLine($"{count} files saved to database.");
-                return 0;
+                return 1;
             }
+
+            int count = database.SaveChanges();
+            Console.WriteLine($"{count} files saved to database.");
+            return 0;
         }
 
         private static bool Update<T>(EtymologyContext database, string[] images) where T : class, ICharacter

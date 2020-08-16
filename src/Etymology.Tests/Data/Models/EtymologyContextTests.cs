@@ -18,32 +18,30 @@
         [TestMethod]
         public async Task AnalyzeAsyncTest()
         {
-            using (EtymologyContext database = CreateDatabase())
-            {
-                const string chinese = "车";
-                CharacterCache characterCache = new CharacterCache();
-                await characterCache.Initialize(database);
-                IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(chinese, 0));
-                AnalyzeResult[] results = await database.AnalyzeAsync(chinese, allTraditional);
-                Assert.AreEqual(1, results.Length);
-                var (queriedChinese, etymology, oracles, bronzes, seals, liushutongs) = results.Single();
-                Assert.AreEqual(chinese, queriedChinese);
-                Assert.IsNotNull(etymology);
-                Assert.IsNotNull(etymology);
-                Assert.IsNotNull(oracles);
-                Assert.IsTrue(oracles.Any());
-                Assert.IsNotNull(oracles.First());
-                Assert.IsNotNull(bronzes);
-                Assert.IsTrue(bronzes.Any());
-                Assert.IsNotNull(bronzes.First());
-                Assert.IsNotNull(seals);
-                Assert.IsTrue(seals.Any());
-                Assert.IsNotNull(seals.First());
-                Assert.IsNotNull(liushutongs);
-                Assert.IsTrue(liushutongs.Any());
-                Assert.IsNotNull(liushutongs.First());
-                Trace.WriteLine($"{chinese} {oracles.Length} {bronzes.Length} {seals.Length} {liushutongs.Length}");
-            }
+            await using EtymologyContext database = CreateDatabase();
+            const string chinese = "车";
+            CharacterCache characterCache = new CharacterCache();
+            await characterCache.Initialize(database);
+            IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(chinese, 0));
+            AnalyzeResult[] results = await database.AnalyzeAsync(chinese, allTraditional);
+            Assert.AreEqual(1, results.Length);
+            var (queriedChinese, etymology, oracles, bronzes, seals, liushutongs) = results.Single();
+            Assert.AreEqual(chinese, queriedChinese);
+            Assert.IsNotNull(etymology);
+            Assert.IsNotNull(etymology);
+            Assert.IsNotNull(oracles);
+            Assert.IsTrue(oracles.Any());
+            Assert.IsNotNull(oracles.First());
+            Assert.IsNotNull(bronzes);
+            Assert.IsTrue(bronzes.Any());
+            Assert.IsNotNull(bronzes.First());
+            Assert.IsNotNull(seals);
+            Assert.IsTrue(seals.Any());
+            Assert.IsNotNull(seals.First());
+            Assert.IsNotNull(liushutongs);
+            Assert.IsTrue(liushutongs.Any());
+            Assert.IsNotNull(liushutongs.First());
+            Trace.WriteLine($"{chinese} {oracles.Length} {bronzes.Length} {seals.Length} {liushutongs.Length}");
         }
 
         [TestMethod]
@@ -70,18 +68,16 @@
         [TestMethod]
         public async Task ExtensionBTest()
         {
-            using (EtymologyContext database = CreateDatabase())
-            {
-                const string extensionB = "𠂇";
-                CharacterCache characterCache = new CharacterCache();
-                await characterCache.Initialize(database);
-                IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(extensionB, 0));
-                var (chinese, etymology, oracles, bronzes, seals, liushutongs) = (await database.AnalyzeAsync(extensionB, allTraditional)).Single();
-                Assert.IsNotNull(etymology);
-                Assert.IsNotNull(etymology);
-                Assert.AreEqual(extensionB, etymology.Traditional);
-                Trace.WriteLine($"{chinese} {oracles.Length} {bronzes.Length} {seals.Length} {liushutongs.Length}");
-            }
+            await using EtymologyContext database = CreateDatabase();
+            const string extensionB = "𠂇";
+            CharacterCache characterCache = new CharacterCache();
+            await characterCache.Initialize(database);
+            IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(extensionB, 0));
+            var (chinese, etymology, oracles, bronzes, seals, liushutongs) = (await database.AnalyzeAsync(extensionB, allTraditional)).Single();
+            Assert.IsNotNull(etymology);
+            Assert.IsNotNull(etymology);
+            Assert.AreEqual(extensionB, etymology.Traditional);
+            Trace.WriteLine($"{chinese} {oracles.Length} {bronzes.Length} {seals.Length} {liushutongs.Length}");
         }
 
         [TestMethod]
@@ -93,13 +89,11 @@
             List<(char chinese, AnalyzeResult[] Result)> testedResults = CommonCharacters
                 .Select(chinese =>
                 {
-                    using (EtymologyContext database = CreateDatabase())
-                    {
-                        CharacterCache characterCache = new CharacterCache();
-                        characterCache.Initialize(database).Wait();
-                        IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(new string(chinese, 1), 0));
-                        return (chinese, database.AnalyzeAsync(new string(chinese, 1), allTraditional).Result);
-                    }
+                    using EtymologyContext database = CreateDatabase();
+                    CharacterCache characterCache = new CharacterCache();
+                    characterCache.Initialize(database).Wait();
+                    IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(new string(chinese, 1), 0));
+                    return (chinese, database.AnalyzeAsync(new string(chinese, 1), allTraditional).Result);
                 })
                 .Where(item =>
                 {
