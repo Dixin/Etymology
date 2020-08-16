@@ -2,7 +2,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 
-const merge = require("webpack-merge");
+const { merge } = require('webpack-merge');
 const common = require("./webpack.config.js");
 
 const Paths = common.Paths;

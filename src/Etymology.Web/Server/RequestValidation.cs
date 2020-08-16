@@ -20,6 +20,7 @@
         private const string CookieName = nameof(Oracle);
         private const string FormFieldName = nameof(Bronze);
         private const string HeaderName = nameof(Seal);
+        private const SameSiteMode CookieSameSiteMode = SameSiteMode.Strict;
 
         internal static MvcOptions AddAntiforgery(this MvcOptions options)
         {
@@ -32,7 +33,7 @@
             {
                 options.Cookie.Name = CookieName;
                 options.Cookie.HttpOnly = false;
-                options.Cookie.SameSite = SameSiteMode.None; // Default same site mode is Lax, which make the cookie not readable in 360 browser.
+                options.Cookie.SameSite = CookieSameSiteMode; // Default same site mode is Lax, which make the cookie not readable in 360 browser.
                 options.FormFieldName = FormFieldName;
                 options.HeaderName = HeaderName;
             });
@@ -85,7 +86,7 @@
             context.Response.Cookies.Append(
                 tokens.FormFieldName,
                 tokens.RequestToken,
-                new CookieOptions() { HttpOnly = false, SameSite = SameSiteMode.None }); // Default same site mode is Lax, which make the cookie not readable in 360 browser.
+                new CookieOptions() { HttpOnly = false, SameSite = CookieSameSiteMode }); // Default same site mode is Lax, which make the cookie not readable in 360 browser.
         }
 
         private static (bool IsValid, string Message) IsValid(this HttpRequest request, Settings settings)
