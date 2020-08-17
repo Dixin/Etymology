@@ -1,5 +1,5 @@
 version: 2.0.{build}
-image: Visual Studio 2017
+image: Visual Studio 2019
 configuration:
 - Debug
 - Release
@@ -9,54 +9,24 @@ dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version: '{version}'
+  version_prefix: '{version}'
   package_version: '{version}'
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
 environment:
-  Server:
-    secure: TvXoVEeYYNoo2cXBZTeGuQ==
-  Database:
-    secure: VoBmaLf7l0+NV1kGgG+wPg==
-  User:
-    secure: UzHGGTiu63CYQPT9rPKhJA==
-  Password:
-    secure: si1rZXqiINGCaeQU0Oh7hg==
+  Etymology:
+    secure: EXqa8qHo22jd/nq17/myGbk077tkDDe22+jT/Jxl1SBNTkWct5r/PY1QgSporP57WTQX34qcPp6fMfcQvo/biux+eZeL9X76KQDg5wQstdvOhH9asGVVF70Mq5YwSDQJarvxs0vQXt4gi52WK68EIYfCDE3jf+dAjeUBbXP9ZlqvzpojUC7cw9/Ee84w7ppMPCbVu3daB8r57QmfdEHQK6p3B7mVcJr4RPe+KuKXSgsw2aa6yPNFsBoh0towBlTM5CJ3GHx4tI2n54PKpA5HHGkHlVR7LZl2d6t+vDG3v3YNiiYWy6dfYnzVJgzpOxJ6
   APPVEYOR_RDP_PASSWORD:
     secure: aii6TuA5V1pzlqRiUOXyTQ==
   ASPNETCORE_ENVIRONMENT: Staging
 install:
-- ps: >-
-    Install-Product node 8
-
-
-    $file = "$($env:appveyor_build_folder)\src\Etymology.Web\Server\settings.$($env:ASPNETCORE_ENVIRONMENT).json"
-
-    (Get-Content $file).Replace("{server}", $env:Server).Replace("{database}", $env:Database).Replace("{user}", $env:User).Replace("{password}", $env:Password) | Set-Content $file
+- ps: Install-Product node Current
 before_build:
-- cmd: >-
-    dotnet restore
-
-
-    cd ./src/Etymology.Web
-
-    npm install
-
-    cd ../..
+- cmd: dotnet restore
 build:
-  publish_wap_xcopy: true
   parallel: true
-  verbosity: detailed
-after_test:
-- ps: dotnet publish ./src/Etymology.Web/Etymology.Web.csproj -c $env:CONFIGURATION -o ../../Publish/$env:CONFIGURATION
+  verbosity: normal
 artifacts:
 - path: ./Publish/Release
   name: PublishRelease
-deploy:
-- provider: AzureAppServiceZipDeploy
-  appservice_environment: false
-  website: etymologystaging
-  username: dixinyan
-  password:
-    secure: aii6TuA5V1pzlqRiUOXyTQ==
-  artifact: PublishRelease
