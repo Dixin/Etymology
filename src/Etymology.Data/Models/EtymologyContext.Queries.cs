@@ -7,6 +7,8 @@
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
 
+    // Create models:
+    // dotnet ef dbcontext scaffold "Server=tcp:{server}.database.windows.net,1433;Initial Catalog={database};Persist Security Info=False;User ID={user};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer --data-annotations --context EtymologyContext --force --output-dir Models --schema dbo --project Etymology.Data --startup-project Etymology.Data.Console
     public partial class EtymologyContext
     {
         private static IEnumerable<string> FilterStokesForSqlServer(IEnumerable<(string Traditional, int CodePoint)> allTraditional) =>
@@ -37,8 +39,7 @@
                     .Select((traditional, index) =>
                     {
                         DbParameter traditionalParameter = command.CreateParameter();
-                        traditionalParameter.ParameterName =
-                            $"{nameof(Models.Etymology.Traditional)}{index}";
+                        traditionalParameter.ParameterName = $"{nameof(Models.Etymology.Traditional)}{index}";
                         traditionalParameter.Value = traditional;
                         command.Parameters.Add(traditionalParameter);
                         return traditionalParameter;

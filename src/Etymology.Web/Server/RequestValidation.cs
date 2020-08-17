@@ -18,8 +18,11 @@
     internal static class RequestValidation
     {
         private const string CookieName = nameof(Oracle);
+
         private const string FormFieldName = nameof(Bronze);
+
         private const string HeaderName = nameof(Seal);
+
         private const SameSiteMode CookieSameSiteMode = SameSiteMode.Strict;
 
         internal static MvcOptions AddAntiforgery(this MvcOptions options)
@@ -86,7 +89,7 @@
             context.Response.Cookies.Append(
                 tokens.FormFieldName,
                 tokens.RequestToken,
-                new CookieOptions() { HttpOnly = false, SameSite = CookieSameSiteMode }); // Default same site mode is Lax, which make the cookie not readable in 360 browser.
+                new CookieOptions() { HttpOnly = false, SameSite = CookieSameSiteMode, Secure = true }); // Default same site mode is Lax, which make the cookie not readable in 360 browser.
         }
 
         private static (bool IsValid, string Message) IsValid(this HttpRequest request, Settings settings)
@@ -135,7 +138,7 @@
         private static string GetIPAddress(this HttpContext context) =>
             context.Connection.RemoteIpAddress?.ToString()
             ?? context.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString()
-            ?? (context.Request.Headers.TryGetValue("X-Forwarded-For", out StringValues forarded) ? forarded.ToString() : null)
+            ?? (context.Request.Headers.TryGetValue("X-Forwarded-For", out StringValues forwarded) ? forwarded.ToString() : null)
             ?? (context.Request.Headers.TryGetValue("REMOTE_ADDR", out StringValues remote) ? remote.ToString() : null);
     }
 }
