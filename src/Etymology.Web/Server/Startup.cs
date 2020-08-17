@@ -1,5 +1,6 @@
 ﻿namespace Etymology.Web.Server
 {
+    using System;
     using System.IO;
     using System.Text;
     using Etymology.Data.Cache;
@@ -23,17 +24,17 @@
 
         public Startup(IWebHostEnvironment environment)
         {
-            IConfigurationBuilder configuration = new ConfigurationBuilder()
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
                 .AddJsonFile(Path.Combine(Server, "settings.json"), optional: false, reloadOnChange: true)
-                .AddJsonFile(Path.Combine(Server, $"settings.{environment.EnvironmentName}.json"), optional: true)
+                .AddJsonFile(Path.Combine(Server, $"settings.{environment.EnvironmentName}.json"), optional: true, true)
                 .AddEnvironmentVariables();
             if (!environment.IsDevelopment())
             {
-                configuration.AddApplicationInsightsSettings(developerMode: environment.IsStaging());
+                configurationBuilder.AddApplicationInsightsSettings(developerMode: environment.IsStaging());
             }
 
-            this.configuration = configuration.Build();
+            this.configuration = configurationBuilder.Build();
             this.environment = environment;
         }
 
@@ -41,7 +42,9 @@
         {
             services.AddSettings(this.configuration, out Settings settings)
                 .AddAntiforgery()
-                .AddDataAccess(settings.Connections[nameof(Etymology)])
+                .AddDataAccess(settings.Connections.TryGetValue(nameof(Etymology), out string connection) && !string.IsNullOrWhiteSpace(connection) 
+                    ? connection 
+                    : this.configuration.GetSection(nameof(Etymology)).Value) // Environment variable.
                 .AddResponseCaching()
                 .AddCharacterCache()
                 .AddLogging(loggingBuilder =>

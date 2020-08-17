@@ -15,6 +15,8 @@
     [TestClass]
     public class EtymologyContextTests
     {
+        private static DbContextOptions<EtymologyContext> contextOptions;
+
         [TestMethod]
         public async Task AnalyzeAsyncTest()
         {
@@ -123,16 +125,24 @@
 
         internal static EtymologyContext CreateDatabase()
         {
-            IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("settings.json")
-                .AddJsonFile($"settings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
-                .Build();
-            Settings settings = configuration.Get<Settings>();
-            return new EtymologyContext(new DbContextOptionsBuilder<EtymologyContext>().UseSqlServer(
-                settings.Connections[nameof(Etymology)],
-                options => options
-                    .EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30),
-                        errorNumbersToAdd: null)).Options);
+            if (contextOptions == null)
+            {
+                IConfiguration configuration = new ConfigurationBuilder()
+                    .AddJsonFile("settings.json")
+                    .AddJsonFile($"settings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
+                        optional: true)
+                    .Build();
+                Settings settings = configuration.Get<Settings>();
+                contextOptions = new DbContextOptionsBuilder<EtymologyContext>()
+                    .UseSqlServer(
+                        settings.Connections.TryGetValue(nameof(Etymology), out string connection) && !string.IsNullOrWhiteSpace(connection)
+                            ? connection
+                            : Environment.GetEnvironmentVariable(nameof(Etymology)) ?? throw new InvalidOperationException("Failed to get connection string."),
+                        options => options.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null))
+                    .Options;
+            }
+
+            return new EtymologyContext(contextOptions);
         }
     }
 }
