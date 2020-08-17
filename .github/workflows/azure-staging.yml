@@ -15,21 +15,26 @@ jobs:
     steps:
     - uses: actions/checkout@master
       
-    - name: Setup Node.js environment
+    - name: Setup Node.js
       uses: actions/setup-node@v2.1.1
 
-    - name: Set up .NET Core
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.102'
 
-    - name: Build with dotnet
+    - name: Build
       run: dotnet build --configuration Release
+    
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+      env:
+        Etymology: ${{ secrets.Etymology }}
 
-    - name: dotnet publish
+    - name: Publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-    - name: Deploy to Azure Web App
+    - name: Deploy
       uses: azure/webapps-deploy@v1
       with:
         app-name: 'etymology-staging'
