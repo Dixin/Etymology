@@ -1,5 +1,5 @@
 ---
-title: Why I Study Chinese Etymology
+title: Why Study Chinese Etymology
 ---
 
 Richard Sears
