@@ -1,6 +1,5 @@
 ﻿namespace Etymology.Web.Server
 {
-    using System;
     using System.IO;
     using System.Text;
     using Etymology.Data.Cache;

@@ -98,7 +98,7 @@
             IHeaderDictionary headers = request.Headers;
             if (!headers.TryGetValue("Referer", out StringValues rawReferrer))
             {
-                return (false, $"Header's referrer is missing.");
+                return (false, "Header's referrer is missing.");
             }
 
             string referrer = rawReferrer.ToString();

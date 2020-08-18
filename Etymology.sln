@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{CC291496-B132-4AE8-BB36-CC0B59B7CAA6}"
 	ProjectSection(SolutionItems) = preProject
 		docs\_config.yml = docs\_config.yml
+		docs\index.md = docs\index.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_posts", "_posts", "{53EE1C43-2F6F-4464-A93D-9FDEB94764D9}"

@@ -69,7 +69,7 @@
                 // length must be 2.
                 if (length != 2)
                 {
-                    return (new ArgumentException(argument, "Input is a single surrogate character and missing another character in the pair."), false);
+                    return (new ArgumentException("Input is a single surrogate character and missing another character in the pair.", argument), false);
                 }
             }
             else
