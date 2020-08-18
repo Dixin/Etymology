@@ -2,7 +2,7 @@
   "name": "Chinese Etymology 字源",
   "short_name": "字源",
   "lang": "zh",
-  "start_url": "https://hanziyuan.net",
+  "start_url": "//hanziyuan.net",
   "display": "standalone",
   "background_color": "#000000",
   "description": "Chinese Etymology 字源, Chinese character history and ancient Chinese character (Oracle characters, Bronze characters, Seal characters, Shuowen Jiezi, Liushutong) analysis and research 汉字历史和古汉字(甲骨文, 金文, 篆字, 说文解字, 六书通)研究与分析. Search 100K+ ancient Chinese characters and etymology. 查询10万+古汉字和字源.",
