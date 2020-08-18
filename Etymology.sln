@@ -26,12 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_posts", "_posts", "{53EE1C
 		docs\_posts\2018-04-23-simplification-of-chinese-character.md = docs\_posts\2018-04-23-simplification-of-chinese-character.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_layouts", "_layouts", "{34D1750B-F418-4911-96C1-EB025084D328}"
-	ProjectSection(SolutionItems) = preProject
-		docs\_layouts\default.html = docs\_layouts\default.html
-		docs\_layouts\post.html = docs\_layouts\post.html
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BF1CDA83-FF92-45D9-A84A-50822A37887A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -95,7 +89,6 @@ Global
 		{067FEF43-B8EE-495C-AED5-C9FAEA45456F} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
 		{4FD2F94A-D8B9-488E-8068-D31148ABA50C} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
 		{53EE1C43-2F6F-4464-A93D-9FDEB94764D9} = {CC291496-B132-4AE8-BB36-CC0B59B7CAA6}
-		{34D1750B-F418-4911-96C1-EB025084D328} = {CC291496-B132-4AE8-BB36-CC0B59B7CAA6}
 		{11B2B287-3690-47A2-B2C9-BCA644A4F477} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
 		{A59BA1E1-7EB9-44C1-A61F-083B6B9F4CA2} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
 		{F11A3AC2-9F77-4F7D-9729-F2AA39848641} = {DB296004-0FF7-4FB5-8F9C-9DAD3630A5E1}
