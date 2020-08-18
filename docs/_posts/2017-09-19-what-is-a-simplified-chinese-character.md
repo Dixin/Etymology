@@ -1,7 +1,8 @@
 ---
-layout: post
 title: What is a Simplified Chinese Character
 ---
+
+Richard Sears
 
 # What is a Simplified Chinese Character
 

@@ -1,7 +1,8 @@
 ---
-layout: post
 title: What is a Traditional Chinese Character
 ---
+
+Richard Sears
 
 # What is a Traditional Chinese Character?
 

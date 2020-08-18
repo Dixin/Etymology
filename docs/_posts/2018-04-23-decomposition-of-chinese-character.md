@@ -1,7 +1,8 @@
 ---
-layout: post
 title: Decompisition of Chinese Characters
 ---
+
+Richard Sears
 
 # Decompisition of Chinese Characters
 We would like to trace the evolution of the components of any modern character back to its original logical components. 

@@ -1,18 +1,23 @@
 ---
-layout: post
 title: Spoken Chinese and Other Languages
 ---
+
+Richard Sears
 
 # Spoken Chinese and Other Languages
 
 ## Table of Contents
 
-- [Mandarin Language and Script](#mandarin-language-and-script)
-- [Taiwanese Language and Script](#taiwanese-language-and-script)
-- [Cantonese Language and Characters](#cantonese-language-and-characters)
-- [Japanese Language and Script](#japanese-language-and-script)
-- [Korean Language and Script](#korean-language-and-script)
-- [Vietnamese Language and Script](#vietnamese-language-and-script)
+- [Spoken Chinese and Other Languages](#spoken-chinese-and-other-languages)
+  - [Table of Contents](#table-of-contents)
+  - [Mandarin Language and Script](#mandarin-language-and-script)
+  - [Taiwanese Language and Script](#taiwanese-language-and-script)
+    - [Book References:](#book-references)
+  - [Cantonese Language and Characters](#cantonese-language-and-characters)
+    - [Book References:](#book-references-1)
+  - [Japanese Language and Script](#japanese-language-and-script)
+  - [Korean Language and Script](#korean-language-and-script)
+  - [Vietnamese Language and Script](#vietnamese-language-and-script)
 
 ## Mandarin Language and Script
 

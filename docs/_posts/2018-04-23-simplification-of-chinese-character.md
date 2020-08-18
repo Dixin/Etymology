@@ -1,7 +1,8 @@
 ---
-layout: post
 title: Simplification of Chinese Characters
 ---
+
+Richard Sears
 
 # Simplification of Chinese Characters
 

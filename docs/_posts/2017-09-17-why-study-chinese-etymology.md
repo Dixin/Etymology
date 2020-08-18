@@ -1,7 +1,8 @@
 ---
-layout: post
 title: Why Study Chinese Etymology
 ---
+
+Richard Sears
 
 # Why Study Chinese Etymology
 
@@ -13,19 +14,35 @@ There are literally thousands of references on this subject, most of them in Chi
 
 ## Table of Contents
 
-- [Pictographs and Ideographs](#pictographs-and-ideographs)
-- [Primitives and Remnants](#primitives-and-remnants)
-- [Meaning and Interpretation](#meaning-and-interpretation)
-- [Signific Abstraction](#signific-abstraction)
-- [Phonetics and Phonetic Shifts](#phonetics-and-phonetic-shifts)
-- [Chinese Derived Characters](#chinese-derived-characters)
-- [Modern Common Chinese Characters](#modern-common-chinese-characters)
-- [Modern Traditional Characters](#traditional-characters)
-- [Cursive and Super Cursive Chinese](#cursive-and-super-cursive-chinese)
-- [Modern Simplified Characters](#simplified-characters)
-- [Seal Characters - ZhuanTiZi 篆體字](#seal)
-- [Bronze Characters - JinWen 金文](#bronze)
-- [Oracle Characters - JiaGuWen 甲骨文](#oracle)
+- [Why Study Chinese Etymology](#why-study-chinese-etymology)
+  - [Table of Contents](#table-of-contents)
+  - [Pictographs and Ideographs](#pictographs-and-ideographs)
+  - [Primitives and Remnants](#primitives-and-remnants)
+  - [Meaning and Interpretation](#meaning-and-interpretation)
+  - [Signific Abstraction](#signific-abstraction)
+  - [Phonetics and Phonetic Shifts](#phonetics-and-phonetic-shifts)
+    - [Book References](#book-references)
+  - [Chinese Derived Characters](#chinese-derived-characters)
+  - [Modern Common Chinese Characters](#modern-common-chinese-characters)
+    - [Book References](#book-references-1)
+- [<a id="traditional-characters"></a>Traditional Chinese - FanTiZi 繁軆字 Modern Printed Chinese Since 200 AD](#traditional-chinese---fantizi-繁軆字-modern-printed-chinese-since-200-ad)
+    - [Book References](#book-references-2)
+  - [Cursive and Super Cursive Chinese](#cursive-and-super-cursive-chinese)
+    - [Book References](#book-references-3)
+  - [<a id="simplified-characters"></a>Simplified Chinese - JianTiZi 簡軆字](#simplified-chinese---jiantizi-簡軆字)
+    - [Reduction in character number](#reduction-in-character-number)
+    - [350 Unique Simplifications](#350-unique-simplifications)
+    - [132 Radical and Stand alone Simplifications](#132-radical-and-stand-alone-simplifications)
+    - [Simplest form of common alternates.](#simplest-form-of-common-alternates)
+    - [Un-simplified Characters](#un-simplified-characters)
+    - [1 to N simplification](#1-to-n-simplification)
+    - [Book References](#book-references-4)
+  - [<a id="seal">Seal Characters - ZhuanTiZi 篆體字 Chin-Han 秦漢 Dynasty Characters - 221 BC - 200 AD</a>](#seal-characters---zhuantizi-篆體字-chin-han-秦漢-dynasty-characters---221-bc---200-ad)
+    - [Book References](#book-references-5)
+  - [<a id="bronze"></a>Bronze Characters - JinWen 金文 Zhou 周 Dynasty Characters 1122 BC - 221 BC](#bronze-characters---jinwen-金文-zhou-周-dynasty-characters-1122-bc---221-bc)
+    - [Book References](#book-references-6)
+  - [<a id="oracle"></a>Oracle Characters - JiaGuWen 甲骨文 Shang 商 Dynasty 1766 BC to 1122 BC](#oracle-characters---jiaguwen-甲骨文-shang-商-dynasty-1766-bc-to-1122-bc)
+    - [Book References](#book-references-7)
 
 ## Pictographs and Ideographs
 
