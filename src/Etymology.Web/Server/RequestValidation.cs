@@ -23,20 +23,18 @@
 
         private const string HeaderName = nameof(Seal);
 
-        private const SameSiteMode CookieSameSiteMode = SameSiteMode.Strict;
-
         internal static MvcOptions AddAntiforgery(this MvcOptions options)
         {
             options.Filters.Add(new ValidateAntiForgeryTokenAttribute());
             return options;
         }
 
-        internal static IServiceCollection AddAntiforgery(this IServiceCollection services) =>
+        internal static IServiceCollection AddAntiforgery(this IServiceCollection services, Settings settings) =>
             services.AddAntiforgery(options =>
             {
                 options.Cookie.Name = CookieName;
                 options.Cookie.HttpOnly = false;
-                options.Cookie.SameSite = CookieSameSiteMode; // Default same site mode is Lax, which make the cookie not readable in 360 browser.
+                options.Cookie.SameSite = settings.SameSiteMode; // Default same site mode is Lax, which make the cookie not readable in 360 browser.
                 options.FormFieldName = FormFieldName;
                 options.HeaderName = HeaderName;
             });
@@ -48,15 +46,15 @@
                     try
                     {
                         string path = request.Path.Value;
-                        if (settings.IndexPageUrls.Contains(path, StringComparer.OrdinalIgnoreCase))
+                        if (settings.IndexPagePaths.Contains(path, StringComparer.OrdinalIgnoreCase))
                         {
                             // Requesting index page.
-                            antiforgery.SendTokenToContext(context);
+                            antiforgery.SendTokenToContext(context, settings);
                         }
                         else
                         {
                             // Not requesting index page.
-                            if (!settings.ExposedPaths.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+                            if (!settings.PublicPaths.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
                             {
                                 (bool isValid, string message) = request.IsValid(settings);
                                 if (!isValid)
@@ -83,13 +81,13 @@
                     }
                 });
 
-        private static void SendTokenToContext(this IAntiforgery antiforgery, HttpContext context)
+        private static void SendTokenToContext(this IAntiforgery antiforgery, HttpContext context, Settings settings)
         {
             AntiforgeryTokenSet tokens = antiforgery.GetAndStoreTokens(context);
             context.Response.Cookies.Append(
                 tokens.FormFieldName,
                 tokens.RequestToken,
-                new CookieOptions() { HttpOnly = false, SameSite = CookieSameSiteMode, Secure = true }); // Default same site mode is Lax, which make the cookie not readable in 360 browser.
+                new CookieOptions() { HttpOnly = false, SameSite = settings.SameSiteMode, Secure = settings.IsHttpsOnly }); // Default same site mode is Lax, which make the cookie not readable in 360 browser.
         }
 
         private static (bool IsValid, string Message) IsValid(this HttpRequest request, Settings settings)

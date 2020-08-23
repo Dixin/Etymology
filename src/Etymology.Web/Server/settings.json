@@ -1,15 +1,20 @@
 ﻿{
+  "AllowedHosts": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net", "etymology-staging.azurewebsites.net", "localhost", "127.0.0.1" ],
+  "Connections": {
+    "Etymology": ""
+  },
+  "ErrorPagePath": "/error",
+  "IndexPagePaths": [ "/", "/index.htm" ],
+  "IsHttpsOnly": false,
   "Logging": {
     "IncludeScopes": false,
     "LogLevel": {
       "Default": "Warning"
     }
   },
-  "ImageCache": "Contents/Images",
-  "Connections": {
-    "Etymology": ""
+  "PublicPaths": [ "/error", "/images", "/js", "/css", "/fonts", "/browserconfig.xml", "/manifest.json", "/favicon.ico", "/robots.txt", "/apple-touch-icon-precomposed.png", "/apple-touch-icon.png", "/apple-touch-icon-120x120-precomposed.png", "/apple-touch-icon-120x120.png", "/apple-touch-icon-152x152-precomposed.png", "/apple-touch-icon-152x152.png" ],
+  "Routes": {
+    "default": "{controller}/{action}"
   },
-  "AllowedHosts": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net", "etymology-staging.azurewebsites.net", "localhost", "127.0.0.1" ],
-  "IndexPageUrls": [ "/", "/index.htm" ],
-  "ExposedPaths": [ "/error", "/images", "/js", "/css", "/fonts", "/browserconfig.xml", "/manifest.json", "/favicon.ico", "/robots.txt", "/apple-touch-icon-precomposed.png", "/apple-touch-icon.png", "/apple-touch-icon-120x120-precomposed.png", "/apple-touch-icon-120x120.png", "/apple-touch-icon-152x152-precomposed.png", "/apple-touch-icon-152x152.png" ]
+  "SameSiteMode": "Strict"
 }

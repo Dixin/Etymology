@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using Etymology.Data.Cache;
     using Etymology.Data.Models;
@@ -45,8 +46,9 @@
 
         public void ConfigureServices(IServiceCollection services) // Container.
         {
-            services.AddSettings(this.configuration, out Settings settings)
-                .AddAntiforgery()
+            services
+                .AddSettings(this.configuration, out Settings settings)
+                .AddAntiforgery(settings)
                 .AddDataAccess(settings.Connections.TryGetValue(nameof(Etymology), out string? connection) && !string.IsNullOrWhiteSpace(connection)
                     ? connection
                     : this.configuration.GetSection(nameof(Etymology)).Value) // Environment variable.
@@ -70,7 +72,7 @@
 
             services.AddRazorPages().AddRazorRuntimeCompilation();
 
-            if (this.environment.IsProduction())
+            if (settings.IsHttpsOnly)
             {
                 services.AddHttpsRedirection(options => options.HttpsPort = 443);
             }
@@ -90,17 +92,27 @@
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
+            if (settings is null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
             if (this.environment.IsProduction())
             {
                 application
-                    .UseExceptionHandler("/error")
-                    .UseStatusCodePagesWithReExecute("/error")
-                    .UseHsts()
-                    .UseHttpsRedirection();
+                    .UseExceptionHandler(settings.ErrorPagePath)
+                    .UseStatusCodePagesWithReExecute(settings.ErrorPagePath);
             }
             else
             {
                 application.UseDeveloperExceptionPage().UseBrowserLink();
+            }
+
+            if (settings.IsHttpsOnly)
+            {
+                application
+                    .UseHsts()
+                    .UseHttpsRedirection();
             }
 
             application
@@ -112,7 +124,7 @@
                 })
                 .UseResponseCaching()
                 .UseRouting()
-                .UseEndpoints(endpoints => endpoints.MapControllerRoute("default", "{controller}/{action}"))
+                .UseEndpoints(endpoints => settings.Routes.ForEach(route => endpoints.MapControllerRoute(route.Key, route.Value)))
                 .UseHostFiltering();
 
             // Add support for GB18030.
