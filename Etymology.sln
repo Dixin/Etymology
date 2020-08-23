@@ -30,9 +30,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BF1CDA83-FF92-45D9-A84A-50822A37887A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Analyzers.props = Analyzers.props
+		Analyzers.ruleset = Analyzers.ruleset
 		appveyor.yml = appveyor.yml
 		Etymology.sln.DotSettings = Etymology.sln.DotSettings
 		README.md = README.md
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Etymology.Tool", "src\Etymology.Tool\Etymology.Tool.csproj", "{11B2B287-3690-47A2-B2C9-BCA644A4F477}"

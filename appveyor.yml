@@ -16,7 +16,7 @@ dotnet_csproj:
   informational_version: '{version}'
 environment:
   Etymology:
-    secure: EXqa8qHo22jd/nq17/myGbk077tkDDe22+jT/Jxl1SBNTkWct5r/PY1QgSporP57WTQX34qcPp6fMfcQvo/biux+eZeL9X76KQDg5wQstdvOhH9asGVVF70Mq5YwSDQJarvxs0vQXt4gi52WK68EIYfCDE3jf+dAjeUBbXP9ZlqvzpojUC7cw9/Ee84w7ppMPCbVu3daB8r57QmfdEHQK6p3B7mVcJr4RPe+KuKXSgsw2aa6yPNFsBoh0towBlTM5CJ3GHx4tI2n54PKpA5HHGkHlVR7LZl2d6t+vDG3v3YNiiYWy6dfYnzVJgzpOxJ6
+    secure: EXqa8qHo22jd/nq17/myGbk077tkDDe22+jT/Jxl1SBNTkWct5r/PY1QgSporP57OD1X5saev6hfDQHy4ZjU9F4C/m8/Sf2IFzSNaeHE/fsAxpe8UmuvXFZ4Suzh8/54GlWd/8wV9PPTaIVyf0bLdLjVexbqw2+Nttv6ycu/CBzsUz/SLSR4BdmLzZtmk/IwvnUgkyLWaS91S41DnwRunZ1a2us5WFWBOB164C3QbWbDQNopjcGjQnFe6zc9eVwwx62FzGjqAegtudV7ly3vY6l4ol0N+KQVedFles3w7w3lg6+62AXAAbno7zif0sqTdPY7I9exVEoNd1uxndUUKA==
   APPVEYOR_RDP_PASSWORD:
     secure: aii6TuA5V1pzlqRiUOXyTQ==
   ASPNETCORE_ENVIRONMENT: Staging
