@@ -55,7 +55,7 @@
         [TestMethod]
         public async Task AnalyzeAsyncErrorTest()
         {
-            IEnumerable<Task> testTasks = ChineseTests.InvalidCharacters.Select(async item =>
+            IEnumerable<Task> testTasks = ChineseTests.NonChineseCharacters.Select(async item =>
             {
                 EtymologyController controller = CreateController();
                 try
@@ -70,16 +70,14 @@
                 }
 
                 Trace.WriteLine(item);
-#pragma warning disable CS8604 // Possible null reference argument.
 #if DEBUG
-                BadRequestObjectResult badRequest = (await controller.AnalyzeAsync(item) as BadRequestObjectResult)!;
+                BadRequestObjectResult badRequest = (BadRequestObjectResult)await controller.AnalyzeAsync(item!);
 #else
-                BadRequestResult badRequest = await controller.AnalyzeAsync(item) as BadRequestResult;
+                BadRequestResult badRequest = (BadRequestResult)await controller.AnalyzeAsync(item!);
 #endif
-#pragma warning restore CS8604 // Possible null reference argument.
                 Assert.IsNotNull(badRequest);
 #if DEBUG
-                Assert.IsInstanceOfType(badRequest!.Value, typeof(ArgumentException));
+                Assert.IsInstanceOfType(badRequest.Value, typeof(ArgumentException));
 #endif
                 Assert.AreEqual((int)HttpStatusCode.BadRequest, badRequest.StatusCode);
             });
@@ -95,12 +93,12 @@
                 new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions())),
                 new CharacterCache(EtymologyContextTests.CreateDatabase()))
 #pragma warning restore CA2000 // Dispose objects before losing scope
-                {
+            {
                 ControllerContext = new ControllerContext()
-                    {
-                        HttpContext = new DefaultHttpContext(),
-                    },
-                };
+                {
+                    HttpContext = new DefaultHttpContext(),
+                },
+            };
         }
     }
 }

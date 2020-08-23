@@ -35,7 +35,7 @@
             ("2B8B8", "𫢸"),
         };
 
-        internal static readonly string?[] InvalidCharacters =
+        internal static readonly string?[] NonChineseCharacters =
         {
             null, string.Empty, " ", "  ", ".", "@", "a", "A", "1", "𠀀".Substring(0, 1),
         };
@@ -50,7 +50,7 @@
         {
             ChineseCharacters.ForEach(item => Assert.IsNull(ValidateSingleChineseCharacter(item.Text).Exception));
 
-            InvalidCharacters.ForEach(item => Assert.IsNotNull(ValidateSingleChineseCharacter(item).Exception));
+            NonChineseCharacters.ForEach(item => Assert.IsNotNull(ValidateSingleChineseCharacter(item).Exception));
         }
 
         [TestMethod]
