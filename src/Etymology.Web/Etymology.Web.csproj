@@ -34,6 +34,6 @@
     <Exec Command="npm install&#xD;&#xA;npm run build$(Configuration)" />
   </Target>
 
-  <Import Project="$(SolutionDir)Analyzers.props" />
+  <Import Project="..\..\Analyzers.props" />
 
 </Project>

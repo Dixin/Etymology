@@ -21,6 +21,6 @@
     <ProjectReference Include="..\Etymology.Data\Etymology.Data.csproj" />
   </ItemGroup>
 
-  <Import Project="$(SolutionDir)Analyzers.props" />
+  <Import Project="..\..\Analyzers.props" />
 
 </Project>

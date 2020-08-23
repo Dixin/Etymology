@@ -38,6 +38,6 @@
     <ProjectReference Include="..\Etymology.Web\Etymology.Web.csproj" />
   </ItemGroup>
 
-  <Import Project="$(SolutionDir)Analyzers.props" />
+  <Import Project="..\..\Analyzers.props" />
 
 </Project>

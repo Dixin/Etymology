@@ -9,6 +9,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.7" />
   </ItemGroup>
 
-  <Import Project="$(SolutionDir)Analyzers.props" />
+  <Import Project="..\..\Analyzers.props" />
 
 </Project>
