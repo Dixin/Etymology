@@ -32,12 +32,12 @@
             ("F900", "豈"),
             ("FE3D", "︽"),
             ("FF6C", "ｬ"),
-            ("2B8B8", "𫢸")
+            ("2B8B8", "𫢸"),
         };
 
-        internal static readonly List<string> OtherCharacters = new List<string>()
+        internal static readonly string?[] InvalidCharacters =
         {
-            null, string.Empty, " ", "  ", ".", "@", "a", "A", "1", "𠀀".Substring(0, 1)
+            null, string.Empty, " ", "  ", ".", "@", "a", "A", "1", "𠀀".Substring(0, 1),
         };
 
         static ChineseTests()
@@ -50,7 +50,7 @@
         {
             ChineseCharacters.ForEach(item => Assert.IsNull(ValidateSingleChineseCharacter(item.Text).Exception));
 
-            OtherCharacters.ForEach(item => Assert.IsNotNull(ValidateSingleChineseCharacter(item).Exception));
+            InvalidCharacters.ForEach(item => Assert.IsNotNull(ValidateSingleChineseCharacter(item).Exception));
         }
 
         [TestMethod]

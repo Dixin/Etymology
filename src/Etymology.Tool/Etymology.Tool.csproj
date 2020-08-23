@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,5 +20,7 @@
     <ProjectReference Include="..\Etymology.Common\Etymology.Common.csproj" />
     <ProjectReference Include="..\Etymology.Data\Etymology.Data.csproj" />
   </ItemGroup>
+
+  <Import Project="$(SolutionDir)Analyzers.props" />
 
 </Project>

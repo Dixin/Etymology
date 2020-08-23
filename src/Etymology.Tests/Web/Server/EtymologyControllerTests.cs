@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -23,31 +24,14 @@
     [TestClass]
     public class EtymologyControllerTests
     {
-        private static EtymologyController CreateController()
-        {
-            CharacterCache characterCache = new CharacterCache();
-            characterCache.Initialize(EtymologyContextTests.CreateDatabase()).Wait();
-            return new EtymologyController(
-                EtymologyContextTests.CreateDatabase(),
-                new NullLogger<EtymologyController>(),
-                new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions())),
-                characterCache)
-                {
-                    ControllerContext = new ControllerContext()
-                        {
-                            HttpContext = new DefaultHttpContext()
-                        }
-                };
-        }
-
         [TestMethod]
         public async Task AnalyzeAsyncTest()
         {
             IEnumerable<Task> testTasks = ChineseTests.ChineseCharacters.Select(async item =>
             {
                 EtymologyController controller = CreateController();
-                controller.ControllerContext.HttpContext.Request.Headers.Add(nameof(Chinese), new StringValues(char.ConvertToUtf32(item.Text, 0).ToString("D")));
-                ViewResult view;
+                controller.ControllerContext.HttpContext.Request.Headers.Add(nameof(Chinese), new StringValues(char.ConvertToUtf32(item.Text, 0).ToString("D", CultureInfo.InvariantCulture)));
+                ViewResult? view;
                 try
                 {
                     view = await controller.AnalyzeAsync(item.Text) as ViewResult;
@@ -57,9 +41,10 @@
                     Trace.WriteLine(exception);
                     throw;
                 }
+
                 Assert.IsNotNull(view);
-                Assert.IsInstanceOfType(view.Model, typeof((string, TimeSpan, AnalyzeResult[])));
-                var (chinese, duration, results) = ((string, TimeSpan, AnalyzeResult[]))view.Model;
+                Assert.IsInstanceOfType(view!.Model, typeof((string, TimeSpan, AnalyzeResult[])));
+                (string chinese, TimeSpan duration, AnalyzeResult[] results) = ((string, TimeSpan, AnalyzeResult[]))view.Model;
                 Assert.AreEqual(item.Text, chinese);
                 Assert.IsTrue(duration > TimeSpan.Zero);
                 Assert.IsNotNull(results);
@@ -70,31 +55,52 @@
         [TestMethod]
         public async Task AnalyzeAsyncErrorTest()
         {
-            IEnumerable<Task> testTasks = ChineseTests.OtherCharacters.Select(async item =>
+            IEnumerable<Task> testTasks = ChineseTests.InvalidCharacters.Select(async item =>
             {
                 EtymologyController controller = CreateController();
                 try
                 {
-                    controller.ControllerContext.HttpContext.Request.Headers.Add(nameof(Chinese), new StringValues(char.ConvertToUtf32(item, 0).ToString("D")));
+#pragma warning disable CS8604 // Possible null reference argument.
+                    controller.ControllerContext.HttpContext.Request.Headers.Add(nameof(Chinese), new StringValues(char.ConvertToUtf32(item, 0).ToString("D", CultureInfo.InvariantCulture)));
+#pragma warning restore CS8604 // Possible null reference argument.
                 }
-                catch (Exception exception)
+                catch (Exception exception) when (exception.IsNotCritical())
                 {
                     Trace.WriteLine(exception);
                 }
 
                 Trace.WriteLine(item);
+#pragma warning disable CS8604 // Possible null reference argument.
 #if DEBUG
-                BadRequestObjectResult badRequest = await controller.AnalyzeAsync(item) as BadRequestObjectResult;
+                BadRequestObjectResult badRequest = (await controller.AnalyzeAsync(item) as BadRequestObjectResult)!;
 #else
                 BadRequestResult badRequest = await controller.AnalyzeAsync(item) as BadRequestResult;
 #endif
+#pragma warning restore CS8604 // Possible null reference argument.
                 Assert.IsNotNull(badRequest);
 #if DEBUG
-                Assert.IsInstanceOfType(badRequest.Value, typeof(ArgumentException));
+                Assert.IsInstanceOfType(badRequest!.Value, typeof(ArgumentException));
 #endif
                 Assert.AreEqual((int)HttpStatusCode.BadRequest, badRequest.StatusCode);
             });
             await Task.WhenAll(testTasks);
+        }
+
+        private static EtymologyController CreateController()
+        {
+            return new EtymologyController(
+#pragma warning disable CA2000 // Dispose objects before losing scope
+                EtymologyContextTests.CreateDatabase(),
+                new NullLogger<EtymologyController>(),
+                new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions())),
+                new CharacterCache(EtymologyContextTests.CreateDatabase()))
+#pragma warning restore CA2000 // Dispose objects before losing scope
+                {
+                ControllerContext = new ControllerContext()
+                    {
+                        HttpContext = new DefaultHttpContext(),
+                    },
+                };
         }
     }
 }

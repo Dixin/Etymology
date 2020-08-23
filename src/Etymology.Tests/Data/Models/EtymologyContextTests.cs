@@ -15,19 +15,18 @@
     [TestClass]
     public class EtymologyContextTests
     {
-        private static DbContextOptions<EtymologyContext> contextOptions;
+        private static DbContextOptions<EtymologyContext>? contextOptions;
 
         [TestMethod]
         public async Task AnalyzeAsyncTest()
         {
             await using EtymologyContext database = CreateDatabase();
             const string Chinese = "车";
-            CharacterCache characterCache = new CharacterCache();
-            await characterCache.Initialize(database);
+            CharacterCache characterCache = new CharacterCache(database);
             IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(Chinese, 0));
             AnalyzeResult[] results = await database.AnalyzeAsync(Chinese, allTraditional);
             Assert.AreEqual(1, results.Length);
-            var (queriedChinese, etymology, oracles, bronzes, seals, liushutongs) = results.Single();
+            (string? queriedChinese, Etymology? etymology, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs) = results.Single();
             Assert.AreEqual(Chinese, queriedChinese);
             Assert.IsNotNull(etymology);
             Assert.IsNotNull(etymology);
@@ -43,16 +42,15 @@
             Assert.IsNotNull(liushutongs);
             Assert.IsTrue(liushutongs.Any());
             Assert.IsNotNull(liushutongs.First());
-            Trace.WriteLine($"{Chinese} {oracles.Length} {bronzes.Length} {seals.Length} {liushutongs.Length}");
+            Trace.WriteLine($"{Chinese} {oracles.Count} {bronzes.Count} {seals.Count} {liushutongs.Count}");
         }
 
         [TestMethod]
         [Ignore]
         public void AnalyzeAllImagesTest()
         {
-            Etymology[] etymologies;
             using EtymologyContext database = CreateDatabase();
-            etymologies = database.Etymology
+            Etymology[] etymologies = database.Etymology
                 .Where(entity =>
                     database.Oracle.Any(character => character.Traditional == entity.Traditional && character.ImageVectorBase64 != null)
                     && database.Bronze.Any(character => character.Traditional == entity.Traditional && character.ImageVectorBase64 != null)
@@ -70,14 +68,13 @@
         {
             await using EtymologyContext database = CreateDatabase();
             const string ExtensionB = "𠂇";
-            CharacterCache characterCache = new CharacterCache();
-            await characterCache.Initialize(database);
+            CharacterCache characterCache = new CharacterCache(database);
             IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(ExtensionB, 0));
-            var (chinese, etymology, oracles, bronzes, seals, liushutongs) = (await database.AnalyzeAsync(ExtensionB, allTraditional)).Single();
+            (string chinese, Etymology etymology, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs) = (await database.AnalyzeAsync(ExtensionB, allTraditional)).Single();
             Assert.IsNotNull(etymology);
             Assert.IsNotNull(etymology);
             Assert.AreEqual(ExtensionB, etymology.Traditional);
-            Trace.WriteLine($"{chinese} {oracles.Length} {bronzes.Length} {seals.Length} {liushutongs.Length}");
+            Trace.WriteLine($"{chinese} {oracles.Count} {bronzes.Count} {seals.Count} {liushutongs.Count}");
         }
 
         [TestMethod]
@@ -90,14 +87,13 @@
                 .Select(chinese =>
                 {
                     using EtymologyContext database = CreateDatabase();
-                    CharacterCache characterCache = new CharacterCache();
-                    characterCache.Initialize(database).Wait();
+                    CharacterCache characterCache = new CharacterCache(database);
                     IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(new string(chinese, 1), 0));
                     return (chinese, database.AnalyzeAsync(new string(chinese, 1), allTraditional).Result);
                 })
                 .Where(item =>
                 {
-                    var (text, results) = item;
+                    (char text, AnalyzeResult[] results) = item;
                     if (!results.Any())
                     {
                         Trace.WriteLine($"Error: {text}");
@@ -106,7 +102,7 @@
 
                     bool hasCharacters = results.Any(result =>
                     {
-                        var (_, etymology, oracles, bronzes, seals, liushutongs) = result;
+                        (_, Etymology etymology, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs) = result;
                         return etymology != null && etymology.HasSimplified() && oracles.Any() && bronzes.Any() && seals.Any() && liushutongs.Any();
                     });
                     if (!hasCharacters)
@@ -127,13 +123,12 @@
             {
                 IConfiguration configuration = new ConfigurationBuilder()
                     .AddJsonFile("settings.json")
-                    .AddJsonFile($"settings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
-                        optional: true)
+                    .AddJsonFile($"settings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
                     .Build();
                 Settings settings = configuration.Get<Settings>();
                 contextOptions = new DbContextOptionsBuilder<EtymologyContext>()
                     .UseSqlServer(
-                        settings.Connections.TryGetValue(nameof(Etymology), out string connection) && !string.IsNullOrWhiteSpace(connection)
+                        settings.Connections.TryGetValue(nameof(Etymology), out string? connection) && !string.IsNullOrWhiteSpace(connection)
                             ? connection
                             : Environment.GetEnvironmentVariable(nameof(Etymology)) ?? throw new InvalidOperationException("Failed to get connection string."),
                         options => options.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null))

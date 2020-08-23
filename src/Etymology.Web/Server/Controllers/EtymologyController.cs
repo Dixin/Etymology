@@ -35,7 +35,7 @@
         [ResponseCache(NoStore = true)]
         public async Task<IActionResult> AnalyzeAsync(string chinese)
         {
-            (Exception inputException, _) = Chinese.ValidateSingleChineseCharacter(chinese, nameof(chinese));
+            (Exception? inputException, _) = Chinese.ValidateSingleChineseCharacter(chinese, nameof(chinese));
             if (inputException != null)
             {
                 this.logger.LogWarning("Received {chinese} is invalid. {message}", chinese, inputException.Message);
@@ -80,7 +80,7 @@
             }
             catch (Exception exception) when (exception.LogErrorWith(this.logger, "Database query fails for {chinese}.", chinese))
             {
-                return null; // Never execute because LogErrorWith returns false.
+                return new EmptyResult(); // Never execute because LogErrorWith returns false.
             }
             finally
             {

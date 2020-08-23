@@ -1,11 +1,12 @@
-﻿namespace Etymology.Data.Models
+﻿#nullable enable
+namespace Etymology.Data.Models
 {
     using System;
+    using System.Collections.Generic;
 
     public class AnalyzeResult
     {
-        public AnalyzeResult(string chinese, Etymology etymologies, Oracle[] oracles, Bronze[] bronzes,
-            Seal[] seals, Liushutong[] liushutongs)
+        public AnalyzeResult(string chinese, Etymology etymologies, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs)
         {
             this.Chinese = chinese;
             this.Etymology = etymologies ?? throw new ArgumentNullException(nameof(etymologies));
@@ -13,24 +14,24 @@
             this.Bronzes = bronzes ?? throw new ArgumentNullException(nameof(bronzes));
             this.Seals = seals ?? throw new ArgumentNullException(nameof(seals));
             this.Liushutongs = liushutongs ?? throw new ArgumentNullException(nameof(liushutongs));
-            this.CharacterCount = oracles.Length + bronzes.Length + seals.Length + liushutongs.Length;
+            this.CharacterCount = oracles.Count + bronzes.Count + seals.Count + liushutongs.Count;
         }
 
         public string Chinese { get; }
 
         public Etymology Etymology { get; }
 
-        public Oracle[] Oracles { get; }
+        public IList<Oracle> Oracles { get; }
 
-        public Bronze[] Bronzes { get; }
+        public IList<Bronze> Bronzes { get; }
 
-        public Seal[] Seals { get; }
+        public IList<Seal> Seals { get; }
 
-        public Liushutong[] Liushutongs { get; }
+        public IList<Liushutong> Liushutongs { get; }
 
         public int CharacterCount { get; }
 
-        public void Deconstruct(out string chinese, out Etymology etymologies, out Oracle[] oracles, out Bronze[] bronzes, out Seal[] seals, out Liushutong[] liushutongs)
+        public void Deconstruct(out string chinese, out Etymology etymologies, out IList<Oracle> oracles, out IList<Bronze> bronzes, out IList<Seal> seals, out IList<Liushutong> liushutongs)
         {
             chinese = this.Chinese;
             etymologies = this.Etymology;

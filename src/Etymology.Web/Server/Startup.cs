@@ -1,5 +1,6 @@
 ﻿namespace Etymology.Web.Server
 {
+    using System;
     using System.IO;
     using System.Text;
     using Etymology.Data.Cache;
@@ -23,6 +24,11 @@
 
         public Startup(IWebHostEnvironment environment)
         {
+            if (environment is null)
+            {
+                throw new ArgumentNullException(nameof(environment));
+            }
+
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
                 .AddJsonFile(Path.Combine(Server, "settings.json"), optional: false, reloadOnChange: true)
@@ -41,8 +47,8 @@
         {
             services.AddSettings(this.configuration, out Settings settings)
                 .AddAntiforgery()
-                .AddDataAccess(settings.Connections.TryGetValue(nameof(Etymology), out string connection) && !string.IsNullOrWhiteSpace(connection) 
-                    ? connection 
+                .AddDataAccess(settings.Connections.TryGetValue(nameof(Etymology), out string? connection) && !string.IsNullOrWhiteSpace(connection)
+                    ? connection
                     : this.configuration.GetSection(nameof(Etymology)).Value) // Environment variable.
                 .AddResponseCaching()
                 .AddCharacterCache()
@@ -60,7 +66,7 @@
                     }
                 })
                 .AddHostFiltering(hostFiltering => hostFiltering.AllowedHosts = settings.AllowedHosts)
-                .AddMvc(options => options.AddAntiforgery()); //services.AddControllersWithViews(options => options.AddAntiforgery());
+                .AddMvc(options => options.AddAntiforgery()); // services.AddControllersWithViews(options => options.AddAntiforgery());
 
             services.AddRazorPages().AddRazorRuntimeCompilation();
 
@@ -75,8 +81,15 @@
             }
         }
 
-        public void Configure(IApplicationBuilder application, ILoggerFactory loggerFactory, IAntiforgery antiforgery, Settings settings, EtymologyContext etymologyContext, ICharacterCache characterCache) // HTTP pipeline.
+        // Async Configure method is not supported by ASP.NET.
+        // https://github.com/aspnet/Hosting/issues/373
+        public void Configure(IApplicationBuilder application, ILoggerFactory loggerFactory, IAntiforgery antiforgery, Settings settings) // HTTP pipeline.
         {
+            if (loggerFactory is null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
             if (this.environment.IsProduction())
             {
                 application
@@ -95,16 +108,12 @@
                 .UseDefaultFiles()
                 .UseStaticFiles(new StaticFileOptions
                 {
-                    OnPrepareResponse = staticFileResponseContext => staticFileResponseContext.Context.Response.Headers[HeaderNames.CacheControl] = $"public,max-age={Cache.ClientCacheMaxAge}"
+                    OnPrepareResponse = staticFileResponseContext => staticFileResponseContext.Context.Response.Headers[HeaderNames.CacheControl] = $"public,max-age={Cache.ClientCacheMaxAge}",
                 })
                 .UseResponseCaching()
                 .UseRouting()
                 .UseEndpoints(endpoints => endpoints.MapControllerRoute("default", "{controller}/{action}"))
                 .UseHostFiltering();
-
-            characterCache.Initialize(etymologyContext).Wait();
-            // Async Configure method is not supported by ASP.NET.
-            // https://github.com/aspnet/Hosting/issues/373
 
             // Add support for GB18030.
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

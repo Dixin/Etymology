@@ -102,7 +102,7 @@
             }
 
             string referrer = rawReferrer.ToString();
-            if (!Uri.TryCreate(referrer, UriKind.Absolute, out Uri referrerUri))
+            if (!Uri.TryCreate(referrer, UriKind.Absolute, out Uri? referrerUri))
             {
                 return (false, $"Header's referrer {referrer} is not valid.");
             }
@@ -135,7 +135,7 @@
             return (true, string.Empty);
         }
 
-        private static string GetIPAddress(this HttpContext context) =>
+        private static string? GetIPAddress(this HttpContext context) =>
             context.Connection.RemoteIpAddress?.ToString()
             ?? context.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString()
             ?? (context.Request.Headers.TryGetValue("X-Forwarded-For", out StringValues forwarded) ? forwarded.ToString() : null)

@@ -1,4 +1,5 @@
-﻿namespace Etymology.Data.Models
+﻿#nullable enable
+namespace Etymology.Data.Models
 {
     using System;
     using Microsoft.EntityFrameworkCore;

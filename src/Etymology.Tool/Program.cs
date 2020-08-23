@@ -4,9 +4,9 @@
     using System.Linq;
     using CommandLine;
 
-    internal class Program
+    internal static class Program
     {
-        private static int Main(string[] args) => 
+        private static int Main(string[] args) =>
             Parser.Default.ParseArguments<SvgOptions, UnicodeOptions>(args).MapResult<SvgOptions, UnicodeOptions, int>(
                 Svg.Save,
                 Unicode.Convert,

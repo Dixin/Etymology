@@ -1,8 +1,10 @@
-﻿namespace Etymology.Data.Models
+﻿#nullable enable
+namespace Etymology.Data.Models
 {
     using System;
     using System.Data.Common;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -103,29 +105,29 @@
                 {
                     etymologies.Add(new Etymology()
                     {
-                        Simplified = reader.ToNullableAndTrim(nameof(Models.Etymology.Simplified)),
-                        Traditional = reader.ToNullableAndTrim(nameof(Models.Etymology.Traditional)),
-                        OldTraditional = reader.ToNullableAndTrim(nameof(Models.Etymology.OldTraditional)),
-                        Pinyin = reader.ToNullableAndTrim(nameof(Models.Etymology.Pinyin)),
-                        Index8105 = reader.ToNullableAndTrim(nameof(Models.Etymology.Index8105)),
-                        SimplificationRule = reader.ToNullableAndTrim(nameof(Models.Etymology.SimplificationRule)),
-                        SimplificationClarified = reader.ToNullableAndTrim(nameof(Models.Etymology.SimplificationClarified)),
-                        VariantRule = reader.ToNullableAndTrim(nameof(Models.Etymology.VariantRule)),
-                        VariantClarified = reader.ToNullableAndTrim(nameof(Models.Etymology.VariantClarified)),
-                        AppliedRule = reader.ToNullableAndTrim(nameof(Models.Etymology.AppliedRule)),
-                        FontRule = reader.ToNullableAndTrim(nameof(Models.Etymology.FontRule)),
-                        Decomposition = reader.ToNullableAndTrim(nameof(Models.Etymology.Decomposition)),
-                        DecompositionClarified = reader.ToNullableAndTrim(nameof(Models.Etymology.DecompositionClarified)),
-                        OriginalMeaning = reader.ToNullableAndTrim(nameof(Models.Etymology.OriginalMeaning)),
-                        EnglishSenses = reader.ToNullableAndTrim(nameof(Models.Etymology.EnglishSenses)),
-                        WordExample = reader.ToNullableAndTrim(nameof(Models.Etymology.WordExample)),
-                        PinyinOther = reader.ToNullableAndTrim(nameof(Models.Etymology.PinyinOther)),
-                        Videos = reader.ToNullableAndTrim(nameof(Models.Etymology.Videos)),
-                        Pictures = reader.ToNullableAndTrim(nameof(Models.Etymology.Pictures)),
-                        FrequencyOrder = reader.ToNullableAndTrim(nameof(Models.Etymology.FrequencyOrder)),
-                        LearnOrder = reader.ToNullableAndTrim(nameof(Models.Etymology.LearnOrder)),
-                        IdealForms = reader.ToNullableAndTrim(nameof(Models.Etymology.IdealForms)),
-                        Classification = reader.ToNullableAndTrim(nameof(Models.Etymology.Classification)),
+                        Simplified = reader.ToStringAndTrim(nameof(Models.Etymology.Simplified)),
+                        Traditional = reader.ToStringAndTrim(nameof(Models.Etymology.Traditional)),
+                        OldTraditional = reader.ToStringAndTrim(nameof(Models.Etymology.OldTraditional)),
+                        Pinyin = reader.ToStringAndTrim(nameof(Models.Etymology.Pinyin)),
+                        Index8105 = reader.ToStringAndTrim(nameof(Models.Etymology.Index8105)),
+                        SimplificationRule = reader.ToStringAndTrim(nameof(Models.Etymology.SimplificationRule)),
+                        SimplificationClarified = reader.ToStringAndTrim(nameof(Models.Etymology.SimplificationClarified)),
+                        VariantRule = reader.ToStringAndTrim(nameof(Models.Etymology.VariantRule)),
+                        VariantClarified = reader.ToStringAndTrim(nameof(Models.Etymology.VariantClarified)),
+                        AppliedRule = reader.ToStringAndTrim(nameof(Models.Etymology.AppliedRule)),
+                        FontRule = reader.ToStringAndTrim(nameof(Models.Etymology.FontRule)),
+                        Decomposition = reader.ToStringAndTrim(nameof(Models.Etymology.Decomposition)),
+                        DecompositionClarified = reader.ToStringAndTrim(nameof(Models.Etymology.DecompositionClarified)),
+                        OriginalMeaning = reader.ToStringAndTrim(nameof(Models.Etymology.OriginalMeaning)),
+                        EnglishSenses = reader.ToStringAndTrim(nameof(Models.Etymology.EnglishSenses)),
+                        WordExample = reader.ToStringAndTrim(nameof(Models.Etymology.WordExample)),
+                        PinyinOther = reader.ToStringAndTrim(nameof(Models.Etymology.PinyinOther)),
+                        Videos = reader.ToStringAndTrim(nameof(Models.Etymology.Videos)),
+                        Pictures = reader.ToStringAndTrim(nameof(Models.Etymology.Pictures)),
+                        FrequencyOrder = reader.ToStringAndTrim(nameof(Models.Etymology.FrequencyOrder)),
+                        LearnOrder = reader.ToStringAndTrim(nameof(Models.Etymology.LearnOrder)),
+                        IdealForms = reader.ToStringAndTrim(nameof(Models.Etymology.IdealForms)),
+                        Classification = reader.ToStringAndTrim(nameof(Models.Etymology.Classification)),
                         EtymologyId = (int)reader[nameof(Models.Etymology.EtymologyId)],
                     });
                 }
@@ -162,7 +164,7 @@
                             SealId = (int)reader[nameof(Models.Seal.SealId)],
                             Traditional = (string)reader[nameof(Models.Seal.Traditional)],
                             ImageVectorBase64 = (string)reader[nameof(Models.Seal.ImageVectorBase64)],
-                            ShuowenTraditional = reader.ToNullableAndTrim(nameof(Models.Seal.ShuowenTraditional))
+                            ShuowenTraditional = reader.ToStringAndTrim(nameof(Models.Seal.ShuowenTraditional))
                         });
                     }
                 }
@@ -194,16 +196,17 @@
 
     internal static class DbDataReaderExtensions
     {
+        [return: MaybeNull]
         internal static T ToNullable<T>(this DbDataReader reader, string column) where T : class
         {
             object value = reader[column];
             return value is DBNull || value is null ? null : (T)value;
         }
 
-        internal static string ToNullableAndTrim(this DbDataReader reader, string column)
+        internal static string ToStringAndTrim(this DbDataReader reader, string column)
         {
             object value = reader[column];
-            return value is DBNull || value is null ? null : ((string)value).Trim();
+            return value is DBNull || value is null ? string.Empty : ((string)value).Trim();
         }
     }
 }

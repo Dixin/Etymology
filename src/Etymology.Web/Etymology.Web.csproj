@@ -6,6 +6,7 @@
     <ApplicationInsightsResourceId>/subscriptions/3d7fc22c-5b77-4fe2-afa6-cef991c8a9ec/resourcegroups/dixinyan/providers/microsoft.insights/components/etymology2</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/d099d3f1-ba53-48cf-b4a0-24e75dedd437/resourcegroups/etymology/providers/microsoft.insights/components/etymology</ApplicationInsightsAnnotationResourceId>
     <UserSecretsId>8834ac8f-c4a3-49c3-8394-cf63bfde210b</UserSecretsId>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,5 +33,7 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="npm install&#xD;&#xA;npm run build$(Configuration)" />
   </Target>
+
+  <Import Project="$(SolutionDir)Analyzers.props" />
 
 </Project>

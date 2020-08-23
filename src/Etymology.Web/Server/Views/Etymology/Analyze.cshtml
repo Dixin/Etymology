@@ -4,7 +4,7 @@
 @model ValueTuple<string, TimeSpan, AnalyzeResult[]>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-@{var (chinese, duration, results) = this.Model;}
+@{(string chinese, TimeSpan duration, AnalyzeResult[] results) = this.Model;}
 
 <div class="etymology-nav" id="@chinese">
     @if (results.Length > 0)
@@ -14,14 +14,14 @@
             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <strong>@chinese</strong>: Found <strong>@results.Length</strong> etymologies and <strong>@sum</strong> characters in <strong>@duration.TotalSeconds.ToString("0.000")</strong> seconds.
             @if (results.Length == 1)
             {
-                var (_, etymology, oracles, bronzes, seals, liushutongs) = results.Single();
+                (_, Etymology etymology, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs) = results.Single();
                 <span class="label label-success">@etymology.Title()</span>
             }
             else
             {
                 foreach (AnalyzeResult result in results)
                 {
-                    var (_, etymology, oracles, bronzes, seals, liushutongs) = result;
+                    (_, Etymology etymology, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs) = result;
                     <a href="#@etymology.FormattedId()" class="btn btn-success btn-xs ladda-button">@etymology.Title()</a>
                 }
             }
@@ -34,7 +34,7 @@
     }
     @foreach (AnalyzeResult result in results)
     {
-        var (_, etymology, oracles, bronzes, seals, liushutongs) = result;
+        (_, Etymology etymology, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs) = result;
         <div class="row mx-0 bg-info row-eq-height border-top border-purple" id="@etymology.FormattedId()">
             <div class="col-md-3  col-sm-4 p-0">
                 <div class="p-1">
@@ -99,7 +99,7 @@
                 </div>
             </div>
             <div class="col-md-9 col-sm-8 etymology-result bg-primary p-1" id="etymologyCharacters">
-                <h3><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Oracle characters 甲骨文 (@oracles.Length)</h3>
+                <h3><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Oracle characters 甲骨文 (@oracles.Count)</h3>
                 @if (!oracles.Any())
                 {
                     <p>There is no known oracle characters found. 没有已知的甲骨文.</p>
@@ -117,7 +117,7 @@
                     </ul>
                 }
                 <hr />
-                <h3><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span> Bronze characters 金文 (@bronzes.Length)</h3>
+                <h3><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span> Bronze characters 金文 (@bronzes.Count)</h3>
                 @if (!bronzes.Any())
                 {
                     <p>There is no known bronze characters found. 没有已知的金文.</p>
@@ -135,7 +135,7 @@
                     </ul>
                 }
                 <hr />
-                <h3><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Seal characters 说文解字的篆字 (@seals.Length)</h3>
+                <h3><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Seal characters 说文解字的篆字 (@seals.Count)</h3>
                 @if (!seals.Any())
                 {
                     <p>There is no known seal characters found. 没有已知的说文解字的篆字.</p>
@@ -153,7 +153,7 @@
                     </ul>
                 }
                 <hr />
-                <h3><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Liushutong characters 六书通的字 (@liushutongs.Length)</h3>
+                <h3><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Liushutong characters 六书通的字 (@liushutongs.Count)</h3>
                 @if (!liushutongs.Any())
                 {
                     <p>There is no known Liushutong characters found. 没有已知的六书通的字.</p>

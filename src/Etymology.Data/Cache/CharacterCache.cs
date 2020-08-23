@@ -1,43 +1,49 @@
-﻿namespace Etymology.Data.Cache
+﻿#nullable enable
+namespace Etymology.Data.Cache
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Etymology.Common;
     using Etymology.Data.Models;
-    using Microsoft.EntityFrameworkCore;
 
     public interface ICharacterCache
     {
-        Task Initialize(EtymologyContext etymologyContext);
-
         IEnumerable<(string Traditional, int CodePoint)> AllTraditional(int codePoint);
     }
 
     public class CharacterCache : ICharacterCache
     {
-        private Dictionary<int, object> traditional;
+        private static Dictionary<int, object?> traditional = new Dictionary<int, object?>();
 
-        private ILookup<int, int> simplifiedToTraditional;
+        private static ILookup<int, int> simplifiedToTraditional = Array.Empty<int>().ToLookup(value => value, value => value);
 
-        private ILookup<int, int> oldTraditionalToTraditional;
+        private static ILookup<int, int> oldTraditionalToTraditional = Array.Empty<int>().ToLookup(value => value, value => value);
 
-        public async Task Initialize(EtymologyContext etymologyContext)
+        public CharacterCache(EtymologyContext etymologyContext)
         {
-            (int Traditional, int Simplified, int[] OldTraditional)[] etymologies = (await etymologyContext.Etymology.Select(etymology => new { etymology.Traditional, etymology.Simplified, etymology.OldTraditional }).ToArrayAsync())
+            if (traditional.Any())
+            {
+                return;
+            }
+
+            (int Traditional, int Simplified, int[] OldTraditional)[] etymologies = etymologyContext
+                .Etymology
+                .Select(etymology => new { etymology.Traditional, etymology.Simplified, etymology.OldTraditional })
+                .AsEnumerable()
                 .Where(etymology => !string.IsNullOrWhiteSpace(etymology.Simplified))
                 .Select(etymology =>
                 (
                     Traditional: char.ConvertToUtf32(etymology.Traditional, 0),
                     Simplified: char.ConvertToUtf32(etymology.Simplified.Characters().First(), 0),
                     OldTraditional: string.IsNullOrWhiteSpace(etymology.OldTraditional)
-                        ? null
+                        ? Array.Empty<int>()
                         : etymology.OldTraditional.Characters().Select(old => char.ConvertToUtf32(old, 0)).ToArray()
                 ))
                 .ToArray();
-            this.traditional = etymologies.ToDictionary(etymology => etymology.Traditional, etymology => (object)null);
-            this.simplifiedToTraditional = etymologies.ToLookup(etymology => etymology.Simplified, etymology => etymology.Traditional);
-            this.oldTraditionalToTraditional = etymologies
+            traditional = etymologies.ToDictionary(etymology => etymology.Traditional, etymology => (object?)null);
+            simplifiedToTraditional = etymologies.ToLookup(etymology => etymology.Simplified, etymology => etymology.Traditional);
+            oldTraditionalToTraditional = etymologies
                 .Where(etymology => etymology.OldTraditional != null)
                 .SelectMany(etymology => etymology.OldTraditional, (etymology, old) => (Old: old, Traditional: etymology.Traditional))
                 .ToLookup(etymology => etymology.Old, etymology => etymology.Traditional);
@@ -45,9 +51,9 @@
 
         public IEnumerable<(string Traditional, int CodePoint)> AllTraditional(int codePoint)
         {
-            List<int> allTraditional = this.simplifiedToTraditional[codePoint].ToList();
-            allTraditional.AddRange(this.oldTraditionalToTraditional[codePoint]);
-            if (this.traditional.ContainsKey(codePoint))
+            List<int> allTraditional = simplifiedToTraditional[codePoint].ToList();
+            allTraditional.AddRange(oldTraditionalToTraditional[codePoint]);
+            if (traditional.ContainsKey(codePoint))
             {
                 allTraditional.Add(codePoint);
             }

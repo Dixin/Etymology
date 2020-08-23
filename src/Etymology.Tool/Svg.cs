@@ -1,32 +1,14 @@
 ﻿namespace Etymology.Tool
 {
-    using CommandLine;
-    using Etymology.Data.Models;
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Etymology.Data.Models;
+    using Microsoft.EntityFrameworkCore;
 
-    [Verb("svgtodb", HelpText = "Add SVG files to database.")]
-    internal class SvgOptions
+    internal static class Svg
     {
-        [Option('d', "directory", Required = false, HelpText = "Save all SVG files in the directory to database.")]
-        public string Directory { get; set; } = @"d:\test";
-
-        [Option('c', "connection", Required = false, HelpText = "Connection string to database.")]
-        public string Connection { get; set; } = "Server=localhost;Initial Catalog=chineseetymology;User ID=sa;Password=ftSq1@zure;MultipleActiveResultSets=False;Connection Timeout=30;";
-    }
-
-    internal class Svg
-    {
-        private static EtymologyContext Database(string connection)
-        {
-            return new EtymologyContext(new DbContextOptionsBuilder<EtymologyContext>().UseSqlServer(
-                connection,
-                options => options
-                    .EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null)).Options);
-        }
         internal static int Save(SvgOptions svgOptions)
         {
             string[] oracleCharacters = Directory.GetFiles(svgOptions.Directory, "j*.svg", SearchOption.AllDirectories);
@@ -52,7 +34,16 @@
             return 0;
         }
 
-        private static bool Update<T>(EtymologyContext database, string[] images) where T : class, ICharacter
+        private static EtymologyContext Database(string connection)
+        {
+            return new EtymologyContext(new DbContextOptionsBuilder<EtymologyContext>().UseSqlServer(
+                connection,
+                options => options
+                    .EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null)).Options);
+        }
+
+        private static bool Update<T>(EtymologyContext database, string[] images)
+            where T : class, ICharacter
         {
             if (images.Any())
             {
@@ -67,15 +58,18 @@
                             Console.WriteLine($"Character not in database: {image}.");
                             return false;
                         }
+
                         dictionary[id].ImageVector = File.ReadAllText(image);
                     }
                     else
                     {
                         Console.WriteLine($"Incorrect file is ignored: {image}.");
+
                         // return false;
                     }
                 }
             }
+
             return true;
         }
     }
