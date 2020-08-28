@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using System.Linq;
-    using System.Text;
+    using Etymology.Common;
     using Etymology.Data.Cache;
     using Etymology.Data.Models;
     using Microsoft.AspNetCore.Antiforgery;
@@ -116,6 +116,7 @@
             }
 
             application
+                .UseEncodings() // Add support for GB18030.
                 .UseAntiforgery(settings, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)))
                 .UseDefaultFiles()
                 .UseStaticFiles(new StaticFileOptions
@@ -126,9 +127,6 @@
                 .UseRouting()
                 .UseEndpoints(endpoints => settings.Routes.ForEach(route => endpoints.MapControllerRoute(route.Key, route.Value)))
                 .UseHostFiltering();
-
-            // Add support for GB18030.
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
     }
 }
