@@ -31,6 +31,12 @@
         public static byte[] ConvertBytes(this byte[] bytes, Encoding from, Encoding to) =>
             Encoding.Convert(from, to, bytes);
 
+        public static string CodePointToHex(this int codePoint) =>
+            codePoint.ToString("X4", CultureInfo.InvariantCulture);
+
+        public static int HexToCodePoint(string hex) =>
+            int.Parse(hex, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture);
+
         public static int BytesToInt32(this byte[] bytes) =>
             bytes.Aggregate(0, (result, @byte) => result * 256 + @byte);
 
