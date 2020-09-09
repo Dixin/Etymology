@@ -74,7 +74,7 @@ namespace Etymology.Data.Models
                         Pictures,
                         FrequencyOrder,
                         LearnOrder,
-                        IdealForms,
+                        BookIndex,
                         Classification,
 	                    EtymologyId
                     FROM dbo.Etymology 
@@ -126,7 +126,7 @@ namespace Etymology.Data.Models
                         Pictures = reader.ToStringAndTrim(nameof(Models.Etymology.Pictures)),
                         FrequencyOrder = reader.ToStringAndTrim(nameof(Models.Etymology.FrequencyOrder)),
                         LearnOrder = reader.ToStringAndTrim(nameof(Models.Etymology.LearnOrder)),
-                        IdealForms = reader.ToStringAndTrim(nameof(Models.Etymology.IdealForms)),
+                        BookIndex = reader.ToStringAndTrim(nameof(Models.Etymology.BookIndex)),
                         Classification = reader.ToStringAndTrim(nameof(Models.Etymology.Classification)),
                         EtymologyId = (int)reader[nameof(Models.Etymology.EtymologyId)],
                     });

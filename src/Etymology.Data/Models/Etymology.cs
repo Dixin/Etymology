@@ -52,7 +52,7 @@ namespace Etymology.Data.Models
         [StringLength(10)]
         public string FrequencyOrder { get; set; }
         [StringLength(25)]
-        public string IdealForms { get; set; }
+        public string BookIndex { get; set; }
         [StringLength(25)]
         public string Classification { get; set; }
         [Key]
