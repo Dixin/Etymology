@@ -119,7 +119,7 @@
                 .UseEncodings() // Add support for GB18030.
                 .UseAntiforgery(settings, antiforgery, loggerFactory.CreateLogger(nameof(RequestValidation)))
                 .UseDefaultFiles()
-                .UseStaticFiles(new StaticFileOptions
+                .UseStaticFiles(new StaticFileOptions()
                 {
                     OnPrepareResponse = staticFileResponseContext => staticFileResponseContext.Context.Response.Headers[HeaderNames.CacheControl] = $"public,max-age={Cache.ClientCacheMaxAge}",
                 })

@@ -27,11 +27,11 @@ namespace Etymology.Data.Models
             }
 
             // LINQ to Entities queries creates multiple round trips to database and causes lower performance.
-            List<Etymology> etymologies = new List<Etymology>();
-            List<Oracle> oracles = new List<Oracle>();
-            List<Bronze> bronzes = new List<Bronze>();
-            List<Liushutong> liushutongs = new List<Liushutong>();
-            List<Seal> seals = new List<Seal>();
+            List<Etymology> etymologies = new();
+            List<Oracle> oracles = new();
+            List<Bronze> bronzes = new();
+            List<Liushutong> liushutongs = new();
+            List<Seal> seals = new();
             await this.Database.CreateExecutionStrategy().ExecuteAsync(async () =>
             {
                 await using DbConnection connection = this.Database.GetDbConnection();

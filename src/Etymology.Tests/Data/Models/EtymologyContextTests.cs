@@ -22,7 +22,7 @@
         {
             await using EtymologyContext database = CreateDatabase();
             const string Chinese = "车";
-            CharacterCache characterCache = new CharacterCache(database);
+            CharacterCache characterCache = new(database);
             IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(Chinese, 0));
             AnalyzeResult[] results = await database.AnalyzeAsync(Chinese, allTraditional);
             Assert.AreEqual(1, results.Length);
@@ -68,7 +68,7 @@
         {
             await using EtymologyContext database = CreateDatabase();
             const string ExtensionB = "𠂇";
-            CharacterCache characterCache = new CharacterCache(database);
+            CharacterCache characterCache = new(database);
             IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(ExtensionB, 0));
             (string chinese, Etymology etymology, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs) = (await database.AnalyzeAsync(ExtensionB, allTraditional)).Single();
             Assert.IsNotNull(etymology);
@@ -87,7 +87,7 @@
                 .Select(chinese =>
                 {
                     using EtymologyContext database = CreateDatabase();
-                    CharacterCache characterCache = new CharacterCache(database);
+                    CharacterCache characterCache = new(database);
                     IEnumerable<(string Traditional, int CodePoint)> allTraditional = characterCache.AllTraditional(char.ConvertToUtf32(new string(chinese, 1), 0));
                     return (chinese, database.AnalyzeAsync(new string(chinese, 1), allTraditional).Result);
                 })
@@ -103,7 +103,7 @@
                     bool hasCharacters = results.Any(result =>
                     {
                         (_, Etymology etymology, IList<Oracle> oracles, IList<Bronze> bronzes, IList<Seal> seals, IList<Liushutong> liushutongs) = result;
-                        return etymology != null && etymology.HasSimplified() && oracles.Any() && bronzes.Any() && seals.Any() && liushutongs.Any();
+                        return etymology is not null && etymology.HasSimplified() && oracles.Any() && bronzes.Any() && seals.Any() && liushutongs.Any();
                     });
                     if (!hasCharacters)
                     {

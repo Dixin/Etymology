@@ -36,7 +36,7 @@
 
         private static EtymologyContext Database(string connection)
         {
-            return new EtymologyContext(new DbContextOptionsBuilder<EtymologyContext>().UseSqlServer(
+            return new(new DbContextOptionsBuilder<EtymologyContext>().UseSqlServer(
                 connection,
                 options => options
                     .EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null)).Options);

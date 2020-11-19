@@ -86,7 +86,7 @@
 
         private static EtymologyController CreateController()
         {
-            return new EtymologyController(
+            return new(
 #pragma warning disable CA2000 // Dispose objects before losing scope
                 EtymologyContextTests.CreateDatabase(),
                 new NullLogger<EtymologyController>(),
@@ -94,7 +94,7 @@
                 new CharacterCache(EtymologyContextTests.CreateDatabase()))
 #pragma warning restore CA2000 // Dispose objects before losing scope
             {
-                ControllerContext = new ControllerContext()
+                ControllerContext = new()
                 {
                     HttpContext = new DefaultHttpContext(),
                 },

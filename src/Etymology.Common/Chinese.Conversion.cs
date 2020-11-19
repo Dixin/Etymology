@@ -117,9 +117,9 @@
             return BitConverter.ToString(utf32Bytes.FormatSurrogateBytes()).Replace("-", string.Empty, StringComparison.InvariantCulture).Substring(SurrogateCodePointPrefix.Length);
         }
 
-        public static bool IsBasicBytes(this byte[] bytes) => bytes?.Length == 2;
+        public static bool IsBasicBytes(this byte[] bytes) => bytes.Length == 2;
 
-        public static bool IsSurrogateBytes(this byte[] bytes) => bytes?.Length == 4;
+        public static bool IsSurrogateBytes(this byte[] bytes) => bytes.Length == 4;
 
         // [一] => "4E00", [𫝀] => "2B740"
         public static string BytesToCodePoint(this byte[] bytes)
@@ -151,7 +151,7 @@
 
         public static IEnumerable<string> Characters(this string text)
         {
-            StringInfo parsed = new StringInfo(text);
+            StringInfo parsed = new(text);
             for (int index = 0; index < parsed.LengthInTextElements; index++)
             {
                 yield return parsed.SubstringByTextElements(index, 1);

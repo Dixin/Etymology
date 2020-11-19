@@ -3,22 +3,22 @@
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Http;
 
-    public class Settings
+    public record Settings
     {
-        public List<string> AllowedHosts { get; } = new List<string>();
+        public List<string> AllowedHosts { get; } = new();
 
-        public Dictionary<string, string> Connections { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Connections { get; } = new();
 
-        public string ErrorPagePath { get; set; } = string.Empty;
+        public string ErrorPagePath { get; init; } = string.Empty;
 
-        public List<string> IndexPagePaths { get; } = new List<string>();
+        public List<string> IndexPagePaths { get; } = new();
 
-        public bool IsHttpsOnly { get; set; }
+        public bool IsHttpsOnly { get; init; }
 
-        public List<string> PublicPaths { get; } = new List<string>();
+        public List<string> PublicPaths { get; } = new();
 
-        public Dictionary<string, string> Routes { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Routes { get; } = new();
 
-        public SameSiteMode SameSiteMode { get; set; }
+        public SameSiteMode SameSiteMode { get; init; }
     }
 }

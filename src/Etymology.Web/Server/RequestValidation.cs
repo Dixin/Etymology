@@ -45,7 +45,7 @@
                     HttpRequest request = context.Request;
                     try
                     {
-                        string path = request.Path.Value;
+                        string path = request.Path.Value ?? string.Empty;
                         if (settings.IndexPagePaths.Contains(path, StringComparer.OrdinalIgnoreCase))
                         {
                             // Requesting index page.
@@ -86,7 +86,7 @@
             AntiforgeryTokenSet tokens = antiforgery.GetAndStoreTokens(context);
             context.Response.Cookies.Append(
                 tokens.FormFieldName,
-                tokens.RequestToken,
+                tokens.RequestToken ?? string.Empty,
                 new CookieOptions() { HttpOnly = false, SameSite = settings.SameSiteMode, Secure = settings.IsHttpsOnly }); // Default same site mode is Lax, which make the cookie not readable in 360 browser.
         }
 
@@ -120,12 +120,12 @@
             // Anti forgery token.
             // The public APIs validate both cookie and request. The APIs to validate only cookie is not public.
             IRequestCookieCollection cookies = request.Cookies;
-            if (!cookies.TryGetValue(CookieName, out string cookie) || string.IsNullOrWhiteSpace(cookie))
+            if (!cookies.TryGetValue(CookieName, out string? cookie) || string.IsNullOrWhiteSpace(cookie))
             {
                 return (false, $"Cookie {CookieName} is missing.");
             }
 
-            if (!cookies.TryGetValue(FormFieldName, out string formField) || string.IsNullOrWhiteSpace(formField))
+            if (!cookies.TryGetValue(FormFieldName, out string? formField) || string.IsNullOrWhiteSpace(formField))
             {
                 return (false, $"Cookie {FormFieldName} is missing.");
             }
@@ -135,7 +135,7 @@
 
         private static string? GetIPAddress(this HttpContext context) =>
             context.Connection.RemoteIpAddress?.ToString()
-            ?? context.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString()
+            ?? context.Features.Get<IHttpConnectionFeature>().RemoteIpAddress?.ToString()
             ?? (context.Request.Headers.TryGetValue("X-Forwarded-For", out StringValues forwarded) ? forwarded.ToString() : null)
             ?? (context.Request.Headers.TryGetValue("REMOTE_ADDR", out StringValues remote) ? remote.ToString() : null);
     }

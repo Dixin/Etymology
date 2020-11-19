@@ -14,7 +14,7 @@ namespace Etymology.Data.Cache
 
     public class CharacterCache : ICharacterCache
     {
-        private static Dictionary<int, object?> traditional = new Dictionary<int, object?>();
+        private static Dictionary<int, object?> traditional = new();
 
         private static ILookup<int, int> simplifiedToTraditional = Array.Empty<int>().ToLookup(value => value, value => value);
 
@@ -41,10 +41,10 @@ namespace Etymology.Data.Cache
                         : etymology.OldTraditional.Characters().Select(old => char.ConvertToUtf32(old, 0)).ToArray()
                 ))
                 .ToArray();
-            traditional = etymologies.ToDictionary(etymology => etymology.Traditional, etymology => (object?)null);
+            traditional = etymologies.ToDictionary(etymology => etymology.Traditional, _ => (object?)null);
             simplifiedToTraditional = etymologies.ToLookup(etymology => etymology.Simplified, etymology => etymology.Traditional);
             oldTraditionalToTraditional = etymologies
-                .Where(etymology => etymology.OldTraditional != null)
+                .Where(etymology => etymology.OldTraditional is not null)
                 .SelectMany(etymology => etymology.OldTraditional, (etymology, old) => (Old: old, Traditional: etymology.Traditional))
                 .ToLookup(etymology => etymology.Old, etymology => etymology.Traditional);
         }

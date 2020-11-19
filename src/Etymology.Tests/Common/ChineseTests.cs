@@ -10,7 +10,7 @@
     [TestClass]
     public class ChineseTests
     {
-        internal static readonly List<(string HexCodePoint, string Text)> ChineseCharacters = new List<(string HexCodePoint, string Text)>()
+        internal static readonly List<(string HexCodePoint, string Text)> ChineseCharacters = new()
         {
             ("4E00", "一"),
             ("3400", "㐀"),

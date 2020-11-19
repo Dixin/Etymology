@@ -7,6 +7,6 @@
     {
         internal static int ClientCacheMaxAge { get; } = (int)TimeSpan.FromDays(180).TotalSeconds;
 
-        internal static MemoryCacheEntryOptions ServerCacheOptions { get; } = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(1) };
+        internal static MemoryCacheEntryOptions ServerCacheOptions { get; } = new() { SlidingExpiration = TimeSpan.FromHours(1) };
     }
 }
