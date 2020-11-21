@@ -2,8 +2,5 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-WebHost
-    .CreateDefaultBuilder(args)
-    .UseStartup<Startup>()
-    .Build()
-    .Run();
+using IWebHost host = WebHost.CreateDefaultBuilder<Startup>(args).Build();
+await host.RunAsync();
