@@ -87,7 +87,7 @@
                 stopwatch.Stop();
             }
 
-            return this.View("~/Server/Views/Etymology/Analyze.cshtml", (chinese, stopwatch.Elapsed, results));
+            return this.View((chinese, stopwatch.Elapsed, results));
         }
     }
 }

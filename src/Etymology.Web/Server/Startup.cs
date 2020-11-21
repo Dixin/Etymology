@@ -17,7 +17,7 @@
 
     public class Startup
     {
-        private const string Server = nameof(Server);
+        private const string ServerRoot = "Server";
 
         private readonly IConfiguration configuration;
 
@@ -32,8 +32,8 @@
 
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
-                .AddJsonFile(Path.Combine(Server, "settings.json"), optional: false, reloadOnChange: true)
-                .AddJsonFile(Path.Combine(Server, $"settings.{environment.EnvironmentName}.json"), optional: true, true)
+                .AddJsonFile(Path.Combine(ServerRoot, "settings.json"), optional: false, reloadOnChange: true)
+                .AddJsonFile(Path.Combine(ServerRoot, $"settings.{environment.EnvironmentName}.json"), optional: true, true)
                 .AddEnvironmentVariables();
             if (!environment.IsDevelopment())
             {
@@ -63,14 +63,18 @@
                     else
                     {
                         loggingBuilder
-                            .AddConsole(consoleLoggerOptions => consoleLoggerOptions.IncludeScopes = true)
+                            .AddSystemdConsole(consoleFormatterOptions => consoleFormatterOptions.IncludeScopes = true)
                             .AddDebug();
                     }
                 })
                 .AddHostFiltering(hostFiltering => hostFiltering.AllowedHosts = settings.AllowedHosts)
-                .AddMvc(options => options.AddAntiforgery()); // services.AddControllersWithViews(options => options.AddAntiforgery());
-
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+                .AddMvc(options => options.AddAntiforgery()) // services.AddControllersWithViews(options => options.AddAntiforgery());
+                .AddRazorRuntimeCompilation() // AddRazorPages() is not needed.
+                .AddRazorOptions(option => option // WithRazorPagesRoot() does not work.
+                    .ViewLocationFormats
+                    .Select(format => $"/{ServerRoot}{format}")
+                    .ToArray()
+                    .ForEach(option.ViewLocationFormats.Add)); // $"/{ServerRoot}/Views/{{1}}/{{0}}{RazorViewEngine.ViewExtension}"
 
             if (settings.IsHttpsOnly)
             {
