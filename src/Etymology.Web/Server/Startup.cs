@@ -25,11 +25,6 @@
 
         public Startup(IWebHostEnvironment environment)
         {
-            if (environment is null)
-            {
-                throw new ArgumentNullException(nameof(environment));
-            }
-
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
                 .AddJsonFile(Path.Combine(ServerRoot, "settings.json"), optional: false, reloadOnChange: true)
@@ -56,15 +51,19 @@
                 .AddCharacterCache()
                 .AddLogging(loggingBuilder =>
                 {
-                    if (this.environment.IsProduction())
+                    // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-5.0#bilp
+                    // Built-in providers: Console, Debug, EventSource, EventLog (Windows).
+                    // Not built-in: AzureAppServicesFile, AzureAppServicesBlob, ApplicationInsights.
+                    if (this.environment.IsDevelopment())
                     {
-                        loggingBuilder.AddApplicationInsights();
+                        loggingBuilder
+                            .ClearProviders()
+                            .AddSystemdConsole(consoleFormatterOptions => consoleFormatterOptions.IncludeScopes = true)
+                            .AddDebug();
                     }
                     else
                     {
-                        loggingBuilder
-                            .AddSystemdConsole(consoleFormatterOptions => consoleFormatterOptions.IncludeScopes = true)
-                            .AddDebug();
+                        loggingBuilder.AddApplicationInsights();
                     }
                 })
                 .AddHostFiltering(hostFiltering => hostFiltering.AllowedHosts = settings.AllowedHosts)
