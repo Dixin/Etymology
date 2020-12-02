@@ -13,6 +13,7 @@
     using Etymology.Tests.Common;
     using Etymology.Tests.Data.Models;
     using Etymology.Web.Server.Controllers;
+    using Etymology.Web.Server.Models;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
@@ -43,8 +44,8 @@
                 }
 
                 Assert.IsNotNull(view);
-                Assert.IsInstanceOfType(view!.Model, typeof((string, TimeSpan, AnalyzeResult[])));
-                (string chinese, TimeSpan duration, AnalyzeResult[] results) = ((string, TimeSpan, AnalyzeResult[]))view.Model;
+                Assert.IsInstanceOfType(view!.Model, typeof(AnalyzeModel));
+                (string chinese, TimeSpan duration, AnalyzeResult[] results) = (AnalyzeModel)view.Model;
                 Assert.AreEqual(item.Text, chinese);
                 Assert.IsTrue(duration > TimeSpan.Zero);
                 Assert.IsNotNull(results);
