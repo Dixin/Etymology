@@ -7,6 +7,7 @@
     using Etymology.Common;
     using Etymology.Data.Cache;
     using Etymology.Data.Models;
+    using Etymology.Web.Server.Models;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Logging;
@@ -87,7 +88,7 @@
                 stopwatch.Stop();
             }
 
-            return this.View((chinese, stopwatch.Elapsed, results));
+            return this.View(new AnalyzeModel(chinese, stopwatch.Elapsed, results));
         }
     }
 }
