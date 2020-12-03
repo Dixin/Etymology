@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Antiforgery;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc.Razor;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -69,11 +70,17 @@
                 .AddHostFiltering(hostFiltering => hostFiltering.AllowedHosts = settings.AllowedHosts)
                 .AddMvc(options => options.AddAntiforgery()) // services.AddControllersWithViews(options => options.AddAntiforgery());
                 .AddRazorRuntimeCompilation() // AddRazorPages() is not needed.
-                .AddRazorOptions(option => option // WithRazorPagesRoot() does not work.
-                    .ViewLocationFormats
-                    .Select(format => $"/{ServerRoot}{format}")
-                    .ToArray()
-                    .ForEach(option.ViewLocationFormats.Add)); // $"/{ServerRoot}/Views/{{1}}/{{0}}{RazorViewEngine.ViewExtension}"
+                .AddRazorOptions(option => // WithRazorPagesRoot() does not work.
+                {
+                    string[] viewLocationFormats = option
+                        .ViewLocationFormats
+                        .Select(format => $"/{ServerRoot}{format}") // $"/{ServerRoot}/Views/{{1}}/{{0}}{RazorViewEngine.ViewExtension}"
+                        .Prepend($"/{ServerRoot}/Views/{{1}}{{0}}{RazorViewEngine.ViewExtension}") // Second.
+                        .Prepend($"/{ServerRoot}/Views/{{1}}{{0}}View{RazorViewEngine.ViewExtension}") // First.
+                        .ToArray();
+                    option.ViewLocationFormats.Clear();
+                    viewLocationFormats.ForEach(option.ViewLocationFormats.Add);
+                });
 
             if (settings.IsHttpsOnly)
             {

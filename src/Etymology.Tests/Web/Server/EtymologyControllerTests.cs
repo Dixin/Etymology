@@ -44,8 +44,8 @@
                 }
 
                 Assert.IsNotNull(view);
-                Assert.IsInstanceOfType(view!.Model, typeof(AnalyzeModel));
-                (string chinese, TimeSpan duration, AnalyzeResult[] results) = (AnalyzeModel)view.Model;
+                Assert.IsInstanceOfType(view!.Model, typeof(EtymologyAnalyzeModel));
+                (string chinese, TimeSpan duration, AnalyzeResult[] results) = (EtymologyAnalyzeModel)view.Model;
                 Assert.AreEqual(item.Text, chinese);
                 Assert.IsTrue(duration > TimeSpan.Zero);
                 Assert.IsNotNull(results);

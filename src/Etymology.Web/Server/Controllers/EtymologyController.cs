@@ -88,7 +88,7 @@
                 stopwatch.Stop();
             }
 
-            return this.View(new AnalyzeModel(chinese, stopwatch.Elapsed, results));
+            return this.View(new EtymologyAnalyzeModel(chinese, stopwatch.Elapsed, results));
         }
     }
 }
