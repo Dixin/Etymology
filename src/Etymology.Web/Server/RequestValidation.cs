@@ -50,22 +50,18 @@
                         {
                             // Requesting index page.
                             antiforgery.SendTokenToContext(context, settings);
-                        }
-                        else
+                        } // Not requesting index page.
+                        else if (!settings.PublicPaths.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
                         {
-                            // Not requesting index page.
-                            if (!settings.PublicPaths.Any(prefix => path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+                            (bool isValid, string message) = request.IsValid(settings);
+                            if (!isValid)
                             {
-                                (bool isValid, string message) = request.IsValid(settings);
-                                if (!isValid)
-                                {
-                                    logger.LogError("Request {method} {uri} from {ipAddress} is invalid. {message}", request.Method, request.GetDisplayUrl(), context.GetIPAddress(), message);
-                                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                                logger.LogError("Request {method} {uri} from {ipAddress} is invalid. {message}", request.Method, request.GetDisplayUrl(), context.GetIPAddress(), message);
+                                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 #if DEBUG
-                                    await context.Response.WriteAsync(message);
+                                await context.Response.WriteAsync(message);
 #endif
-                                    return;
-                                }
+                                return;
                             }
                         }
 

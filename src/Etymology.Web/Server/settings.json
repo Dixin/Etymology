@@ -1,5 +1,11 @@
 ﻿{
-  "AllowedHosts": [ "dixinyan.asuscomm.com", "hanziyuan.net", "etymology.azurewebsites.net", "etymology-staging.azurewebsites.net", "localhost", "127.0.0.1" ],
+  "AllowedHosts": [
+    "hanziyuan.net",
+    "etymology.azurewebsites.net",
+    "etymology-staging.azurewebsites.net",
+    "localhost",
+    "127.0.0.1"
+  ],
   "Connections": {
     "Etymology": ""
   },
@@ -12,7 +18,22 @@
       "Default": "Warning"
     }
   },
-  "PublicPaths": [ "/error", "/images", "/js", "/css", "/fonts", "/browserconfig.xml", "/manifest.json", "/favicon.ico", "/robots.txt", "/apple-touch-icon-precomposed.png", "/apple-touch-icon.png", "/apple-touch-icon-120x120-precomposed.png", "/apple-touch-icon-120x120.png", "/apple-touch-icon-152x152-precomposed.png", "/apple-touch-icon-152x152.png" ],
+  "PublicPaths": [
+    "/css",
+    "/error",
+    "/fonts",
+    "/images",
+    "/js",
+    "/android-chrom-",
+    "/apple-touch-icon",
+    "/browserconfig.xml",
+    "/favicon",
+    "/manifest.json",
+    "/mstile-",
+    "/robots.txt",
+    "/safari-pinned-tab.svg",
+    "site.webmanifest"
+  ],
   "Routes": {
     "default": "{controller}/{action}"
   },
