@@ -29,9 +29,9 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="npm install&#xD;&#xA;npm run build$(Configuration)" />
+    <Exec Command="npm install &amp; npm run build$(Configuration)" />
   </Target>
 
-  <Import Project="..\..\Analyzers.props" />
+    <Import Project="..\..\Analyzers.props" />
 
 </Project>
