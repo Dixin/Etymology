@@ -24,15 +24,8 @@
     "/fonts",
     "/images",
     "/js",
-    "/android-chrom-",
-    "/apple-touch-icon",
-    "/browserconfig.xml",
-    "/favicon",
-    "/manifest.json",
-    "/mstile-",
-    "/robots.txt",
-    "/safari-pinned-tab.svg",
-    "site.webmanifest"
+    "/favicon.ico",
+    "/robots.txt"
   ],
   "Routes": {
     "default": "{controller}/{action}"
