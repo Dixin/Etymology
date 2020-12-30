@@ -1,6 +1,6 @@
 ﻿import Cookies from "js-cookie";
-import "String.prototype.codePointAt";
 import $ from "jquery";
+import "String.prototype.codePointAt";
 
 const global = window;
 const Math = global.Math;

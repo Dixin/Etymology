@@ -38,5 +38,6 @@ module.exports = {
             }
         ]
     },
+    target: ["web", "es5"],
     Paths: Paths
 };
