@@ -11,9 +11,9 @@
     "url": "https://github.com/Dixin/Etymology/issues"
   },
   "dependencies": {
-    "bootstrap": "<4.0.0-alpha.2",
+    "bootstrap": "^4.5.3",
     "ie10-viewport-bug-workaround.js": "^1.0.0",
-    "jquery": "<3.0.0",
+    "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
     "ladda": "^2.0.1",
     "string.prototype.codepointat": "^0.2.1"

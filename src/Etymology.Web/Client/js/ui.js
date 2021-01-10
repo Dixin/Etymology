@@ -1,6 +1,6 @@
 ﻿import "spin.js";
 import * as Ladda from 'ladda';
-import $ from "jquery";
+import * as $ from 'jquery';
 
 const global = window;
 

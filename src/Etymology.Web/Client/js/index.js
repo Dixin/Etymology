@@ -26,7 +26,7 @@ const trySearchFromHash = () => {
     }
 };
 
-$(global.document).on("ready", () => {
+$(() => { // document.ready.
     UI.init();
 
     Hash.init(UI.getNavOffset(), UI.$positions());
@@ -57,7 +57,11 @@ $(global.document).on("ready", () => {
     trySearchFromHash();
 });
 
-$(global).on("hashchange", trySearchFromHash).on("scroll", () => Hash.setAfterScrollWithTimeout(UI.collapseMenu)).on("load", UI.loadVideoThumbnails).on("resize", () => Hash.setPositionsWithTimeout(UI.$positions()));
+$(global)
+    .on("hashchange", trySearchFromHash)
+    .on("scroll", () => Hash.setAfterScrollWithTimeout(UI.collapseMenu))
+    .on("load", UI.loadVideoThumbnails)
+    .on("resize", () => Hash.setPositionsWithTimeout(UI.$positions()));
 
 import "ie10-viewport-bug-workaround.js";
 

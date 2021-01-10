@@ -49,7 +49,7 @@
 
     <style><%= htmlWebpackPlugin.options.minify ? require("to-string-loader!css-loader?{'minimize':{'discardComments':{'removeAll':true}}}!./css/index.css") : require("to-string-loader!css-loader!./css/index.css") %></style>
 
-    <!--[if lt IE 9]>
+    <!--[if lte IE 9]>
         <style type="text/css">
             body div {
                 display: none;
@@ -64,13 +64,13 @@
     <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#etymologyNav" data-offset="50">
-    <!--[if lt IE 9]>
+    <!--[if lte IE 9]>
         <h1>Chinese Etymology 字源</h1>
         <p><a href="/">hanziyuan.net</a> <a href="/">ChineseEtymology.org</a></p>
         <p>You are using a very old browser that is not supported by our new website.</p>
         <p>您所用的浏览器过于陈旧, 我们的新网站无法显示.</p>
-        <p>To use our new website, please use any of those mainstream browsers: Microsoft IE 9, IE 10, <a href="https://www.microsoft.com/download/internet-explorer-11-for-windows-7-details.aspx" target="_blank">IE 11</a>, <a href="https://www.microsoft.com/windows/microsoft-edge" target="_blank">Microsoft Edge</a>, <a href="https://www.google.com/chrome" target="_blank">Google Chrome</a>, <a href="https://www.apple.com/safari" target="_blank">Apple Safari</a>, <a href="https://www.mozilla.org/firefox" target="_blank">Mozilla Firefox</a>, <a href="https://browser.qq.com/" target="_blank">QQ browser</a>, <a href="https://se.360.cn/" target="_blank">360 browser</a>, <a href="https://ie.sogou.com/" target="_blank">Sogou browser</a>, <a href="https://www.maxthon.com" target="_blank">Maxthon browser</a>, <a href="https://liulanqi.baidu.com/" target="_blank">Baidu browser</a>, etc.</p>
-        <p>请使用任意一种主流浏览器访问我们的新网站, 例如: 微软IE 9, IE 10, <a href="https://www.microsoft.com/download/internet-explorer-11-for-windows-7-details.aspx" target="_blank">IE 11浏览器</a>, <a href="https://www.microsoft.com/windows/microsoft-edge" target="_blank">微软Edge浏览器</a>, <a href="https://www.google.com/chrome" target="_blank">谷歌Chrome浏览器</a>, <a href="https://www.apple.com/safari" target="_blank">苹果Safari浏览器</a>, <a href="https://www.mozilla.org/firefox" target="_blank">Mozilla Firefox浏览器</a>, <a href="https://browser.qq.com/" target="_blank">QQ浏览器</a>, <a href="https://se.360.cn/" target="_blank">360浏览器</a>, <a href="https://ie.sogou.com/" target="_blank">搜狗浏览器</a>, <a href="https://www.maxthon.com" target="_blank">遨游浏览器</a>, <a href="https://liulanqi.baidu.com/" target="_blank">百度浏览器</a>, 等.</p>
+        <p>To use our new website, please use any of those mainstream browsers: Microsoft IE 10, <a href="https://www.microsoft.com/download/internet-explorer-11-for-windows-7-details.aspx" target="_blank">IE 11</a>, <a href="https://www.microsoft.com/windows/microsoft-edge" target="_blank">Microsoft Edge</a>, <a href="https://www.google.com/chrome" target="_blank">Google Chrome</a>, <a href="https://www.apple.com/safari" target="_blank">Apple Safari</a>, <a href="https://www.mozilla.org/firefox" target="_blank">Mozilla Firefox</a>, <a href="https://browser.qq.com/" target="_blank">QQ browser</a>, <a href="https://se.360.cn/" target="_blank">360 browser</a>, <a href="https://ie.sogou.com/" target="_blank">Sogou browser</a>, <a href="https://www.maxthon.com" target="_blank">Maxthon browser</a>, <a href="https://liulanqi.baidu.com/" target="_blank">Baidu browser</a>, etc.</p>
+        <p>请使用任意一种主流浏览器访问我们的新网站, 例如: 微软IE 10, <a href="https://www.microsoft.com/download/internet-explorer-11-for-windows-7-details.aspx" target="_blank">IE 11浏览器</a>, <a href="https://www.microsoft.com/windows/microsoft-edge" target="_blank">微软Edge浏览器</a>, <a href="https://www.google.com/chrome" target="_blank">谷歌Chrome浏览器</a>, <a href="https://www.apple.com/safari" target="_blank">苹果Safari浏览器</a>, <a href="https://www.mozilla.org/firefox" target="_blank">Mozilla Firefox浏览器</a>, <a href="https://browser.qq.com/" target="_blank">QQ浏览器</a>, <a href="https://se.360.cn/" target="_blank">360浏览器</a>, <a href="https://ie.sogou.com/" target="_blank">搜狗浏览器</a>, <a href="https://www.maxthon.com" target="_blank">遨游浏览器</a>, <a href="https://liulanqi.baidu.com/" target="_blank">百度浏览器</a>, 等.</p>
     <![endif]-->
 
     <!-- Navigation. -->
@@ -271,6 +271,7 @@
                             <p class="pre-inline"><b>Variant rule clarification 异体规则说明 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> <br>Not applicable.</p>
                             <p><b>Applied rules 应用规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> Not applicable.</p>
                             <p><b>New font rule 新字形规则 <a href="https://dixin.github.io/Etymology/simplification-of-chinese-character" target="_blank" title="Help: Simplification of Chinese character">[?]</a>:</b> Not applicable.</p>
+
                             <a class="btn btn-warning btn-xs ladda-button" data-style="zoom-in" href="https://github.com/Dixin/Etymology/issues/new" target="_blank" title="Help: Simplification of Chinese character"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Report issue 报错/留言</a>
                         </div>
                     </div>
