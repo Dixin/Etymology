@@ -40,6 +40,6 @@
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "start_url": "http://hanziyuan.net",
+    "start_url": "/",
     "display": "standalone"
 }
