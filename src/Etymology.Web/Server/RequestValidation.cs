@@ -1,18 +1,11 @@
 ﻿namespace Etymology.Web.Server;
 
-using System;
-using System.Linq;
-using System.Net;
 using Etymology.Common;
 using Etymology.Data.Models;
 using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
 internal static class RequestValidation

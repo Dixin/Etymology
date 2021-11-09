@@ -1,16 +1,11 @@
 ﻿namespace Etymology.Web.Server.Controllers;
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using Etymology.Common;
 using Etymology.Data.Cache;
 using Etymology.Data.Models;
 using Etymology.Web.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
 public class EtymologyController : Controller

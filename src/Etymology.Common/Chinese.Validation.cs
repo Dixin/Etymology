@@ -1,9 +1,5 @@
 ﻿namespace Etymology.Common;
 
-using System;
-using System.Globalization;
-using System.Linq;
-
 public static partial class Chinese
 {
     private static readonly (int Min, int Max)[] BasicRanges = new (string Min, string Max)[]

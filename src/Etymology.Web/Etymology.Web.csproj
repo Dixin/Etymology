@@ -2,10 +2,14 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
     <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
     <UserSecretsId>1eeb3477-bd6c-4e1c-b71d-c463ce05fa6f</UserSecretsId>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\GlobalUsings.cs" Link="GlobalUsings.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.16.0" />

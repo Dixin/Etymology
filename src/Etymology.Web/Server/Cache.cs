@@ -1,6 +1,5 @@
 ﻿namespace Etymology.Web.Server;
 
-using System;
 using Microsoft.Extensions.Caching.Memory;
 
 internal static class Cache

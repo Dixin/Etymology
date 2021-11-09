@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using CommandLine;
+﻿using CommandLine;
 using Etymology.Tool;
 
 Parser

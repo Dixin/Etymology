@@ -1,12 +1,5 @@
 ﻿namespace Etymology.Tests.Web.Server;
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Etymology.Common;
 using Etymology.Data.Cache;
 using Etymology.Data.Models;

@@ -1,15 +1,9 @@
 ﻿namespace Etymology.Tests.Data.Models;
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Etymology.Data.Cache;
 using Etymology.Data.Models;
 using Etymology.Web.Server;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]

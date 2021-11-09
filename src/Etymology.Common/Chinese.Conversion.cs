@@ -1,12 +1,5 @@
 ﻿namespace Etymology.Common;
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-
 public static partial class Chinese
 {
     private const string SurrogateCodePointPrefix = "000";

@@ -1,19 +1,10 @@
 ﻿namespace Etymology.Web.Server;
 
-using System;
-using System.IO;
-using System.Linq;
 using Etymology.Common;
 using Etymology.Data.Cache;
 using Etymology.Data.Models;
 using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
 public class Startup

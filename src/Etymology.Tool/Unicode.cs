@@ -1,6 +1,5 @@
 ﻿namespace Etymology.Tool;
 
-using System;
 using Etymology.Common;
 
 internal static class Unicode

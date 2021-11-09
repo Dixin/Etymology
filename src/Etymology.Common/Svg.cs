@@ -1,9 +1,5 @@
 ﻿namespace Etymology.Common;
 
-using System;
-using System.Text;
-using System.Xml.Linq;
-
 public static class Svg
 {
     public static string ConvertToBase64(this string svgFile)

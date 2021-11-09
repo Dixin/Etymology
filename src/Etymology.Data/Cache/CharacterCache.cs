@@ -1,9 +1,6 @@
 ﻿#nullable enable
 namespace Etymology.Data.Cache;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Etymology.Common;
 using Etymology.Data.Models;
 

@@ -1,8 +1,5 @@
 ﻿namespace Etymology.Web.Server;
 
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
-
 public record Settings
 {
     public List<string> AllowedHosts { get; } = new();
