@@ -1,7 +1,6 @@
-﻿namespace Etymology.Web.Server.Models
-{
-    using System;
-    using Etymology.Data.Models;
+﻿namespace Etymology.Web.Server.Models;
 
-    public record EtymologyAnalyzeModel(string Chinese, TimeSpan Elapsed, AnalyzeResult[] Results);
-}
+using System;
+using Etymology.Data.Models;
+
+public record EtymologyAnalyzeModel(string Chinese, TimeSpan Elapsed, AnalyzeResult[] Results);

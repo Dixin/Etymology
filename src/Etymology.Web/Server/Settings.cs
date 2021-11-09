@@ -1,24 +1,23 @@
-﻿namespace Etymology.Web.Server
+﻿namespace Etymology.Web.Server;
+
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+
+public record Settings
 {
-    using System.Collections.Generic;
-    using Microsoft.AspNetCore.Http;
+    public List<string> AllowedHosts { get; } = new();
 
-    public record Settings
-    {
-        public List<string> AllowedHosts { get; } = new();
+    public Dictionary<string, string> Connections { get; } = new();
 
-        public Dictionary<string, string> Connections { get; } = new();
+    public string ErrorPagePath { get; init; } = string.Empty;
 
-        public string ErrorPagePath { get; init; } = string.Empty;
+    public List<string> IndexPagePaths { get; } = new();
 
-        public List<string> IndexPagePaths { get; } = new();
+    public bool IsHttpsOnly { get; init; }
 
-        public bool IsHttpsOnly { get; init; }
+    public List<string> PublicPaths { get; } = new();
 
-        public List<string> PublicPaths { get; } = new();
+    public Dictionary<string, string> Routes { get; } = new();
 
-        public Dictionary<string, string> Routes { get; } = new();
-
-        public SameSiteMode SameSiteMode { get; init; }
-    }
+    public SameSiteMode SameSiteMode { get; init; }
 }

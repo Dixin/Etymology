@@ -1,9 +1,8 @@
-﻿namespace Etymology.Data.Console
+﻿namespace Etymology.Data.Console;
+
+internal static class Program
 {
-    internal static class Program
+    private static void Main()
     {
-        private static void Main()
-        {
-        }
     }
 }
