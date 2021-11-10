@@ -4,6 +4,7 @@ using Etymology.Data.Cache;
 using Etymology.Data.Models;
 using Etymology.Web.Server;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]

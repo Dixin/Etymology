@@ -1,19 +1,15 @@
 ﻿namespace Etymology.Common;
 
-using System;
-using System.Threading;
-using Microsoft.Extensions.Logging;
-
 public static class ExceptionExtensions
 {
     public static bool IsNotCritical(this Exception exception) =>
-        !(exception is AccessViolationException
-          || exception is AppDomainUnloadedException
-          || exception is BadImageFormatException
-          || exception is CannotUnloadAppDomainException
-          || exception is InvalidProgramException
-          || exception is OutOfMemoryException
-          || exception is ThreadAbortException);
+        exception is not (AccessViolationException
+            or AppDomainUnloadedException
+            or BadImageFormatException
+            or CannotUnloadAppDomainException
+            or InvalidProgramException
+            or OutOfMemoryException
+            or ThreadAbortException);
 
     public static bool LogErrorWith(this Exception exception, ILogger logger, string message, params object[] args)
     {

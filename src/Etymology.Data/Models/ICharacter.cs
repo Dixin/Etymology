@@ -1,58 +1,57 @@
-﻿namespace Etymology.Data.Models
+﻿namespace Etymology.Data.Models;
+
+using System.ComponentModel.DataAnnotations.Schema;
+
+public interface IFormattable
 {
-    using System.ComponentModel.DataAnnotations.Schema;
+    [NotMapped]
+    string Prefix { get; }
 
-    public interface IFormattable
-    {
-        [NotMapped]
-        string Prefix { get; }
+    [NotMapped]
+    int Id { get; }
+}
 
-        [NotMapped]
-        int Id { get; }
-    }
+public interface ICharacter : IFormattable
+{
+    string Traditional { get; set; }
 
-    public interface ICharacter : IFormattable
-    {
-        string Traditional { get; set; }
+    string ImageBase64 { get; set; }
 
-        string ImageBase64 { get; set; }
+    string ImageVector { get; set; }
+}
 
-        string ImageVector { get; set; }
-    }
+public partial class Bronze : ICharacter
+{
+    [NotMapped]
+    public string Prefix => "B";
 
-    public partial class Bronze : ICharacter
-    {
-        [NotMapped]
-        public string Prefix => "B";
+    [NotMapped]
+    public int Id => this.BronzeId;
+}
 
-        [NotMapped]
-        public int Id => this.BronzeId;
-    }
+public partial class Liushutong : ICharacter
+{
+    [NotMapped]
+    public string Prefix => "L";
 
-    public partial class Liushutong : ICharacter
-    {
-        [NotMapped]
-        public string Prefix => "L";
+    [NotMapped]
+    public int Id => this.LiushutongId;
+}
 
-        [NotMapped]
-        public int Id => this.LiushutongId;
-    }
+public partial class Oracle : ICharacter
+{
+    [NotMapped]
+    public string Prefix => "J";
 
-    public partial class Oracle : ICharacter
-    {
-        [NotMapped]
-        public string Prefix => "J";
+    [NotMapped]
+    public int Id => this.OracleId;
+}
 
-        [NotMapped]
-        public int Id => this.OracleId;
-    }
+public partial class Seal : ICharacter
+{
+    [NotMapped]
+    public string Prefix => "S";
 
-    public partial class Seal : ICharacter
-    {
-        [NotMapped]
-        public string Prefix => "S";
-
-        [NotMapped]
-        public int Id => this.SealId;
-    }
+    [NotMapped]
+    public int Id => this.SealId;
 }
