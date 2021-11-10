@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using global::Etymology.Common;
 
-[DebuggerDisplay("{" + nameof(Traditional) + "}, {" + nameof(Simplified) + "}, {" + nameof(EtymologyId) + "}, {" + nameof(OldTraditional) + "}")]
+[DebuggerDisplay($"{{{nameof(Traditional)}}}, {{{nameof(Simplified)}}}, {{{nameof(EtymologyId)}}}, {{{nameof(OldTraditional)}}}")]
 public partial class Etymology : IFormattable
 {
     [NotMapped]

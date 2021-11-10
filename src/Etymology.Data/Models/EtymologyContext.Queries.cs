@@ -191,8 +191,7 @@ public partial class EtymologyContext
 
 internal static class DbDataReaderExtensions
 {
-    [return: MaybeNull]
-    internal static T ToNullable<T>(this DbDataReader reader, string column) where T : class
+    internal static T? ToNullable<T>(this DbDataReader reader, string column) where T : class
     {
         object value = reader[column];
         return value is DBNull or null ? null : (T)value;
